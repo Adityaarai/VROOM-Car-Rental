@@ -1,0 +1,406 @@
+{% extends 'partials/base.html' %} {% load static %} {% block title %}
+Carlisting! VROOM {% endblock %} {% block content%}
+
+<div class="all">
+  <div class="filter">
+    <button class="filter-btn" data-category="all">All</button>
+    <button class="filter-btn" data-category="SUV">SUV</button>
+    <button class="filter-btn" data-category="EV">EV</button>
+    <button class="filter-btn" data-category="Truck">Truck</button>
+    <button class="filter-btn" data-category="Sedan">Sedan</button>
+  </div>
+
+  <div id="popup" class="popup">
+    <div class="popup-content">
+      <span class="close">&times;</span>
+      <h2>Car Details</h2>
+      <div id="popup-details"></div>
+      <button id="bookButton">Book Now</button>
+    </div>
+  </div>
+
+  <div class="cards-container">
+    <!-- Cards will be dynamically added here -->
+  </div>
+
+  <div class="page-btn">
+    <button id="previousPageBtn">Previous Page</button>
+    <button id="nextPageBtn">Next Page</button>
+  </div>
+</div>
+
+<script>
+  // Sample data
+  var cardsData = [
+    {
+      image: '{% static "media/lambo.jpg" %}',
+      price: "$20,000",
+      model: "toyota",
+      buttonText: "View Details",
+    },
+    {
+      image: "https://via.placeholder.com/150",
+      model: "Model 2",
+      price: "$25,000",
+      buttonText: "View Details",
+    },
+    {
+      image: "https://via.placeholder.com/150",
+      model: "Model 3",
+      price: "$30,000",
+      buttonText: "View Details",
+    },
+    {
+      image: "https://via.placeholder.com/150",
+      model: "Model 4",
+      price: "$35,000",
+      buttonText: "View Details",
+    },
+    {
+      image: "https://via.placeholder.com/150",
+      model: "Model 5",
+      price: "$40,000",
+      buttonText: "View Details",
+    },
+    {
+      image: "https://via.placeholder.com/150",
+      model: "Model 6",
+      price: "$45,000",
+      buttonText: "View Details",
+    },
+    {
+      image: "https://via.placeholder.com/150",
+      model: "Model 7",
+      price: "$50,000",
+      buttonText: "View Details",
+    },
+    {
+      image: "https://via.placeholder.com/150",
+      model: "Model 8",
+      price: "$55,000",
+      buttonText: "View Details",
+    },
+    {
+      image: "https://via.placeholder.com/150",
+      model: "Model 9",
+      price: "$60,000",
+      buttonText: "View Details",
+    },
+    {
+      image: "https://via.placeholder.com/150",
+      model: "Model 10",
+      price: "$65,000",
+      buttonText: "View Details",
+    },
+    {
+      image: "https://via.placeholder.com/150",
+      model: "Model 11",
+      price: "$70,000",
+      buttonText: "View Details",
+    },
+    {
+      image: "https://via.placeholder.com/150",
+      model: "Model 12",
+      price: "$75,000",
+      buttonText: "View Details",
+    },
+    {
+      image: "https://via.placeholder.com/150",
+      model: "Model 13",
+      price: "$80,000",
+      buttonText: "View Details",
+    },
+    {
+      image: "https://via.placeholder.com/150",
+      model: "Model 14",
+      price: "$85,000",
+      buttonText: "View Details",
+    },
+    {
+      image: "https://via.placeholder.com/150",
+      model: "Model 15",
+      price: "$90,000",
+      buttonText: "View Details",
+    },
+    {
+      image: "https://via.placeholder.com/150",
+      model: "Model 16",
+      price: "$95,000",
+      buttonText: "View Details",
+    },
+    {
+      image: "https://via.placeholder.com/150",
+      model: "Model 17",
+      price: "$100,000",
+      buttonText: "View Details",
+    },
+    {
+      image: "https://via.placeholder.com/150",
+      model: "Model 18",
+      price: "$105,000",
+      buttonText: "View Details",
+    },
+    {
+      image: "https://via.placeholder.com/150",
+      model: "Model 19",
+      price: "$110,000",
+      buttonText: "View Details",
+    },
+    {
+      image: "https://via.placeholder.com/150",
+      model: "Model 20",
+      price: "$115,000",
+      buttonText: "View Details",
+    },
+  ];
+
+  function showPopup(cardData) {
+    var popup = document.getElementById("popup");
+    var popupDetails = document.getElementById("popup-details");
+    popupDetails.innerHTML = `
+                <img src="${cardData.image}" alt="${cardData.model}">
+                <p>Model: ${cardData.model}</p>
+                <p>Price: ${cardData.price}</p>
+            `;
+    popup.style.display = "block";
+  }
+
+  window.addEventListener("DOMContentLoaded", function () {
+    var allButton = document.querySelector('.filter-btn[data-category="all"]');
+    allButton.click();
+  });
+
+  var filterBtns = document.querySelectorAll(".filter-btn");
+  var cardsContainer = document.querySelector(".cards-container");
+  var nextPageBtn = document.getElementById("nextPageBtn");
+  var previousPageBtn = document.getElementById("previousPageBtn");
+
+  filterBtns.forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var category = this.getAttribute("data-category");
+      cardsContainer.innerHTML = "";
+      var count = category === "all" ? 20 : 12;
+      for (var i = 1; i <= count; i++) {
+        var cardData = cardsData[i - 1];
+        var card = document.createElement("div");
+        card.classList.add("card");
+        if (category !== "all") {
+          card.classList.add("filter", category);
+        }
+        var image = document.createElement("img");
+        image.src = cardData.image;
+        card.appendChild(image);
+        var cardContent = document.createElement("div");
+        cardContent.classList.add("card-content");
+        var price = document.createElement("p");
+        price.classList.add("price");
+        price.textContent = cardData.price;
+        cardContent.appendChild(price);
+        var model = document.createElement("p");
+        model.classList.add("model");
+        model.textContent = cardData.model;
+        cardContent.appendChild(model);
+        var button = document.createElement("button");
+        button.classList.add("cardbtn");
+        button.textContent = cardData.buttonText;
+        button.addEventListener("click", function () {
+          showPopup(cardData);
+        });
+        cardContent.appendChild(button);
+        card.appendChild(cardContent);
+        cardsContainer.appendChild(card);
+      }
+    });
+  });
+
+  //next page button
+  nextPageBtn.addEventListener("click", function () {
+    alert("Change the cars according to the cars in the database");
+  });
+
+  //previous page button
+  previousPageBtn.addEventListener("click", function () {
+    alert("Change the cars according to the cars in the database");
+  });
+
+  // Popup Close
+  document.querySelector(".close").addEventListener("click", function () {
+    document.getElementById("popup").style.display = "none";
+  });
+
+  //Book button
+  document.getElementById("bookButton").addEventListener("click", function () {
+    alert("Change the functionality of the book button");
+  });
+</script>
+<style>
+  body {
+    margin-top: 10vh;
+  }
+  .all {
+    width: 80vw;
+    margin-left: 10%;
+  }
+
+  .filter {
+    margin: 40px 2%;
+    padding-top: 20px;
+  }
+
+  .filter-btn {
+    padding: 8px 16px;
+    border: none;
+    background-color: #2f6690;
+    color: #d9dcd6;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-right: 10px;
+    font-size: medium;
+  }
+
+  .filter-btn:hover {
+    background-color: #16425b;
+  }
+
+  .cards-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 0 20px;
+  }
+
+  .card {
+    height: 35vh;
+    width: 18vw;
+    margin: 2px;
+    background-color: #d9dcd6;
+    border: 1px solid #d9dcd6;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    box-sizing: border-box;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .card img {
+    margin-left: 5%;
+    margin-top: 5%;
+    margin-bottom: 10px;
+    width: 90%;
+    height: 50%;
+  }
+
+  .card-content {
+    margin-top: 20px;
+    padding-left: 10%;
+  }
+
+  .model {
+    padding-top: 3%;
+    padding-bottom: 3%;
+    font-size: 1.2rem;
+    font-weight: 450;
+  }
+
+  .price {
+    font-size: 1.5rem;
+    font-weight: 500;
+  }
+
+  .cardbtn {
+    margin-top: 10px;
+    width: 80%;
+    font-weight: bold;
+    font-size: large;
+  }
+
+  .page-btn {
+    margin-top: 20px;
+    text-align: center;
+  }
+
+  .page-btn button {
+    padding: 10px 20px;
+    background-color: #2f6690;
+    color: #d9dcd6;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 10px;
+    margin-bottom: 10px;
+  }
+
+  .page-btn button:hover {
+    background-color: #16425b;
+  }
+
+  .popup {
+    display: none;
+    position: fixed;
+    z-index: 1001;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+
+  .popup-content {
+    background-color: #d9dcd6;
+
+    margin-top: 15vh;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 70%;
+    height: 60%;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    position: relative;
+  }
+
+  .popup-content h2 {
+    margin-top: 10px;
+    margin-bottom: 20px;
+  }
+
+  .popup-content img {
+    width: 90%;
+    margin-bottom: 5px;
+    margin-left: 5%;
+    margin-right: 10%;
+    height: 40vh;
+  }
+
+  .popup-content p {
+    margin-top: 5px;
+    font-weight: 600;
+    font-size: 1.3rem;
+    padding-left: 2vw;
+  }
+
+  .popup-content button {
+    padding: 10px 20px;
+    margin-left: 2vw;
+    background-color: #2f6690;
+    color: #d9dcd6;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 15px;
+    right: 0;
+  }
+
+  .popup-content button:hover {
+    background-color: #16425b;
+  }
+
+  .close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    font-size: 24px;
+  }
+</style>
+
+{% endblock %}
