@@ -7,9 +7,10 @@
     <div class="nav-right">
       <ul class="nav-list">
         <li><a href="{% url 'index' %}">Home</a></li>
-        <li><a href="{% url 'aboutus' %}">About Us</a></li>
+        <li><a href="{% url 'about_us' %}">About Us</a></li>
         <li><a href="{% url 'carlisting' %}">Car Listings</a></li>
-        <li><a href="{% url 'signup' %}">SignIn / SignUp</a></li>
+        <li><a href="{% url 'signup' %}">SignUp</a></li>
+        <li><a href="{% url 'login' %}">LogIn</a></li>
       </ul>
     </div>
   </div>
@@ -107,7 +108,7 @@
   }
 
   .nav-list li a:hover {
-    color: white; 
+    color: white;
   }
 
   .nav-list li a::after {
