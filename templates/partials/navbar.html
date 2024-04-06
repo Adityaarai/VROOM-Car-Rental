@@ -1,0 +1,134 @@
+<!-- navbar -->
+<nav id="navbar">
+  <div class="nav-container">
+    <div class="nav-left">
+      <h1>VROOM</h1>
+    </div>
+    <div class="nav-right">
+      <ul class="nav-list">
+        <li><a href="{% url 'index' %}">Home</a></li>
+        <li><a href="{% url 'aboutus' %}">About Us</a></li>
+        <li><a href="{% url 'carlisting' %}">Car Listings</a></li>
+        <li><a href="{% url 'signup' %}">SignIn / SignUp</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+{% if request.path == '/' %}
+<script>
+  window.onscroll = function () {
+    scrollFunction();
+  };
+
+  function scrollFunction() {
+    if (
+      document.body.scrollTop > 80 ||
+      document.documentElement.scrollTop > 80
+    ) {
+      document.getElementById("navbar").classList.add("scrolled");
+    } else {
+      document.getElementById("navbar").classList.remove("scrolled");
+    }
+  }
+</script>
+
+<style>
+  #navbar {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    height: 60px;
+    background-color: transparent;
+    padding: 20px 10px 10px 10px;
+    transition: background-color 0.3s ease;
+    z-index: 1000;
+  }
+</style>
+
+{% else %}
+<style>
+  #navbar {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    height: 60px;
+    background-color: var(--indigo);
+    padding: 20px 10px 10px 10px;
+    transition: background-color 0.3s ease;
+    z-index: 1000;
+  }
+</style>
+{% endif %}
+
+<style>
+  @import url("https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Play:wght@400;700&display=swap");
+
+  * {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    text-decoration: none;
+    font-family: "Montserrat", sans-serif;
+  }
+
+  :root {
+    --indigo: #16425b;
+    --lapis: #2f6690;
+    --cerulean: #3a7ca5;
+    --skyblue: #81c3d7;
+    --platinum: #d9dcd6;
+  }
+
+  #navbar.scrolled {
+    background-color: var(--indigo);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  }
+
+  .nav-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  .nav-right li {
+    display: inline-block;
+    margin: 10px 20px;
+  }
+  .nav-left,
+  .nav-right {
+    padding: 10px;
+  }
+  .nav-list li a {
+    color: var(--platinum);
+    font-weight: 400;
+    font-size: 1.3em;
+    position: relative;
+    transition: color 0.3s ease;
+  }
+
+  .nav-list li a:hover {
+    color: white; 
+  }
+
+  .nav-list li a::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    bottom: -5px;
+    left: 0;
+    background-color: var(--platinum);
+    visibility: hidden;
+    transform: scaleX(0);
+    transition: all 0.3s ease-in-out;
+  }
+
+  .nav-list li a:hover::after {
+    visibility: visible;
+    transform: scaleX(1);
+  }
+
+  .nav-left {
+    color: var(--platinum);
+  }
+</style>

@@ -1,0 +1,222 @@
+
+    {% extends 'partials/base.html' %}
+    {% load static %}
+    {% block title %} VROOM {% endblock %}
+
+    {% block content %}
+    <div id="slogan">
+      <div id="text">
+        <p><br />Travel Anywhere<br />You Want</p>
+        <button id="bookBtn">Book Now</button>
+        <div id="loginPopup" class="popup">
+          <div class="popup-content">
+            <span class="close" onclick="closePopup()">&times;</span>
+            <h2>Login Required!</h2>
+            <a href="{% url 'signup' %}">Login</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<p id="title">Categories</p>
+<div id="category">
+  <div class="suv">
+    <a href="{% url 'carlisting' %}">
+      <img src="{% static 'media/suv.png' %}" alt="Image 1" />
+      <p>SUV</p>
+    </a>
+  </div>
+  <div class="ev">
+    <a href="{% url 'carlisting' %}">
+      <img src="{% static 'media/ev.png' %}" alt="Image 2" />
+      <p>EV</p>
+    </a>
+  </div>
+  <div class="truck">
+    <a href="{% url 'carlisting' %}">
+      <img src="{% static 'media/truck.png' %}" alt="Image 3" />
+      <p>Truck</p>
+    </a>
+  </div>
+  <div class="sedan">
+    <a href="{% url 'carlisting' %}">
+      <img src="{% static 'media/sedan.png' %}" alt="Image 4" />
+      <p>Sedan</p>
+    </a>
+  </div>
+</div>
+<script>
+  const bookBtn = document.getElementById("bookBtn");
+  const loginPopup = document.getElementById("loginPopup");
+
+  bookBtn.addEventListener("click", () => {
+    loginPopup.style.display = "block";
+  });
+
+  function closePopup() {
+    loginPopup.style.display = "none";
+  }
+</script>
+
+<style>
+  @import url("https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Play:wght@400;700&display=swap");
+
+  /* General styles */
+  body {
+    margin: 0;
+    padding-top: 0;
+    font-family: "Montserrat", sans-serif;
+  }
+
+  /* Popup styles */
+  .popup {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+
+  .popup-content {
+    background-color: #fefefe;
+    margin: 3% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 600px;
+    color: #333;
+    height: 77%;
+  }
+
+  .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+
+  .close:hover,
+  .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .popup-content a,
+  h2 {
+    padding-left: 60px;
+    padding-top: 0;
+  }
+
+  /* Button styles */
+  #bookBtn {
+    background-color: transparent;
+    color: #fff;
+    border: 2px solid #fff;
+    padding: 10px 20px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+  }
+
+  #bookBtn:hover {
+    background-color: #fff;
+    color: #000;
+  }
+
+  /* Slogan styles */
+  #slogan {
+    color: white;
+    text-align: center;
+    height: 100vh;
+    font-size: clamp(30px, 50px, 60px);
+    font-weight: bold;
+    background-image: url("{% static 'media/background.jpg'%}");
+    opacity: 1;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  #slogan #text {
+    padding-left: 10vh;
+    padding-top: 20vh;
+    height: 50%;
+    width: 50%;
+    font-size: 10vh;
+    text-align: left;
+  }
+
+  #title {
+    font-size: 30px;
+    font-weight: 500;
+    text-align: center;
+    margin-top: 60px;
+  }
+
+  #category {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+    max-width: 1200px;
+    margin: 20px auto;
+    text-align: center;
+    border: #000;
+    width: 100%;
+
+  }
+
+  .box {
+    width: 200px;
+    padding: 20px;
+    margin: 10px;
+    background-color: #f0f0f0;
+    border-radius: 10px;
+    text-align: center;
+    border: 2px solid #ddd;
+  }
+
+  .box img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-bottom: 10px;
+  }
+
+  .box p {
+    margin: 0;
+  }
+
+  .box a {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  /* Button styles */
+  #bookbtn {
+    background-color: transparent;
+    color: #fff;
+    border: 2px solid #fff;
+    padding: 10px 20px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+  }
+
+  #bookbtn:hover {
+    background-color: #2f6690;
+    color: #d9dcd6;
+  }
+</style>
+
+{% endblock %}
+
