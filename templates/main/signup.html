@@ -1,17 +1,9 @@
+
+{% extends 'partials/base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>VROOM Car Rental Signup</title>
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="{% static 'css/signup.css' %}"
-    />
-  </head>
-  <body>
+{% block title %} VROOM {% endblock %}
+
+{% block content %}
     {% for message in messages %}
     <div
       class="alert alert-{{ message.tags }} alert-dismissible fade show"
@@ -107,5 +99,79 @@
         </form>
       </div>
     </div>
-  </body>
-</html>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.left-panel {
+    flex: 1;
+    padding: 20px;
+}
+
+.right-panel {
+    flex: 1;
+    padding: 20px;
+}
+
+img {
+    max-width: 100%;
+}
+
+form {
+    max-width: 300px;
+    margin: 0 auto;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+.login-link {
+    margin-top: 20px;
+}
+
+.login-link a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.login-link a:hover {
+    text-decoration: underline;
+}
+
+</style>
+{% endblock %}
