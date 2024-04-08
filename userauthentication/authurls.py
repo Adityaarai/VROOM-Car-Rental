@@ -5,6 +5,5 @@ from . import authviews
 urlpatterns = [
     path('signup/', authviews.signup, name = 'signup'),
     path('login/', authviews.login, name = 'login'),  
-    path('activate/<uidb64>/<token>', authviews.activate, name="activate"),
-
+    path('activate/<uidb64>/<token>', authviews.activate, name='activate'),
 ]
