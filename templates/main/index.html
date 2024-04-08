@@ -21,32 +21,129 @@
   </div>
 </div>
 
-<p id="title">Categories</p>
-<div id="category">
-  <div class="suv">
-    <a href="{% url 'carlisting' %}">
-      <img src="{% static 'img/suv.png' %}" alt="Image 1" />
-      <p>SUV</p>
-    </a>
-  </div>
-  <div class="ev">
-    <a href="{% url 'carlisting' %}">
-      <img src="{% static 'img/ev.png' %}" alt="Image 2" />
-      <p>EV</p>
-    </a>
-  </div>
-  <div class="truck">
-    <a href="{% url 'carlisting' %}">
-      <img src="{% static 'img/truck.png' %}" alt="Image 3" />
-      <p>Truck</p>
-    </a>
-  </div>
-  <div class="sedan">
-    <a href="{% url 'carlisting' %}">
-      <img src="{% static 'img/sedan.png' %}" alt="Image 4" />
-      <p>Sedan</p>
-    </a>
-  </div>
+
+<div id="types">
+  
+      <p id="title">Categories</p>
+
+          <div id="category">
+            <div class="suv">
+              <a href="{% url 'carlisting' %}">
+                <img src="{% static 'img/suv.png' %}" alt="Image 1" />
+                <p>SUV</p>
+              </a>
+            </div>
+            <div class="ev">
+              <a href="{% url 'carlisting' %}">
+                <img src="{% static 'img/ev.png' %}" alt="Image 2" />
+                <p>EV</p>
+              </a>
+            </div>
+            <div class="truck">
+              <a href="{% url 'carlisting' %}">
+                <img src="{% static 'img/truck.png' %}" alt="Image 3" />
+                <p>Truck</p>
+              </a>
+            </div>
+            <div class="sedan">
+              <a href="{% url 'carlisting' %}">
+                <img src="{% static 'img/sedan.png' %}" alt="Image 4" />
+                <p>Sedan</p>
+              </a>
+            </div>
+      </div>
+
+
+      <div id="brand">Top Brands</div>
+          <div id="brand-upper">
+                <div class="Suzuki">
+                  <a href="{% url 'carlisting' %}">
+                    <img src="{% static 'img/suzuki.png' %}" alt="Image 1" />
+                    <p>Suzuki</p>
+                  </a>
+                </div>
+                <div class="Tata">
+                  <a href="{% url 'carlisting' %}">
+                    <img src="{% static 'img/tata.png' %}" alt="Image 1" />
+                    <p>Tata</p>
+                  </a>
+                </div>
+                <div class="Kia">
+                  <a href="{% url 'carlisting' %}">
+                    <img src="{% static 'img/kia.png' %}" alt="Image 1" />
+                    <p>Kia</p>
+                  </a>
+                </div>
+                <div class="Toyota">
+                  <a href="{% url 'carlisting' %}">
+                    <img src="{% static 'img/toyota.png' %}" alt="Image 1" />
+                    <p>Toyota</p>
+                  </a>
+                </div>
+                <div class="Hyundai">
+                  <a href="{% url 'carlisting' %}">
+                    <img src="{% static 'img/hyundai.png' %}" alt="Image 1" />
+                    <p>Hyundai</p>
+                  </a>
+                </div>
+                <div class="Mahindra">
+                  <a href="{% url 'carlisting' %}">
+                    <img src="{% static 'img/mahindra.png' %}" alt="Image 1" />
+                    <p>Mahindra</p>
+                  </a>
+                </div>
+          </div>
+          <div id="brand-lower">
+              <div class="Honda">
+                <a href="{% url 'carlisting' %}">
+                  <img src="{% static 'img/honda.png' %}" alt="Image 1" />
+                  <p>Honda</p>
+                </a>
+              </div>
+              <div class="MG">
+                <a href="{% url 'carlisting' %}">
+                  <img src="{% static 'img/mg.png' %}" alt="Image 1" />
+                  <p>MG</p>
+                </a>
+              </div>
+              <div class="Skoda">
+                <a href="{% url 'carlisting' %}">
+                  <img src="{% static 'img/skoda.png' %}" alt="Image 1" />
+                  <p>Skoda</p>
+                </a>
+              </div>
+              <div class="Jeep">
+                <a href="{% url 'carlisting' %}">
+                  <img src="{% static 'img/jeep.png' %}" alt="Image 1" />
+                  <p>Jeep</p>
+                </a>
+              </div>
+              <div class="Renault">
+                <a href="{% url 'carlisting' %}">
+                  <img src="{% static 'img/renault.png' %}" alt="Image 1" />
+                  <p>Renault</p>
+                </a>
+              </div>
+              <div class="Nissan">
+                <a href="{% url 'carlisting' %}">
+                  <img src="{% static 'img/nissan.png' %}" alt="Image 1" />
+                  <p>Nissan</p>
+                </a>
+              </div>
+        </div>
+</div>
+
+<div id="vroom">
+  <h2 id="vroom-title">Why Choose Us?</h2>
+    <ol id="vroom-list">
+      <li>Wide range of vehicles.</li>
+      <li>Quick and easy process.</li>
+      <li>Well-maintained vehicles.</li>
+      <li>Competitive pricing.</li>
+      <li>Flexible rental options.</li>
+      <li>Customer satisfaction is our top priority.</li> 
+      <li>Strive to exceed your expectations.</li>
+    </ol>
 </div>
 <script>
   const bookBtn = document.getElementById("bookBtn");
@@ -85,14 +182,19 @@
   }
 
   .popup-content {
+    margin-top: 25vh;
+    margin-left: 25vw;
     background-color: #fefefe;
-    margin: 3% auto;
+    align-items: center;
     padding: 20px;
     border: 1px solid #888;
-    width: 80%;
-    max-width: 600px;
+    border-radius: 20px;
+    width: 50vw;
+    /* max-width: 800px; */
     color: #333;
-    height: 77%;
+    height: 50%;
+    z-index: 1500;
+    font-size: 5rem;
   }
 
   .close {
@@ -114,22 +216,7 @@
     padding-left: 60px;
     padding-top: 0;
   }
-
-  /* Button styles */
-  #bookBtn {
-    background-color: transparent;
-    color: #fff;
-    border: 2px solid #fff;
-    padding: 10px 20px;
-    font-size: 18px;
-    cursor: pointer;
-    transition: background-color 0.3s, color 0.3s;
-  }
-
-  #bookBtn:hover {
-    background-color: #fff;
-    color: #000;
-  }
+  
 
   /* Slogan styles */
   #slogan {
@@ -155,10 +242,16 @@
   }
 
   #title {
-    font-size: 30px;
-    font-weight: 500;
+    font-size: 50px;
+    font-weight: 600;
     text-align: center;
-    margin-top: 60px;
+    margin-top: 10vh;
+    margin-bottom: 5vh;
+  }
+
+  #types{
+    height: 83vh;
+    width: 100vw;
   }
 
   #category {
@@ -166,43 +259,62 @@
     justify-content: space-around;
     align-items: center;
     flex-wrap: wrap;
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 20px auto;
     text-align: center;
     border: #000;
     width: 100%;
-
   }
 
-  .box {
-    width: 200px;
-    padding: 20px;
-    margin: 10px;
-    background-color: #f0f0f0;
-    border-radius: 10px;
+  #brand{
+    font-size: 50px;
+    font-weight: 600;
     text-align: center;
-    border: 2px solid #ddd;
+    margin-top: 10vh;
+    margin-bottom: 60px;
   }
 
-  .box img {
-    width: 100px;
-    height: 100px;
-    object-fit: cover;
-    border-radius: 50%;
-    margin-bottom: 10px;
+  #brand-upper, #brand-lower {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+    max-width: 1400px;
+    margin: 20px auto;
+    text-align: center;
+    border: #000;
+    width: 100%;
   }
 
-  .box p {
-    margin: 0;
+  #vroom{
+    color:white;
+    padding-top: 20vh;
+    height: 72vh;
+    background-image: url("{% static 'img/why-vroom.jpg'%}");
+    opacity: 0.98;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
   }
 
-  .box a {
-    text-decoration: none;
-    color: inherit;
+  #vroom-title{
+    font-size: 10vh;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  #vroom-list{
+    width: 80vw;
+    font-size: 3vh;
+    font-weight: 500;
+    padding-top: 5vh;
+    line-height: 5vh;
+    padding-left: 10vw;
+    /* text-align: right; */
   }
 
   /* Button styles */
-  #bookbtn {
+  #bookBtn {
     background-color: transparent;
     color: #fff;
     border: 2px solid #fff;
@@ -212,10 +324,11 @@
     transition: background-color 0.3s, color 0.3s;
   }
 
-  #bookbtn:hover {
-    background-color: #2f6690;
+  #bookBtn:hover {
+    background-color: #16425b;
     color: #d9dcd6;
   }
+ 
 </style>
 
 {% endblock %}

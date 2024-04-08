@@ -10,9 +10,9 @@ def carlisting(request):
 def about_us(request):
     return render(request, 'main/about.html')
 
-def login(request):
-    return render(request, 'main/login.html')
+#def login(request):
+ #   return render(request, 'main/login.html')
 
-def signup(request):
-    return render(request, 'main/signup.html')
+#def signup(request):
+ #   return render(request, 'main/signup.html')
 
