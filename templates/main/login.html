@@ -1,94 +1,101 @@
+{% extends 'partials/base.html' %} {% load static %} {% block title %} VROOM -
+Signin{% endblock %} {% block content %} {% for message in messages %}
+<div class="alert alert-danger" role="alert">{{ message }}</div>
+{% endfor %}
 
-{% extends 'partials/base.html' %}
-{% load static %}
-{% block title %} VROOM {% endblock %}
+<div class="container">
+  <div class="left-side">
+    <img src="{% static 'img/vehicle.jpg' %}" alt="Vehicle Image" />
+  </div>
+  <div class="right-side">
+    <h2>Sign In</h2>
+    <form id="login-form" method="post">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input
+          type="text"
+          name="username"
+          id="username"
+          placeholder="Username"
+          value="{{ username }}"
+          required
+        />
+      </div>
 
-{% block content %}
-    {% for message in messages %}
-    <div class="alert alert-danger" role="alert">
-        {{ message }}
-    </div>
-    {% endfor %}
+      <div class="form-group">
+        <label for="username">Password</label>
+        <input
+          type="password"
+          name="password"
+          id="password"
+          placeholder="Password"
+          required
+        />
+      </div>
 
+      <button type="submit">Sign In</button>
 
-    <div class="container">
-        <div class="left-side">
-            <img src="{% static 'img/vehicle.jpg' %}" alt="Vehicle Image">
-        </div>
-        <div class="right-side">
-            <h2>Sign In</h2>
-            <form id="login-form" method="post">
-                {% csrf_token %}
-                <div class="form-group">
-                    <label for="username">Username</label>
-                    <input type="text" name="username" id="username" placeholder="Username" value="{{ username }}" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="username">Password</label>
-                    <input type="password" name="password" id="password" placeholder="Password" required>
-                </div>
-               
-                <button type="submit">Sign In</button>
-                
-                <div class="signup-link">
-                    <p>Don't have an account yet? <a href="{% url 'signup' %}">Sign Up</a></p>
-                </div>
-            </form>
-        </div>
-    </div>
+      <div class="signup-link">
+        <p>
+          Don't have an account yet? <a href="{% url 'signup' %}">Sign Up</a>
+        </p>
+      </div>
+    </form>
+  </div>
+</div>
 <style>
-body {
+  body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-}
+  }
 
-.container {
+  .container {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-}
+  }
 
-.left-side {
+  .left-side {
     flex: 1;
     padding: 20px;
-}
+  }
 
-img {
+  img {
     max-width: 100%;
-}
+  }
 
-.right-side {
+  .right-side {
     flex: 1;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-}
+  }
 
-.login-form {
+  .login-form {
     padding: 20px;
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
+  }
 
-.login-form h2 {
+  .login-form h2 {
     margin-bottom: 20px;
-}
+  }
 
-.login-form input {
+  .login-form input {
     width: 100%;
     padding: 10px;
     margin-bottom: 15px;
     border: 1px solid #ccc;
     border-radius: 5px;
     box-sizing: border-box;
-}
+  }
 
-.login-form button {
+  .login-form button {
     width: 100%;
     padding: 10px;
     background-color: #007bff;
@@ -96,12 +103,11 @@ img {
     border: none;
     border-radius: 5px;
     cursor: pointer;
-}
+  }
 
-.signup-link {
+  .signup-link {
     margin-top: 15px;
     text-align: center;
-}
+  }
 </style>
 {% endblock %}
-
