@@ -9,10 +9,10 @@ from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.utils.encoding import force_bytes
 from django.utils.encoding import force_str
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login as auth_login, logout
 from . tokens import generate_token
 from django.utils.http import urlencode
-import re 
+import re
 
 
 # Create your views here.
@@ -50,7 +50,7 @@ def signup(request):
 
         myuser.save()
 
-        messages.success(request, "Your account has been successfully created. We have sent you a confirmation email, please confirm your email in order to activate your account.")
+        messages.success(request, "Success: Your account has been successfully created. We have sent you a confirmation email, please confirm your email in order to activate your account.")
 
         # Welcome Email
         subject = "Welcome to VROOM-Car-Rental-Service Login!!"
@@ -79,28 +79,27 @@ def signup(request):
         email.fail_silently = True
         email.send()
 
-
-        # Redirect to the sign-in page with the username pre-filled
-        login_url = redirect('login').url
-        return redirect(f'{login_url}?{urlencode({"email": email})}')  
+        return redirect('login')
 
     return render(request, 'main/signup.html')
 
 def login(request):
-
     if request.method == 'POST':
         email = request.POST.get('email')
         password = request.POST['password']
 
-        # First, attempt to authenticate against the default User model using email
         user = authenticate(request, username=email, password=password)
+        
         if user is not None:
-            login(request, user)
+            auth_login(request, user)
+            fname = user.first_name
+            # messages.success(request, "Logged In Sucessfully!!")
             return render(request, "main/index.html")
-    
+            
         # If no user was authenticated, show error message
-        messages.error(request, "Invalid email or password!")
-        return redirect('login')
+        else:
+            messages.error(request, "Invalid email or password!")
+            return redirect('login')
     
     # Clear all messages before rendering the sign-in page
     setattr(request, 'messages', [])
@@ -109,23 +108,18 @@ def login(request):
     email = request.GET.get('email', '')
     return render(request, 'main/login.html', {'email': email})
 
-#def signout(request):
- #   logout(request)
- #   messages.success(request, "Logged Out Successfully!")
- #   return redirect('index')
-
 def activate(request, uidb64, token):
     try:
         uid = force_str(urlsafe_base64_decode(uidb64))
         myuser = User.objects.get(pk=uid)
-    
     except (TypeError, ValueError, OverflowError, User.DoesNotExist):
         myuser = None
-    
+
     if myuser is not None and generate_token.check_token(myuser, token):
         myuser.is_active = True
         myuser.save()
-        login(request, myuser)
+        auth_login(request, myuser)
+        messages.success(request, "Your Account has been activated!!")
         return redirect('index')
     else:
         return render(request, 'main/activation_failed.html')

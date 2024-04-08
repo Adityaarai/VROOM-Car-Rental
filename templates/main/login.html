@@ -1,22 +1,14 @@
-
 {% extends 'partials/base.html' %}
 {% load static %}
 {% block title %} VROOM {% endblock %}
 
 {% block content %}
-    {% for message in messages %}
-    <div class="alert alert-danger" role="alert">
-        {{ message }}
-    </div>
-    {% endfor %}
-
-
     <div class="container">
         <div class="left-panel" style="margin-right: 50px;">
             <img src="{% static 'img/vehicle.jpg' %}" alt="Vehicle Image">
         </div>
         
-        <div class="right-panel"style="margin-right: 190px;">
+        <div class="right-panel" style="margin-right: 190px;">
             <h2>Login</h2>
             <form id="signin-form" method="post">
                 {% csrf_token %}
@@ -33,82 +25,113 @@
                     <p>Don't have an account yet? <button type="button"><a class="title" href="{% url 'signup' %}">Sign Up</a></button></p>
                 </div>                
             </form>
+            <div class="message">
+                {% for message in messages %}
+                    {% if message.tags == 'error' %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ message }}
+                        </div>
+                    {% elif message.tags == 'success' %}
+                        <div class="alert alert-success" role="alert">
+                            {{ message }}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
         </div>
     </div>
-<style>
+    <style>
+        body {
+            font-family: "Montserrat", sans-serif;
+            margin: 0;
+            padding: 0;
+        }
 
-body {
-    font-family: "Montserrat", sans-serif;
-    margin: 0;
-    padding: 0;
-}
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
 
-.container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
+        .left-panel {
+            flex: 1;
+        }
 
-.left-panel {
-    flex: 1;
-}
+        img {
+            max-width: 100%;
+        }
 
-img {
-    max-width: 100%;
-}
+        .form-group {
+            margin-bottom: 15px;
+        }
 
-.form-group {
-    margin-bottom: 15px;
-}
+        .right-panel h2 {
+            margin-top: 0;
+            margin-bottom: 50px;
+        }
 
-.right-panel h2{
-    margin-top:0px;
-    margin-bottom:50px;
-}
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            margin-bottom: 10px;
+        }
 
-input[type="email"],
-input[type="password"] {
-    width: 100%;
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    margin-bottom: 10px;
-}
+        button {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #2f6690;
+            color: #fff;
+            cursor: pointer;
+        }
 
-button {
-    width: 100%;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    background-color: #2f6690;
-    color: #fff;
-    cursor: pointer;
-}
+        button:hover {
+            background-color: #16425b;
+        }
 
-button:hover {
-    background-color: #16425b;
-}
+        button,
+        .signup-link button {
+            width: 100%;
+            padding: 15px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #2f6690;
+            color: #fff;
+            cursor: pointer;
+        }
 
-button, .signup-link button {
-    width: 100%;
-    padding: 15px;
-    margin-top: 10px; 
-    border: none;
-    border-radius: 5px;
-    background-color: #2f6690;
-    color: #fff;
-    cursor: pointer;
-}
-    
-button:hover, .signup-link button:hover {
-    background-color: #16425b;
-    color: #fff;
-}
+        button:hover,
+        .signup-link button:hover {
+            background-color: #16425b;
+            color: #fff;
+        }
 
-.title{
-    color: #fff;
-}
-</style>
+        .title {
+            color: #fff;
+        }
+
+        /* Customizing alert colors */
+        .alert-danger {
+            color: red;
+            font-weight: bold;
+        }
+
+        .alert-success {
+            color: green;
+            font-weight: bold;
+        }
+
+        /* Adjusting message display */
+        .message {
+            margin-top: 20px;
+            max-width: 300px; /* Adjust as needed */
+            word-wrap: break-word; /* Allow long messages to wrap */
+        }
+    </style>
 {% endblock %}
-
