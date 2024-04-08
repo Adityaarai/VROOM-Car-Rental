@@ -1,107 +1,137 @@
-
 {% extends 'partials/base.html' %}
 {% load static %}
 {% block title %} VROOM {% endblock %}
 
 {% block content %}
-    {% for message in messages %}
-    <div class="alert alert-danger" role="alert">
-        {{ message }}
-    </div>
-    {% endfor %}
-
-
     <div class="container">
-        <div class="left-side">
+        <div class="left-panel" style="margin-right: 50px;">
             <img src="{% static 'img/vehicle.jpg' %}" alt="Vehicle Image">
         </div>
-        <div class="right-side">
-            <h2>Sign In</h2>
-            <form id="login-form" method="post">
+        
+        <div class="right-panel" style="margin-right: 190px;">
+            <h2>Login</h2>
+            <form id="signin-form" method="post">
                 {% csrf_token %}
                 <div class="form-group">
-                    <label for="username">Username</label>
-                    <input type="text" name="username" id="username" placeholder="Username" value="{{ username }}" required>
+                    <label for="email">Email</label>
+                    <input type="email" name="email" id="email" placeholder="Enter your email" required>
                 </div>
-                
                 <div class="form-group">
-                    <label for="username">Password</label>
-                    <input type="password" name="password" id="password" placeholder="Password" required>
+                    <label for="password">Password</label>
+                    <input type="password" name="password" id="password" placeholder="Enter your password" required>
                 </div>
-               
                 <button type="submit">Sign In</button>
-                
                 <div class="signup-link">
-                    <p>Don't have an account yet? <a href="{% url 'signup' %}">Sign Up</a></p>
-                </div>
+                    <p>Don't have an account yet? <button type="button"><a class="title" href="{% url 'signup' %}">Sign Up</a></button></p>
+                </div>                
             </form>
+            <div class="message">
+                {% for message in messages %}
+                    {% if message.tags == 'error' %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ message }}
+                        </div>
+                    {% elif message.tags == 'success' %}
+                        <div class="alert alert-success" role="alert">
+                            {{ message }}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
         </div>
     </div>
-<style>
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-}
+    <style>
+        body {
+            font-family: "Montserrat", sans-serif;
+            margin: 0;
+            padding: 0;
+        }
 
-.container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
 
-.left-side {
-    flex: 1;
-    padding: 20px;
-}
+        .left-panel {
+            flex: 1;
+        }
 
-img {
-    max-width: 100%;
-}
+        img {
+            max-width: 100%;
+        }
 
-.right-side {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
+        .form-group {
+            margin-bottom: 15px;
+        }
 
-.login-form {
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
+        .right-panel h2 {
+            margin-top: 0;
+            margin-bottom: 50px;
+        }
 
-.login-form h2 {
-    margin-bottom: 20px;
-}
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            margin-bottom: 10px;
+        }
 
-.login-form input {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-sizing: border-box;
-}
+        button {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #2f6690;
+            color: #fff;
+            cursor: pointer;
+        }
 
-.login-form button {
-    width: 100%;
-    padding: 10px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
+        button:hover {
+            background-color: #16425b;
+        }
 
-.signup-link {
-    margin-top: 15px;
-    text-align: center;
-}
-</style>
+        button,
+        .signup-link button {
+            width: 100%;
+            padding: 15px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #2f6690;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        button:hover,
+        .signup-link button:hover {
+            background-color: #16425b;
+            color: #fff;
+        }
+
+        .title {
+            color: #fff;
+        }
+
+        /* Customizing alert colors */
+        .alert-danger {
+            color: red;
+            font-weight: bold;
+        }
+
+        .alert-success {
+            color: green;
+            font-weight: bold;
+        }
+
+        /* Adjusting message display */
+        .message {
+            margin-top: 20px;
+            max-width: 300px; /* Adjust as needed */
+            word-wrap: break-word; /* Allow long messages to wrap */
+        }
+    </style>
 {% endblock %}
-

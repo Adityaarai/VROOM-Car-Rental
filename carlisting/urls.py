@@ -8,6 +8,6 @@ urlpatterns = [
     path('about-us/', views.about_us, name = 'about_us'),
 
     #change after creating signin sinup page
-    path('signup/', views.signup, name = 'signup'),
-    path('login/', views.login, name = 'login'),
+   # path('signup/', views.signup, name = 'signup'),
+    # path('login/', views.login, name = 'login'),
 ]
