@@ -1,5 +1,8 @@
-{% extends 'partials/base.html' %} {% load static %} {% block title %} VROOM {%
-endblock %} {% block content %}
+{% extends 'partials/base.html' %} 
+{% load static %} 
+{% block title %} VROOM - Signup {%endblock %} 
+
+{% block content %}
 <div class="container">
   <div class="left-panel" style="margin-left: 80px">
     <img src="{% static 'img/vehicle.jpg' %}" alt="Vehicle Image" />
@@ -8,7 +11,6 @@ endblock %} {% block content %}
     <h2>Sign Up</h2>
     <form id="signup-form" method="post">
       {% csrf_token %}
-
       <div class="form-group">
         <label for="firstname">First Name</label>
         <input
@@ -63,12 +65,15 @@ endblock %} {% block content %}
 
       <div class="login-link">
         <p>Already have an account? <a href="{% url 'login' %}">Sign In</a></p>
-        {% if messages %} {% for message in messages %} {% if message.tags ==
-        'error' %}
-        <p class="error">{{ message }}</p>
-        {% elif message.tags == 'success' %}
-        <p class="success">{{ message }}</p>
-        {% endif %} {% endfor %} {% endif %}
+        {% if messages %} 
+          {% for message in messages %} 
+            {% if message.tags == 'error' %}
+              <p class="error">{{ message }}</p>
+            {% elif message.tags == 'success' %}
+              <p class="success">{{ message }}</p>
+            {% endif %} 
+          {% endfor %} 
+        {% endif %}
       </div>
     </form>
   </div>

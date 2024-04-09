@@ -1,5 +1,7 @@
-{% extends 'partials/base.html' %} {% load static %} {% block title %} VROOM {%
-endblock %} {% block content %}
+{% extends 'partials/base.html' %} 
+{% load static %} 
+{% block title %} VROOM - Sigin{% endblock %}
+{% block content %}
 <div class="container">
   <div class="left-panel" style="margin-right: 50px">
     <img src="{% static 'img/vehicle.jpg' %}" alt="Vehicle Image" />
@@ -40,11 +42,13 @@ endblock %} {% block content %}
       </div>
     </form>
     <div class="message">
-      {% for message in messages %} {% if message.tags == 'error' %}
-      <div class="alert alert-danger" role="alert">{{ message }}</div>
-      {% elif message.tags == 'success' %}
-      <div class="alert alert-success" role="alert">{{ message }}</div>
-      {% endif %} {% endfor %}
+      {% for message in messages %} 
+      	{% if message.tags == 'error' %}
+        	<div class="alert alert-danger" role="alert">{{ message }}</div>
+        {% elif message.tags == 'success' %}
+        	<div class="alert alert-success" role="alert">{{ message }}</div>
+        {% endif %} 
+      {% endfor %}
     </div>
   </div>
 </div>
