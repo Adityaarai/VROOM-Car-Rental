@@ -11,24 +11,16 @@
         <li><a href="{% url 'index' %}">Home</a></li>
         <li><a href="{% url 'about_us' %}">About Us</a></li>
         <li><a href="{% url 'carlisting' %}">Car Listings</a></li>
-        {% if user.is_authenticated and user.is_staff %}
+        {% if user.is_authenticated %}
           <li class="profile-icon">
-            <a href="{% url 'staff_profile' %}" class="profile-dropdown">
+            <a href="#" class="profile-dropdown">
               <img src="{% static 'img/profileicon.png' %}" alt="User profile icon">
               <ul class="dropdown-menu">
-                <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
-                <li><a href="{% url 'staff_profile' %}">My Profile</a></li>
-                <li><a href="{% url 'logout' %}">Logout</a></li>
-              </ul>
-            </a>
-          </li>
-        {% elif user.is_authenticated %}
-          <li class="profile-icon">
-            <a href="{% url 'staff_profile' %}" class="profile-dropdown">
-              <img src="{% static 'img/profileicon.png' %}" alt="User profile icon">
-              <ul class="dropdown-menu">
-                <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
-                <li><a href="{% url 'user_profile' %}">My Profile</a></li>
+                {% if user.is_staff %}
+                  <li><a href="{% url 'staff_profile' %}">My Profile</a></li>
+                {% else %}
+                  <li><a href="{% url 'user_profile' %}">My Profile</a></li>
+                {% endif %}
                 <li><a href="{% url 'logout' %}">Logout</a></li>
               </ul>
             </a>
@@ -81,8 +73,6 @@
       });
     });
   });
-
-
 </script>
 
 <style>
@@ -142,14 +132,20 @@
     flex-direction: row;
     justify-content: space-between;
   }
-  .nav-right li {
-    display: inline-block;
-    margin: 10px 20px;
-  }
-  .nav-left,
+
   .nav-right {
     padding: 10px;
   }
+
+  .nav-list {
+    display: flex;
+    align-items: center; /* Align items vertically in the center */
+  }
+
+  .nav-list li {
+    margin: 0 10px; 
+  }
+
   .nav-list li a {
     color: var(--platinum);
     font-weight: 400;
@@ -192,16 +188,16 @@
   .dropdown-menu {
     display: none;
     position: absolute;
-    background-color: white;
+    background-color: #16425b; /* Change background color */
+    color: #fff ; /* Change text color */
     min-width: 160px;
     z-index: 1;
-    top: 50px; /* Adjust this value as needed */
-    left: 0;
+    top: calc(100% + 10px); 
+    right: 0; /* Position to the right */
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   }
 
   .dropdown-menu.show {
     display: block;
   }
-
 </style>

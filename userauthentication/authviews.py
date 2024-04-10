@@ -13,6 +13,12 @@ from django.contrib.auth import authenticate, login as auth_login, logout
 from . tokens import generate_token
 from django.utils.http import urlencode
 import re #regular expression - pattern check
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import PasswordChangeForm
+from .forms import UserProfileForm 
+from django.contrib.auth import update_session_auth_hash
+
+
 
 
 # Create your views here.
@@ -141,20 +147,38 @@ def activate(request, uidb64, token):
     else:
         return render(request, 'main/activation_failed.html')
 
-def dashboard_view(request):
-    # Add your dashboard logic here
-    return render(request, 'main/dashboard.html')
-
+@login_required
 def user_profile_view(request):
-    # Add your user profile logic here
-    return render(request, 'main/user_profile.html')
+    user = request.user
+    
+    if request.method == 'POST':
+        form = PasswordChangeForm(user, request.POST)
+
+        if 'update_profile' in request.POST:  # Check if the profile update form is submitted
+            profile_form = UserProfileForm(request.POST, instance=user)
+            if profile_form.is_valid():
+                profile_form.save()
+                messages.success(request, "Profile information updated successfully.")
+            else:
+                messages.error(request, "Failed to update profile information. Please check the provided data.")
+
+        elif 'change_password' in request.POST:  # Check if the change password form is submitted
+            form = PasswordChangeForm(user, request.POST)
+            if form.is_valid():
+                form.save()
+                update_session_auth_hash(request, form.user)
+                messages.success(request, "Password updated successfully.")
+            else:
+                for field, errors in form.errors.items():
+                    for error in errors:
+                        messages.error(request, f"{field}: {error}")
+
+    return render(request, 'main/user_profile.html', {'user': user})
+
+def logout_view(request):
+    logout(request)
+    return redirect('index')
 
 def staff_profile_view(request):
     # Add your staff profile logic here
     return render(request, 'main/staff_profile.html')
-
-def logout_view(request):
-    if request.method == 'POST':
-        logout(request)
-        return redirect('index')
-    return render(request, 'main/logout_confirmation.html')
