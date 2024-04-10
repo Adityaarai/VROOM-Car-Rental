@@ -18,6 +18,7 @@ class CarDetails(models.Model):
     car_model = models.CharField(max_length=100, null=True)
     price = models.DecimalField(decimal_places=2, max_digits=10, null=True)
     availability = models.BooleanField(default=True)
+    image = models.ImageField(default='static/img/lambo.jpg', upload_to='static/img/car_images')
 
     # display what is shown in the product name
     def __str__(self):
