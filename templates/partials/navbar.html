@@ -4,7 +4,7 @@
 <nav id="navbar">
   <div class="nav-container">
     <div class="nav-left">
-      <h1>VROOM</h1>
+      <a href="{% url 'index' %}"><h1>VROOM</h1></a>
     </div>
     <div class="nav-right">
       <ul class="nav-list">
@@ -145,7 +145,7 @@
     transform: scaleX(1);
   }
 
-  .nav-left {
+  .nav-left h1{
     color: var(--platinum);
   }
 

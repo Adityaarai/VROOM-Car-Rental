@@ -10,6 +10,7 @@ Carlisting! VROOM {% endblock %} {% block content%}
     <button class="filter-btn" data-category="Sedan">Sedan</button>
   </div>
 
+  <!-- Displayed after clicking view details -->
   <div id="popup" class="popup">
     <div class="popup-content">
       <span class="close">&times;</span>
@@ -21,139 +22,31 @@ Carlisting! VROOM {% endblock %} {% block content%}
 
   <div class="cards-container">
     <!-- Cards will be dynamically added here -->
+    {% for item in items %}
+    <div class="card">
+      <img src="{{ item.image.url }}" alt="Car Image">
+      <div class="card-details">
+        <h2 class="car-model">{{ item.car_model }}</h2>
+        <h4 class="renter-name">{{ item.renter_name }}</h4>
+        <p class="car-type">Type: {{ item.car_type }}</p>
+        <p class="car-price">Price: {{ item.price }}</p>
+        <button class="view-details">View details</button>
+      </div>
+    </div>
+    {% endfor %}
   </div>
 
   <div class="page-btn">
     <button id="previousPageBtn">Previous Page</button>
+    <h2 class="page-number"></h2>
     <button id="nextPageBtn">Next Page</button>
   </div>
 </div>
 
-<script>
-  // Sample data
-  var cardsData = [
-    {
-      image: '{% static "media/lambo.jpg" %}',
-      price: "$20,000",
-      model: "toyota",
-      buttonText: "View Details",
-    },
-    {
-      image: "https://via.placeholder.com/150",
-      model: "Model 2",
-      price: "$25,000",
-      buttonText: "View Details",
-    },
-    {
-      image: "https://via.placeholder.com/150",
-      model: "Model 3",
-      price: "$30,000",
-      buttonText: "View Details",
-    },
-    {
-      image: "https://via.placeholder.com/150",
-      model: "Model 4",
-      price: "$35,000",
-      buttonText: "View Details",
-    },
-    {
-      image: "https://via.placeholder.com/150",
-      model: "Model 5",
-      price: "$40,000",
-      buttonText: "View Details",
-    },
-    {
-      image: "https://via.placeholder.com/150",
-      model: "Model 6",
-      price: "$45,000",
-      buttonText: "View Details",
-    },
-    {
-      image: "https://via.placeholder.com/150",
-      model: "Model 7",
-      price: "$50,000",
-      buttonText: "View Details",
-    },
-    {
-      image: "https://via.placeholder.com/150",
-      model: "Model 8",
-      price: "$55,000",
-      buttonText: "View Details",
-    },
-    {
-      image: "https://via.placeholder.com/150",
-      model: "Model 9",
-      price: "$60,000",
-      buttonText: "View Details",
-    },
-    {
-      image: "https://via.placeholder.com/150",
-      model: "Model 10",
-      price: "$65,000",
-      buttonText: "View Details",
-    },
-    {
-      image: "https://via.placeholder.com/150",
-      model: "Model 11",
-      price: "$70,000",
-      buttonText: "View Details",
-    },
-    {
-      image: "https://via.placeholder.com/150",
-      model: "Model 12",
-      price: "$75,000",
-      buttonText: "View Details",
-    },
-    {
-      image: "https://via.placeholder.com/150",
-      model: "Model 13",
-      price: "$80,000",
-      buttonText: "View Details",
-    },
-    {
-      image: "https://via.placeholder.com/150",
-      model: "Model 14",
-      price: "$85,000",
-      buttonText: "View Details",
-    },
-    {
-      image: "https://via.placeholder.com/150",
-      model: "Model 15",
-      price: "$90,000",
-      buttonText: "View Details",
-    },
-    {
-      image: "https://via.placeholder.com/150",
-      model: "Model 16",
-      price: "$95,000",
-      buttonText: "View Details",
-    },
-    {
-      image: "https://via.placeholder.com/150",
-      model: "Model 17",
-      price: "$100,000",
-      buttonText: "View Details",
-    },
-    {
-      image: "https://via.placeholder.com/150",
-      model: "Model 18",
-      price: "$105,000",
-      buttonText: "View Details",
-    },
-    {
-      image: "https://via.placeholder.com/150",
-      model: "Model 19",
-      price: "$110,000",
-      buttonText: "View Details",
-    },
-    {
-      image: "https://via.placeholder.com/150",
-      model: "Model 20",
-      price: "$115,000",
-      buttonText: "View Details",
-    },
-  ];
 
+
+
+  <script>
   function showPopup(cardData) {
     var popup = document.getElementById("popup");
     var popupDetails = document.getElementById("popup-details");
@@ -165,63 +58,122 @@ Carlisting! VROOM {% endblock %} {% block content%}
     popup.style.display = "block";
   }
 
-  window.addEventListener("DOMContentLoaded", function () {
-    var allButton = document.querySelector('.filter-btn[data-category="all"]');
-    allButton.click();
-  });
+  document.addEventListener("DOMContentLoaded", function () {
+    
+    var filterButtons = document.querySelectorAll('.filter-btn');
+    var cards = document.querySelectorAll('.card');
+    var cardsPerPage = 5; // Set the number of cards per page
+    var currentPage = 1; // Initialize current page
 
-  var filterBtns = document.querySelectorAll(".filter-btn");
-  var cardsContainer = document.querySelector(".cards-container");
-  var nextPageBtn = document.getElementById("nextPageBtn");
-  var previousPageBtn = document.getElementById("previousPageBtn");
-
-  filterBtns.forEach(function (btn) {
-    btn.addEventListener("click", function () {
-      var category = this.getAttribute("data-category");
-      cardsContainer.innerHTML = "";
-      var count = category === "all" ? 20 : 12;
-      for (var i = 1; i <= count; i++) {
-        var cardData = cardsData[i - 1];
-        var card = document.createElement("div");
-        card.classList.add("card");
-        if (category !== "all") {
-          card.classList.add("filter", category);
+    // Function to display filtered cards for the current page
+    function displayFilteredCards() {
+      var filteredCards = document.querySelectorAll('.filtered');
+      var startIndex = (currentPage - 1) * cardsPerPage;
+      var endIndex = startIndex + cardsPerPage;
+      var pagenum = document.querySelector('.page-number');
+      pagenum.innerHTML = currentPage;
+      filteredCards.forEach(function (card, index) {
+        if (index >= startIndex && index < endIndex) {
+          card.style.display = "block";
+        } else {
+          card.style.display = "none";
         }
-        var image = document.createElement("img");
-        image.src = cardData.image;
-        card.appendChild(image);
-        var cardContent = document.createElement("div");
-        cardContent.classList.add("card-content");
-        var price = document.createElement("p");
-        price.classList.add("price");
-        price.textContent = cardData.price;
-        cardContent.appendChild(price);
-        var model = document.createElement("p");
-        model.classList.add("model");
-        model.textContent = cardData.model;
-        cardContent.appendChild(model);
-        var button = document.createElement("button");
-        button.classList.add("cardbtn");
-        button.textContent = cardData.buttonText;
-        button.addEventListener("click", function () {
-          showPopup(cardData);
+      });
+    }
+
+       filterButtons.forEach(function (button) {
+      button.addEventListener("click", function () {
+        currentPage = 1;
+        var category = this.getAttribute("data-category");
+        var thisButton = document.querySelector('.filter-btn[data-category="' + category + '"]');
+
+        // Change the color of the button pressed
+        filterButtons.forEach(function (btn) {
+          btn.style.backgroundColor = "#2f6690";
         });
-        cardContent.appendChild(button);
-        card.appendChild(cardContent);
-        cardsContainer.appendChild(card);
+        thisButton.style.backgroundColor = "#16425b";
+
+        // Filtering the cards according to the button pressed
+        cards.forEach(function (card) {
+          card.classList.remove("filtered");
+          console.log(category);
+          console.log(card);
+          var cardCategory = card.querySelector(".car-type").textContent.split(":")[1].trim(); // Assuming category is retrieved from card content
+          if (category == "all" || category == cardCategory) {
+            card.classList.add("filtered");
+            card.style.display = "block";
+          } else {
+            card.style.display = "none";
+          }
+        });
+
+        // Display filtered cards on current page
+        displayFilteredCards();
+      });
+    });
+
+     // pressing all button on start
+     var allButton = document.querySelector('.filter-btn[data-category="all"]');
+    if (allButton) {
+        allButton.click();
+        console.log("All button clicked");
+        displayFilteredCards();
+    } else {
+        console.error("All button not found");
+    }
+
+    // Add event listener for "Next Page" button
+    nextPageBtn.addEventListener("click", function () {
+      var totalPages = Math.ceil(document.querySelectorAll('.filtered').length / cardsPerPage);
+      if (currentPage < totalPages) {
+        currentPage++;
+        displayFilteredCards();
       }
     });
-  });
 
-  //next page button
-  nextPageBtn.addEventListener("click", function () {
-    alert("Change the cars according to the cars in the database");
-  });
+    // Add event listener for "Previous Page" button
+    previousPageBtn.addEventListener("click", function () {
+      if (currentPage > 1) {
+        currentPage--;
+        displayFilteredCards();
+      }
+    });
+});
 
-  //previous page button
-  previousPageBtn.addEventListener("click", function () {
-    alert("Change the cars according to the cars in the database");
-  });
+
+
+
+//   var nextPageBtn = document.getElementById("nextPageBtn");
+//   var previousPageBtn = document.getElementById("previousPageBtn");
+
+//   document.addEventListener("DOMContentLoaded", function () {
+//   var filterButtons = document.querySelectorAll('.filter-btn');
+//   var cards = document.querySelectorAll('.card');
+
+//   filterButtons.forEach(function (button) {
+//     button.addEventListener("click", function () {
+//       var category = this.getAttribute("data-category");
+//       thisbutton = document.querySelector('.filter-btn[data-category="'+category+'"]');
+
+//       // changing the color of the button pressed
+//       filterButtons.forEach(function (btn) {
+//         btn.style.backgroundColor = "#2f6690"; 
+//       });
+//       thisbutton.style.backgroundColor = "#16425b";
+
+//       // filtering the cards according to button pressed
+//       cards.forEach(function (card) {
+//         var cardCategory = card.querySelector(".car-type").textContent.split(":")[1].trim(); // Assuming category is retrieved from card content
+//         if (category == "all" || category == cardCategory) {
+//           card.style.display = "block";
+//         } else {
+//           card.style.display = "none";
+//         }
+//       });
+//     });
+//   });
+// });
+
 
   // Popup Close
   document.querySelector(".close").addEventListener("click", function () {
@@ -232,8 +184,13 @@ Carlisting! VROOM {% endblock %} {% block content%}
   document.getElementById("bookButton").addEventListener("click", function () {
     alert("Change the functionality of the book button");
   });
+
 </script>
+
+<!-- CSS -->
 <style>
+ 
+
   body {
     margin-top: 10vh;
   }
@@ -263,9 +220,10 @@ Carlisting! VROOM {% endblock %} {% block content%}
   }
 
   .cards-container {
+    height: auto;
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content:space-evenly;
     padding: 0 20px;
   }
 
@@ -280,6 +238,10 @@ Carlisting! VROOM {% endblock %} {% block content%}
     border-radius: 5px;
     box-sizing: border-box;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .card:hover{
+    background-color: #b4b4b3;
   }
 
   .card img {
@@ -316,7 +278,10 @@ Carlisting! VROOM {% endblock %} {% block content%}
 
   .page-btn {
     margin-top: 20px;
+    display: flex;
+    flex-direction: row;
     text-align: center;
+    justify-content: center;
   }
 
   .page-btn button {
