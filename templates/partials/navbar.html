@@ -13,14 +13,24 @@
         <li><a href="{% url 'carlisting' %}">Car Listings</a></li>
         {% if user.is_authenticated and user.is_staff %}
           <li class="profile-icon">
-            <a href="{% url 'staff_profile' %}">
+            <a href="{% url 'staff_profile' %}" class="profile-dropdown">
               <img src="{% static 'img/profileicon.png' %}" alt="User profile icon">
+              <ul class="dropdown-menu">
+                <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+                <li><a href="{% url 'staff_profile' %}">My Profile</a></li>
+                <li><a href="{% url 'logout' %}">Logout</a></li>
+              </ul>
             </a>
           </li>
         {% elif user.is_authenticated %}
           <li class="profile-icon">
-            <a href="{% url 'user_profile' %}">
+            <a href="{% url 'staff_profile' %}" class="profile-dropdown">
               <img src="{% static 'img/profileicon.png' %}" alt="User profile icon">
+              <ul class="dropdown-menu">
+                <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+                <li><a href="{% url 'user_profile' %}">My Profile</a></li>
+                <li><a href="{% url 'logout' %}">Logout</a></li>
+              </ul>
             </a>
           </li>
         {% else %}
@@ -48,6 +58,31 @@
       document.getElementById("navbar").classList.remove("scrolled");
     }
   }
+
+  document.addEventListener("DOMContentLoaded", function() {
+    var profileIcons = document.querySelectorAll('.profile-icon');
+
+    profileIcons.forEach(function(profileIcon) {
+      var profileDropdown = profileIcon.querySelector('.profile-dropdown');
+      var dropdownMenu = profileIcon.querySelector('.dropdown-menu');
+
+      profileDropdown.addEventListener('click', function(event) {
+        event.preventDefault(); // Prevent default action
+        event.stopPropagation(); // Stop event propagation
+
+        dropdownMenu.classList.toggle('show');
+      });
+
+      // Close dropdown when clicking outside
+      window.addEventListener('click', function(event) {
+        if (!profileIcon.contains(event.target)) {
+          dropdownMenu.classList.remove('show');
+        }
+      });
+    });
+  });
+
+
 </script>
 
 <style>
@@ -153,4 +188,20 @@
     width: 40px;
     height: 40px;
   }
+
+  .dropdown-menu {
+    display: none;
+    position: absolute;
+    background-color: white;
+    min-width: 160px;
+    z-index: 1;
+    top: 50px; /* Adjust this value as needed */
+    left: 0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  }
+
+  .dropdown-menu.show {
+    display: block;
+  }
+
 </style>

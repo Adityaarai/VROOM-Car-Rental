@@ -140,3 +140,21 @@ def activate(request, uidb64, token):
         return redirect('index')
     else:
         return render(request, 'main/activation_failed.html')
+
+def dashboard_view(request):
+    # Add your dashboard logic here
+    return render(request, 'main/dashboard.html')
+
+def user_profile_view(request):
+    # Add your user profile logic here
+    return render(request, 'main/user_profile.html')
+
+def staff_profile_view(request):
+    # Add your staff profile logic here
+    return render(request, 'main/staff_profile.html')
+
+def logout_view(request):
+    if request.method == 'POST':
+        logout(request)
+        return redirect('index')
+    return render(request, 'main/logout_confirmation.html')
