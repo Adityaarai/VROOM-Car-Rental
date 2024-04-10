@@ -1,18 +1,25 @@
 from django.shortcuts import render
+from .models import CarDetails
 
 # Create your views here.
 def index(request):
     return render(request, 'main/index.html')
         
 def carlisting(request):
-    return render(request, 'main/carlisting.html')
+    items = CarDetails.objects.all()
+
+    context = {
+        'items': items,
+    }
+
+    return render(request, 'main/carlisting.html', context)
 
 def about_us(request):
     return render(request, 'main/about.html')
 
-def login(request):
-    return render(request, 'main/login.html')
+def userprofile(request):
+   return render(request, 'main/user_profile.html')
 
-def signup(request):
-    return render(request, 'main/signup.html')
+def staffprofile(request):
+   return render(request, 'main/staff_profile.html')
 

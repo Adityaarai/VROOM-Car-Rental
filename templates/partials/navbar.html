@@ -1,16 +1,32 @@
 <!-- navbar -->
+{% load static %}
+
 <nav id="navbar">
   <div class="nav-container">
     <div class="nav-left">
-      <h1>VROOM</h1>
+      <a href="{% url 'index' %}"><h1>VROOM</h1></a>
     </div>
     <div class="nav-right">
       <ul class="nav-list">
         <li><a href="{% url 'index' %}">Home</a></li>
         <li><a href="{% url 'about_us' %}">About Us</a></li>
         <li><a href="{% url 'carlisting' %}">Car Listings</a></li>
-        <li><a href="{% url 'signup' %}">SignUp</a></li>
-        <li><a href="{% url 'login' %}">LogIn</a></li>
+        {% if user.is_authenticated and user.is_staff %}
+          <li class="profile-icon">
+            <a href="{% url 'staff_profile' %}">
+              <img src="{% static 'img/profileicon.png' %}" alt="User profile icon">
+            </a>
+          </li>
+        {% elif user.is_authenticated %}
+          <li class="profile-icon">
+            <a href="{% url 'user_profile' %}">
+              <img src="{% static 'img/profileicon.png' %}" alt="User profile icon">
+            </a>
+          </li>
+        {% else %}
+          <li><a href="{% url 'signup' %}">SignUp</a></li>
+          <li><a href="{% url 'login' %}">Login</a></li>
+        {% endif %}
       </ul>
     </div>
   </div>
@@ -129,7 +145,12 @@
     transform: scaleX(1);
   }
 
-  .nav-left {
+  .nav-left h1{
     color: var(--platinum);
+  }
+
+  .profile-icon img{
+    width: 40px;
+    height: 40px;
   }
 </style>
