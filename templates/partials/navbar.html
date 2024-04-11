@@ -10,7 +10,7 @@
       <ul class="nav-list">
         <li><a href="{% url 'index' %}">Home</a></li>
         <li><a href="{% url 'about_us' %}">About Us</a></li>
-        <li><a href="{% url 'carlisting' %}">Car Listings</a></li>
+        <li><a href="{% url 'carlisting' %}?value=All">Car Listings</a></li>
         {% if user.is_authenticated and user.is_staff %}
           <li class="profile-icon">
             <a href="{% url 'staff_profile' %}">
@@ -49,7 +49,6 @@
     }
   }
 </script>
-
 <style>
   #navbar {
     position: fixed;
@@ -77,6 +76,7 @@
   }
 </style>
 {% endif %}
+
 
 <style>
   @import url("https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Play:wght@400;700&display=swap");
