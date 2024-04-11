@@ -33,7 +33,9 @@ Carlisting! VROOM {% endblock %} {% block content%}
           <h4 class="car-price">Rs {{ item.price }} / day</h4>
         </div>
         <div class="bookbtn">
-          <button class="view-details">View details</button>
+          <a href="{% url ''%}">
+            <button class="view-details">View details</button>
+          </a>
         </div>
       </div>
     </div>

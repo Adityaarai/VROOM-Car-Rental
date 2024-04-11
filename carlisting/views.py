@@ -14,6 +14,9 @@ def carlisting(request):
 
     return render(request, 'main/carlisting.html', context)
 
+def orders(request):
+    return render(request, 'main/car_details.html')
+
 def about_us(request):
     return render(request, 'main/about.html')
 
