@@ -1,0 +1,115 @@
+{% extends 'partials/base.html' %} 
+{% load static %} 
+{% block title %} VROOM - Car Details{% endblock %}
+{% block content %}
+    <div id="main">
+        <div id="image">
+            <img src="/img/ev.png" alt="car image" />
+        </div>
+        <div id="details">
+            <div id="model">
+                <p>Model</p>
+            </div>
+            <div id="price">
+                <p>price</p>
+            </div>
+            <label for="bookingStartDate">Booking Start Date:</label><br>
+            <input type="date" id="bookingStartDate" name="bookingStartDate"><br>
+            <label for="bookingEndDate">Booking End Date:</label><br>
+            <input type="date" id="bookingEndDate" name="bookingEndDate"><br><br>
+            <button id="home" href="{% url 'carlisting' %}" >Back</button>
+            <button id="book">Book</button>
+            <div class="popup" id="popup">
+                <div class="popup-content">
+                    <span class="close" onclick="closePopup()">&times;</span>
+                    <h2>Booking Requested</h2>
+                    <p>Your booking request has been submitted.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Function to display the popup
+        function showPopup() {
+            document.getElementById("popup").style.display = "flex";
+        }
+
+        // Function to close the popup
+        function closePopup() {
+            document.getElementById("popup").style.display = "none";
+        }
+
+        // Add event listener to the button
+        document.getElementById("book").addEventListener("click", showPopup);
+    </script>
+    
+<style>
+    #main{
+        width: 80vw;
+        margin-left: 10vw;
+        height: 50vh;
+        display: flex;
+        justify-content: space-between;
+        padding: 20px;
+        border: 1px solid black;
+        border-radius: 20px;
+    }
+    #image{
+        width: 50%;
+    }
+    #image img{
+        padding: 5%;
+        width: 90%;
+        height: 90%;
+    }
+    #details{
+        width: 40%;
+        font-size: 3vh;
+        font-weight: 800;
+    }
+    #details button{
+        background-color: #2f6690;
+        height: 40px;
+        width: 100px;
+        font-size: 2vh;
+        color: #d9dcd6;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+
+    }
+    #details button:hover{
+        background-color: #16425b;
+    }
+    .popup {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            align-items: center;
+            justify-content: center;
+            border-radius: 20px;
+        }
+
+        .popup-content {
+            background-color: #fefefe;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+
+        /* Styling for the close button */
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+        }
+</style>
+{% endblock %}
