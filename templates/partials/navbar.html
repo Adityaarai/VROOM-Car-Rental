@@ -10,7 +10,7 @@
       <ul class="nav-list">
         <li><a href="{% url 'index' %}">Home</a></li>
         <li><a href="{% url 'about_us' %}">About Us</a></li>
-        <li><a href="{% url 'carlisting' %}?value=All">Car Listings</a></li>
+        <li><a href="{% url 'carlisting' %}?value=All">Book Cars</a></li>
         {% if user.is_authenticated%}
         <li class="profile-icon">
           <a href="#" class="profile-dropdown">
@@ -137,7 +137,8 @@
     justify-content: space-between;
   }
 
-  .nav-right {
+  .nav-right,
+  .nav-left {
     padding: 10px;
   }
 
@@ -152,6 +153,7 @@
 
   .nav-list li a {
     color: var(--platinum);
+    margin-right: 20px;
     font-weight: 400;
     font-size: 1.3em;
     position: relative;
