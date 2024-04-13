@@ -33,7 +33,9 @@ Carlisting! VROOM {% endblock %} {% block content%}
           <h4 class="car-price">Rs {{ item.price }} / day</h4>
         </div>
         <div class="bookbtn">
-          <a href="{% url ''%}">
+          <a
+            href="{% url 'orders'%}?renter_name={{item.renter_name}}&car_model={{item.car_model}}"
+          >
             <button class="view-details">View details</button>
           </a>
         </div>
@@ -216,6 +218,7 @@ Carlisting! VROOM {% endblock %} {% block content%}
     width: 90vw;
     margin: 0 5%;
     margin-top: 9.5vh;
+    min-height: 66vh;
   }
 
   .filter {
@@ -286,7 +289,7 @@ Carlisting! VROOM {% endblock %} {% block content%}
   }
 
   .page-btn {
-    margin-top: 20px;
+    margin: 15px 0;
     display: flex;
     flex-direction: row;
     text-align: center;
@@ -300,8 +303,7 @@ Carlisting! VROOM {% endblock %} {% block content%}
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    margin-right: 10px;
-    margin-bottom: 10px;
+    margin: 10px;
   }
 
   .page-btn button:hover {
@@ -388,6 +390,10 @@ Carlisting! VROOM {% endblock %} {% block content%}
 
   .view-details:hover {
     background-color: var(--indigo);
+  }
+
+  .page-number {
+    margin: 10px;
   }
 </style>
 
