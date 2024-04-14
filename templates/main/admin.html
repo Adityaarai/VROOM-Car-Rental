@@ -1,430 +1,414 @@
-{% extends 'partials/base.html' %} {% load static %} {% block title %} VROOM -
-Distributor profile{% endblock %} {% block content %}
+{% extends 'partials/base.html' %} 
+{% load static %} 
+{% block title %} VROOM - Distributor profile{% endblock %}
+{% block content %}
 <div class="container">
-  <button id="distributor-btn">Distributor</button>
-  <button id="user-btn">User</button>
+    <button id="distributor-btn">Distributor</button>
+    <button id="user-btn">User</button>
 </div>
 
 <div id="content" class="container">
-  <div id="distributor-content">
-    <h2>Distributor Information</h2>
+    <div id="distributor-content">
+        <h2>Distributor Information</h2>
 
-    <button id="distributor-add-btn">Add</button>
-    <button id="distributor-delete-btn">Delete</button>
+        <button id="distributor-add-btn">Add</button>
+        <button id="distributor-delete-btn">Delete</button>
 
-    <table>
-      <tr>
-        <th>Distributor ID</th>
-        <th>Distributor Name</th>
-        <th>Password</th>
-        <th>Contact Number</th>
-      </tr>
-      <tr>
-        <td>1</td>
-        <td>Distributor1</td>
-        <td>********</td>
-        <td>123-456-7890</td>
-      </tr>
-      <tr>
-        <td>2</td>
-        <td>Distributor2</td>
-        <td>********</td>
-        <td>456-789-0123</td>
-      </tr>
-      <tr>
-        <td>3</td>
-        <td>Distributor3</td>
-        <td>********</td>
-        <td>789-012-3456</td>
-      </tr>
-      <tr>
-        <td>4</td>
-        <td>Distributor4</td>
-        <td>********</td>
-        <td>012-345-6789</td>
-      </tr>
-      <tr>
-        <td>5</td>
-        <td>Distributor5</td>
-        <td>********</td>
-        <td>345-678-9012</td>
-      </tr>
-    </table>
+        <table>
+            <tr>
+                <th>Distributor ID</th>
+                <th>Distributor Name</th>
+                <th>Password</th>
+                <th>Contact Number</th>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>Distributor1</td>
+                <td>********</td>
+                <td>123-456-7890</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>Distributor2</td>
+                <td>********</td>
+                <td>456-789-0123</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>Distributor3</td>
+                <td>********</td>
+                <td>789-012-3456</td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>Distributor4</td>
+                <td>********</td>
+                <td>012-345-6789</td>
+            </tr>
+            <tr>
+                <td>5</td>
+                <td>Distributor5</td>
+                <td>********</td>
+                <td>345-678-9012</td>
+            </tr>
+        </table>
 
-    <div class="popup" id="addDistributorPopup">
-      <div class="popup-content">
-        <span class="close" onclick="closePopup('addDistributorPopup')"
-          >&times;</span
-        >
-        <h2>Add Distributor</h2>
-        <form id="addDistributorForm">
-          <label for="distributorName">Distributor Name:</label><br />
-          <input
-            type="text"
-            id="distributorName"
-            name="distributorName"
-          /><br />
-          <label for="password">Password:</label><br />
-          <input type="password" id="password" name="password" /><br /><br />
-          <label for="contactNumber">Contact Number:</label><br />
-          <input
-            type="text"
-            id="contactNumber"
-            name="contactNumber"
-          /><br /><br />
-          <button type="submit">Add Distributor</button>
-        </form>
-      </div>
+        <div class="popup" id="addDistributorPopup">
+            <div class="popup-content">
+                <span class="close" onclick="closePopup('addDistributorPopup')">&times;</span>
+                <h2>Add Distributor</h2>
+                <form id="addDistributorForm">
+                    <label for="distributorName">Distributor Name:</label><br>
+                    <input type="text" id="distributorName" name="distributorName"><br>
+                    <label for="password">Password:</label><br>
+                    <input type="password" id="password" name="password"><br><br>
+                    <label for="contactNumber">Contact Number:</label><br>
+                    <input type="text" id="contactNumber" name="contactNumber"><br><br>
+                    <button type="submit">Add Distributor</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="popup" id="deleteDistributorPopup">
+            <div class="popup-content">
+                <span class="close" onclick="closePopup('deleteDistributorPopup')">&times;</span>
+                <h2>Delete Distributor</h2>
+                <label for="distributorID">Distributor ID:</label><br>
+                <input type="text" id="distributorID" name="distributorID">
+                <button onclick="deleteDistributor()">Delete</button>
+            </div>
+        </div>
     </div>
 
-    <div class="popup" id="deleteDistributorPopup">
-      <div class="popup-content">
-        <span class="close" onclick="closePopup('deleteDistributorPopup')"
-          >&times;</span
-        >
-        <h2>Delete Distributor</h2>
-        <label for="distributorID">Distributor ID:</label><br />
-        <input type="text" id="distributorID" name="distributorID" />
-        <button onclick="deleteDistributor()">Delete</button>
-      </div>
+    <div id="user-content">
+        <h2>User Information</h2>
+
+        <button id="user-add-btn">Add</button>
+        <button id="user-delete-btn">Delete</button>
+
+        <table>
+            <tr>
+                <th>User ID</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Password</th>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>JohnDoe</td>
+                <td>john@example.com</td>
+                <td>********</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>JaneSmith</td>
+                <td>jane@example.com</td>
+                <td>********</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>Alex123</td>
+                <td>alex@example.com</td>
+                <td>********</td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>Admin1</td>
+                <td>admin@example.com</td>
+                <td>********</td>
+            </tr>
+            <tr>
+                <td>5</td>
+                <td>TestUser</td>
+                <td>testuser@example.com</td>
+                <td>********</td>
+            </tr>
+        </table>
+
+        <div class="popup" id="addUserPopup">
+            <div class="popup-content">
+                <span class="close" onclick="closePopup('addUserPopup')">&times;</span>
+                <h2>Add User</h2>
+                <form id="addUserForm">
+                    <label for="username">Username:</label><br>
+                    <input type="text" id="username" name="username"><br>
+                    <label for="email">Email:</label><br>
+                    <input type="email" id="email" name="email"><br>
+                    <label for="password">Password:</label><br>
+                    <input type="password" id="password" name="password"><br><br>
+                    <button type="submit">Add User</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="popup" id="deleteUserPopup">
+            <div class="popup-content">
+                <span class="close" onclick="closePopup('deleteUserPopup')">&times;</span>
+                <h2>Delete User</h2>
+                <label for="userID">User ID:</label><br>
+                <input type="text" id="userID" name="userID">
+                <button onclick="deleteUser()">Delete</button>
+            </div>
+        </div>
     </div>
-  </div>
-
-  <div id="user-content">
-    <h2>User Information</h2>
-
-    <button id="user-add-btn">Add</button>
-    <button id="user-delete-btn">Delete</button>
-
-    <table>
-      <tr>
-        <th>User ID</th>
-        <th>Username</th>
-        <th>Email</th>
-        <th>Password</th>
-      </tr>
-      <tr>
-        <td>1</td>
-        <td>JohnDoe</td>
-        <td>john@example.com</td>
-        <td>********</td>
-      </tr>
-      <tr>
-        <td>2</td>
-        <td>JaneSmith</td>
-        <td>jane@example.com</td>
-        <td>********</td>
-      </tr>
-      <tr>
-        <td>3</td>
-        <td>Alex123</td>
-        <td>alex@example.com</td>
-        <td>********</td>
-      </tr>
-      <tr>
-        <td>4</td>
-        <td>Admin1</td>
-        <td>admin@example.com</td>
-        <td>********</td>
-      </tr>
-      <tr>
-        <td>5</td>
-        <td>TestUser</td>
-        <td>testuser@example.com</td>
-        <td>********</td>
-      </tr>
-    </table>
-
-    <div class="popup" id="addUserPopup">
-      <div class="popup-content">
-        <span class="close" onclick="closePopup('addUserPopup')">&times;</span>
-        <h2>Add User</h2>
-        <form id="addUserForm">
-          <label for="username">Username:</label><br />
-          <input type="text" id="username" name="username" /><br />
-          <label for="email">Email:</label><br />
-          <input type="email" id="email" name="email" /><br />
-          <label for="password">Password:</label><br />
-          <input type="password" id="password" name="password" /><br /><br />
-          <button type="submit">Add User</button>
-        </form>
-      </div>
-    </div>
-
-    <div class="popup" id="deleteUserPopup">
-      <div class="popup-content">
-        <span class="close" onclick="closePopup('deleteUserPopup')"
-          >&times;</span
-        >
-        <h2>Delete User</h2>
-        <label for="userID">User ID:</label><br />
-        <input type="text" id="userID" name="userID" />
-        <button onclick="deleteUser()">Delete</button>
-      </div>
-    </div>
-  </div>
 </div>
 
+
 <script>
-  // JavaScript to toggle content based on button clicks
-  document
-    .getElementById("distributor-btn")
-    .addEventListener("click", function () {
-      document.getElementById("distributor-content").style.display = "block";
-      document.getElementById("user-content").style.display = "none";
+    // JavaScript to toggle content based on button clicks
+    document.getElementById("distributor-btn").addEventListener("click", function() {
+        document.getElementById("distributor-content").style.display = "block";
+        document.getElementById("user-content").style.display = "none";
     });
 
-  document.getElementById("user-btn").addEventListener("click", function () {
-    document.getElementById("distributor-content").style.display = "none";
-    document.getElementById("user-content").style.display = "block";
-  });
-
-  window.addEventListener("DOMContentLoaded", function () {
-    var allButton = document.querySelector('.filter-btn[data-category="all"]');
-    allButton.click();
-  });
-
-  // Distributor add button and popup
-  const distributorAddBtn = document.getElementById("distributor-add-btn");
-  const addDistributorPopup = document.getElementById("addDistributorPopup");
-  if (distributorAddBtn && addDistributorPopup) {
-    distributorAddBtn.addEventListener("click", () => {
-      addDistributorPopup.style.display = "block";
+    document.getElementById("user-btn").addEventListener("click", function() {
+        document.getElementById("distributor-content").style.display = "none";
+        document.getElementById("user-content").style.display = "block";
     });
-  }
 
-  // Distributor delete button and popup
-  const distributorDeleteBtn = document.getElementById(
-    "distributor-delete-btn"
-  );
-  const deleteDistributorPopup = document.getElementById(
-    "deleteDistributorPopup"
-  );
-  if (distributorDeleteBtn && deleteDistributorPopup) {
-    distributorDeleteBtn.addEventListener("click", () => {
-      deleteDistributorPopup.style.display = "block";
+    window.addEventListener("DOMContentLoaded", function () {
+        var allButton = document.querySelector('.filter-btn[data-category="all"]');
+        allButton.click();
     });
-  }
-
-  // User add button and popup
-  const userAddBtn = document.getElementById("user-add-btn");
-  const addUserPopup = document.getElementById("addUserPopup");
-  if (userAddBtn && addUserPopup) {
-    userAddBtn.addEventListener("click", () => {
-      addUserPopup.style.display = "block";
-    });
-  }
-
-  // User delete button and popup
-  const userDeleteBtn = document.getElementById("user-delete-btn");
-  const deleteUserPopup = document.getElementById("deleteUserPopup");
-  if (userDeleteBtn && deleteUserPopup) {
-    userDeleteBtn.addEventListener("click", () => {
-      deleteUserPopup.style.display = "block";
-    });
-  }
-
-  // Close popup function
-  function closePopup(id) {
-    const popup = document.getElementById(id);
-    if (popup) {
-      popup.style.display = "none";
+    
+    // Distributor add button and popup
+    const distributorAddBtn = document.getElementById("distributor-add-btn");
+    const addDistributorPopup = document.getElementById("addDistributorPopup");
+    if (distributorAddBtn && addDistributorPopup) {
+        distributorAddBtn.addEventListener("click", () => {
+            addDistributorPopup.style.display = "block";
+        });
     }
-  }
+
+    // Distributor delete button and popup
+    const distributorDeleteBtn = document.getElementById("distributor-delete-btn");
+    const deleteDistributorPopup = document.getElementById("deleteDistributorPopup");
+    if (distributorDeleteBtn && deleteDistributorPopup) {
+        distributorDeleteBtn.addEventListener("click", () => {
+            deleteDistributorPopup.style.display = "block";
+        });
+    }
+
+    // User add button and popup
+    const userAddBtn = document.getElementById("user-add-btn");
+    const addUserPopup = document.getElementById("addUserPopup");
+    if (userAddBtn && addUserPopup) {
+        userAddBtn.addEventListener("click", () => {
+            addUserPopup.style.display = "block";
+        });
+    }
+
+    // User delete button and popup
+    const userDeleteBtn = document.getElementById("user-delete-btn");
+    const deleteUserPopup = document.getElementById("deleteUserPopup");
+    if (userDeleteBtn && deleteUserPopup) {
+        userDeleteBtn.addEventListener("click", () => {
+            deleteUserPopup.style.display = "block";
+        });
+    }
+
+    // Close popup function
+    function closePopup(id) {
+        const popup = document.getElementById(id);
+        if (popup) {
+            popup.style.display = "none";
+        }
+    }
+
 </script>
 
 <style>
-  body {
-    margin: 0;
-    padding-top: 0;
-    overflow-x: hidden;
-    font-family: "Montserrat", sans-serif;
-  }
-  .container {
-    display: flex;
-    justify-content: center;
-    margin-top: 50px;
-  }
-  .container button {
-    padding: 10px 20px;
-    margin: 0 10px;
-    font-size: 16px;
-    cursor: pointer;
-    border: none;
-    background-color: #2f6690;
-    color: white;
-    border-radius: 5px;
-    outline: none;
-  }
-  .container button:hover {
-    background-color: #16425b;
-  }
-  #distributor-content,
-  #user-content {
-    display: none;
-    margin-top: 20px;
-  }
-  #content {
-    margin-left: 10vw;
-    width: 80vw;
-    padding: 20px;
-    border: 1px solid #d9dcd6;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-  .filter {
-    margin: 40px 2%;
-    padding-top: 20px;
-  }
-  .filter-btn {
-    padding: 8px 16px;
-    border: none;
-    background-color: #2f6690;
-    color: #d9dcd6;
-    cursor: pointer;
-    border-radius: 5px;
-    margin-right: 10px;
-    font-size: medium;
-  }
-  .filter-btn:hover {
-    background-color: #16425b;
-  }
-  .page-btn {
-    margin-top: 20px;
-    text-align: center;
-  }
-  .page-btn button {
-    padding: 10px 20px;
-    background-color: #2f6690;
-    color: #d9dcd6;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-right: 10px;
-    margin-bottom: 10px;
-  }
-  .page-btn button:hover {
-    background-color: #16425b;
-  }
+    :root {
+    --indigo: #16425b;
+    --lapis: #2f6690;
+    --cerulean: #3a7ca5;
+    --skyblue: #81c3d7;
+    --platinum: #d9dcd6;
+    --darkgray: #b4b4b3;
+    --red: #f44336;
+    --green: #4CAF50;
+    --darkgreen: darkgreen;
+    --crimson: crimson;
+    }
 
-  #distributor-add-btn,
-  #distributor-delete-btn {
-    background-color: #4caf50; /* Green */
-    border: none;
-    color: white;
-    padding: 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px 10px;
-    cursor: pointer;
-    border-radius: 4px;
-    float: right;
-  }
+    body {
+        margin: 0;
+        padding-top: 0;
+        overflow-x: hidden;
+        font-family: "Montserrat", sans-serif;
+    }
 
-  #distributor-add-btn {
-    background-color: #4caf50;
-    margin-right: 40px;
-  }
+    .container {
+        display: flex;
+        justify-content: center;
+        margin-top: 50px;
+    }
 
-  #distributor-add-btn:hover {
-    background-color: darkgreen;
-  }
+    .container button {
+        padding: 10px 20px;
+        margin: 0 10px;
+        font-size: 16px;
+        cursor: pointer;
+        border: none;
+        background-color: var(--lapis);
+        color: white;
+        border-radius: 5px;
+        outline: none;
+    }
 
-  #distributor-delete-btn {
-    background-color: #f44336;
-  }
+    .container button:hover {
+        background-color: var(--indigo);
+    }
 
-  #distributor-delete-btn:hover {
-    background-color: crimson;
-  }
+    #distributor-content,
+    #user-content {
+        display: none;
+        margin-top: 20px;
+    }
 
-  /* For User Information Edit */
-  table {
-    margin-top: 15px;
-    border-collapse: collapse;
-    width: 78vw;
-  }
+    #content {
+        margin-left: 10vw;
+        width: 80vw;
+        padding: 20px;
+        border: 1px solid var(--platinum);
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
 
-  th,
-  td {
-    border: 1px solid #dddddd;
-    text-align: left;
-    padding: 8px;
-  }
+    .filter {
+        margin: 40px 2%;
+        padding-top: 20px;
+    }
 
-  th {
-    background-color: #f2f2f2;
-  }
+    .filter-btn {
+        padding: 8px 16px;
+        border: none;
+        background-color: var(--lapis);
+        color: var(--platinum);
+        cursor: pointer;
+        border-radius: 5px;
+        margin-right: 10px;
+        font-size: medium;
+    }
 
-  tr:nth-child(even) {
-    background-color: #f2f2f2;
-  }
+    .filter-btn:hover {
+        background-color: var(--indigo);
+    }
 
-  #user-add-btn,
-  #user-delete-btn {
-    background-color: #4caf50; /* Green */
-    border: none;
-    color: white;
-    padding: 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px 10px;
-    cursor: pointer;
-    border-radius: 4px;
-    float: right;
-  }
+    .page-btn {
+        margin-top: 20px;
+        text-align: center;
+    }
 
-  #user-add-btn {
-    background-color: #4caf50;
-    margin-right: 40px;
-  }
-  #user-add-btn:hover {
-    background-color: darkgreen;
-  }
+    .page-btn button {
+        padding: 10px 20px;
+        background-color: var(--lapis);
+        color: var(--platinum);
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-right: 10px;
+        margin-bottom: 10px;
+    }
 
-  #user-delete-btn {
-    background-color: #f44336;
-  }
+    .page-btn button:hover {
+        background-color: var(--indigo);
+    }
 
-  #user-delete-btn:hover {
-    background-color: crimson;
-  }
+    #distributor-add-btn,
+    #distributor-delete-btn,
+    #user-add-btn,
+    #user-delete-btn {
+        background-color: var(--green);
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px 10px;
+        cursor: pointer;
+        border-radius: 4px;
+        float: right;
+    }
 
-  .popup {
-    display: none;
-    position: fixed;
-    z-index: 9999;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-  }
+    #distributor-add-btn {
+        background-color: var(--green);
+        margin-right: 40px;
+    }
 
-  .popup-content {
-    background-color: #fefefe;
-    margin: 20% auto;
-    padding: 20px;
-    border-radius: 5px;
-    width: 60%;
-  }
+    #distributor-add-btn:hover,
+    #user-add-btn:hover {
+        background-color: var(--darkgreen);
+    }
 
-  .close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
-  }
+    #distributor-delete-btn,
+    #user-delete-btn {
+        background-color: var(--red);
+    }
 
-  .close:hover,
-  .close:focus {
-    color: black;
-    text-decoration: none;
-  }
+    #distributor-delete-btn:hover,
+    #user-delete-btn:hover {
+        background-color: var(--crimson);
+    }
+
+    /* For User Information Edit */
+    table {
+        margin-top: 15px;
+        border-collapse: collapse;
+        width: 78vw;
+    }
+
+    th,
+    td {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    .popup {
+        display: none;
+        position: fixed;
+        z-index: 9999;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .popup-content {
+        background-color: var(--platinum);
+        margin: 20% auto;
+        padding: 20px;
+        border-radius: 5px;
+        width: 60%;
+    }
+
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: black;
+        text-decoration: none;
+    }
+
+
+
 </style>
 {% endblock %}

@@ -237,223 +237,257 @@
 </script>
 
 <style>
-    body {
-        margin: 0;
-        padding-top: 0;
-        overflow-x: hidden;
-        font-family: "Montserrat", sans-serif;
-    }
-    .container {
-        display: flex;
-        justify-content: center;
-        margin-top: 50px;
-    }
-    .container button {
-        padding: 10px 20px;
-        margin: 0 10px;
-        font-size: 16px;
-        cursor: pointer;
-        border: none;
-        background-color: #2f6690;
-        color: white;
-        border-radius: 5px;
-        outline: none;
-    }
-    .container button:hover {
-        background-color: #16425b;
-    }
-    #car-content,
-    #booking-content {
-        display: none;
-        margin-top: 20px;
-    }
-    #content {
-        margin-left: 10vw;
-        width: 80vw;
-        padding: 20px;
-        border: 1px solid #d9dcd6;
-        border-radius: 5px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-    .filter {
-        margin: 40px 2%;
-        padding-top: 20px;
-    }
-    .filter-btn {
-        padding: 8px 16px;
-        border: none;
-        background-color: #2f6690;
-        color: #d9dcd6;
-        cursor: pointer;
-        border-radius: 5px;
-        margin-right: 10px;
-        font-size: medium;
-    }
-    .filter-btn:hover {
-        background-color: #16425b;
-    }
-    .cards-container {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        padding: 0 20px;
-    }
-    .card {
-        height: 35vh;
-        width: 18vw;
-        margin: 10px;
-        background-color: #d9dcd6;
-        border: 1px solid #d9dcd6;
-        padding: 20px;
-        margin-bottom: 20px;
-        border-radius: 5px;
-        box-sizing: border-box;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-    .card img {
-        margin-left: 5%;
-        margin-top: 5%;
-        margin-bottom: 10px;
-        width: 90%;
-        height: 50%;
-    }
-    .card-content {
-        margin-top: 20px;
-        padding-left: 10%;
-    }
-    .model {
-        margin: 0;
-        margin-bottom:5px ;
-        font-size: 1.2rem;
-        font-weight: 450;
-    }
-    .price {
-        margin-bottom:10px ;
-        font-size: 1.5rem;
-        font-weight: 500;
-    }
+    
+    :root {
+    --indigo: #16425b;
+    --lapis: #2f6690;
+    --cerulean: #3a7ca5;
+    --skyblue: #81c3d7;
+    --platinum: #d9dcd6;
+    --darkgray: #b4b4b3;
+    --red: #f44336;
+    --green: #4CAF50;
+    --darkgreen: darkgreen;
+    --crimson: crimson;
+}
 
-    .card button{
-        background-color: red;
-        text-align: center;
-        width: 80%;
-    }
+body {
+    margin: 0;
+    padding-top: 0;
+    overflow-x: hidden;
+    font-family: "Montserrat", sans-serif;
+}
 
-    .card button:hover{
-      background-color: crimson;
-    }
+.container {
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+}
 
-    .page-btn {
-        margin-top: 20px;
-        text-align: center;
-    }
-    .page-btn button {
-        padding: 10px 20px;
-        background-color: #2f6690;
-        color: #d9dcd6;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        margin-right: 10px;
-        margin-bottom: 10px;
-    }
-    .page-btn button:hover {
-        background-color: #16425b;
-    }
+.container button {
+    padding: 10px 20px;
+    margin: 0 10px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    background-color: var(--lapis);
+    color: white;
+    border-radius: 5px;
+    outline: none;
+}
 
-    #car-add-btn{
-      background-color: #4CAF50;
-      float: right;
-    }
+.container button:hover {
+    background-color: var(--indigo);
+}
 
-    #car-add-btn:hover{
-      background-color: darkgreen;
-    }
+#car-content,
+#booking-content {
+    display: none;
+    margin-top: 20px;
+}
 
-    /* For User Information Edit */
-    table {
-        margin-top: 15px;
-        border-collapse: collapse;
-        width: 78vw;
-    }
+#content {
+    margin-left: 10vw;
+    width: 80vw;
+    padding: 20px;
+    border: 1px solid var(--platinum);
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
 
-    th, td {
-        border: 1px solid #dddddd;
-        text-align: left;
-        padding: 8px;
-    }
+.filter {
+    margin: 40px 2%;
+    padding-top: 20px;
+}
 
-    th {
-        background-color: #f2f2f2;
-    }
+.filter-btn {
+    padding: 8px 16px;
+    border: none;
+    background-color: var(--lapis);
+    color: var(--platinum);
+    cursor: pointer;
+    border-radius: 5px;
+    margin-right: 10px;
+    font-size: medium;
+}
 
-    tr:nth-child(even) {
-        background-color: #f2f2f2;
-    }
+.filter-btn:hover {
+    background-color: var(--indigo);
+}
 
-    #booking-add-btn,#booking-delete-btn {
-        background-color: #4CAF50; /* Green */
-        border: none;
-        color: white;
-        padding: 10px 20px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 16px;
-        margin: 4px 2px 10px;
-        cursor: pointer;
-        border-radius: 4px;
-        float: right;
-    }
+.cards-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 0 20px;
+}
 
-    #booking-add-btn {
-        background-color: #4CAF50;
-        margin-right: 40px;
-    }
-    #booking-add-btn:hover{
-      background-color: darkgreen;
-    }
+.card {
+    height: 35vh;
+    width: 18vw;
+    margin: 10px;
+    background-color: var(--platinum);
+    border: 1px solid var(--platinum);
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    box-sizing: border-box;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
 
-    #booking-delete-btn {
-        background-color: #f44336;
-    }
+.card img {
+    margin-left: 5%;
+    margin-top: 5%;
+    margin-bottom: 10px;
+    width: 90%;
+    height: 50%;
+}
 
-    #booking-delete-btn:hover{
-      background-color: crimson;
-    }
+.card-content {
+    margin-top: 20px;
+    padding-left: 10%;
+}
 
-    .popup {
-      display: none;
-      position: fixed;
-      z-index: 9999;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0,0,0,0.5);
-    }
+.model {
+    margin: 0;
+    margin-bottom: 5px;
+    font-size: 1.2rem;
+    font-weight: 450;
+}
 
-    .popup-content {
-      background-color: #fefefe;
-      margin: 20% auto;
-      padding: 20px;
-      border-radius: 5px;
-      width: 60%;
-    }
+.price {
+    margin-bottom: 10px;
+    font-size: 1.5rem;
+    font-weight: 500;
+}
 
-    .close {
-      color: #aaa;
-      float: right;
-      font-size: 28px;
-      font-weight: bold;
-      cursor: pointer;
-    }
+.card button {
+    background-color: var(--red);
+    text-align: center;
+    width: 80%;
+}
 
-    .close:hover,
-    .close:focus {
-      color: black;
-      text-decoration: none;
-    }
+.card button:hover {
+    background-color: var(--crimson);
+}
+
+.page-btn {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.page-btn button {
+    padding: 10px 20px;
+    background-color: var(--lapis);
+    color: var(--platinum);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+.page-btn button:hover {
+    background-color: var(--indigo);
+}
+
+#car-add-btn {
+    background-color: var(--green);
+    float: right;
+}
+
+#car-add-btn:hover {
+    background-color: var(--darkgreen);
+}
+
+/* For User Information Edit */
+table {
+    margin-top: 15px;
+    border-collapse: collapse;
+    width: 78vw;
+}
+
+th,
+td {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+#booking-add-btn,
+#booking-delete-btn {
+    background-color: var(--green);
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    float: right;
+}
+
+#booking-add-btn {
+    background-color: var(--green);
+    margin-right: 40px;
+}
+
+#booking-add-btn:hover {
+    background-color: var(--darkgreen);
+}
+
+#booking-delete-btn {
+    background-color: var(--red);
+}
+
+#booking-delete-btn:hover {
+    background-color: var(--crimson);
+}
+
+.popup {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.popup-content {
+    background-color: var(--platinum);
+    margin: 20% auto;
+    padding: 20px;
+    border-radius: 5px;
+    width: 60%;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+}
+
 
 
 </style>
