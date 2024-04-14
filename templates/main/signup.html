@@ -80,88 +80,96 @@
 </div>
 
 <style>
+  :root {
+    --primary-color: #2f6690;
+    --secondary-color: #16425b;
+    --error-color: red;
+    --success-color: green;
+  }
+
   body {
-    font-family: "Montserrat", sans-serif;
-    margin: 0;
-    padding: 0;
+      font-family: "Montserrat", sans-serif;
+      margin: 0;
+      padding: 0;
   }
 
   .container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
   }
 
   .left-panel {
-    flex: 1;
-    padding: 20px;
+      flex: 1;
+      padding: 20px;
   }
 
   .right-panel {
-    flex: 1;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+      flex: 1;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
   }
 
   .right-panel h2 {
-    margin-right: 210px;
+      margin-right: 210px;
   }
 
   .right-panel form {
-    margin-top: 30px;
+      margin-top: 30px;
   }
 
   img {
-    max-width: 100%;
+      max-width: 100%;
   }
 
   input[type="text"],
   input[type="email"],
   input[type="password"] {
-    width: 100%;
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
+      width: 100%;
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
   }
 
   button {
-    width: 100%;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    background-color: #2f6690;
-    color: #fff;
-    cursor: pointer;
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      background-color: var(--primary-color);
+      color: #fff;
+      cursor: pointer;
   }
 
   button:hover {
-    background-color: #16425b;
+      background-color: var(--secondary-color);
   }
 
   .login-link {
-    margin-top: 20px;
+      margin-top: 20px;
   }
 
   .login-link a {
-    color: #2f6690;
-    text-decoration: none;
+      color: var(--primary-color);
+      text-decoration: none;
   }
 
   .login-link a:hover {
-    text-decoration: underline;
+      text-decoration: underline;
   }
 
   .error {
-    color: red;
-    font-weight: bold;
+      color: var(--error-color);
+      font-weight: bold;
   }
 
   .success {
-    color: green;
-    font-weight: bold;
+      color: var(--success-color);
+      font-weight: bold;
   }
+
 </style>
 {% endblock %}
