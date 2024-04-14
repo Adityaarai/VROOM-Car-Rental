@@ -140,6 +140,7 @@
   .nav-right,
   .nav-left {
     padding: 10px;
+    padding-top: 0;
   }
 
   .nav-list {
@@ -148,6 +149,8 @@
   }
 
   .nav-list li {
+    height: 40px;
+    padding-top: 10px;
     margin: 0 10px;
   }
 
@@ -158,6 +161,7 @@
     font-size: 1.3em;
     position: relative;
     transition: color 0.3s ease;
+    padding-right: 10px;
   }
 
   .nav-list li a:hover {
@@ -184,9 +188,11 @@
 
   .nav-left h1 {
     color: var(--platinum);
+    padding: 10px 20px ;
   }
 
   .profile-icon img {
+    margin-top: -10px;
     width: 40px;
     height: 40px;
   }
@@ -194,12 +200,12 @@
   .dropdown-menu {
     display: none;
     position: absolute;
-    background-color: #16425b; /* Change background color */
-    color: #fff; /* Change text color */
+    background-color: #16425b; 
+    color: #fff; 
     min-width: 160px;
     z-index: 1;
     top: calc(100% + 10px);
-    right: 0; /* Position to the right */
+    right: 0; 
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   }
 
