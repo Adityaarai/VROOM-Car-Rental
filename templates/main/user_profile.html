@@ -1,109 +1,111 @@
-{% extends 'partials/base.html' %} {% load static %} {% block title %} VROOM -
-User profile{% endblock %} {% block content %}
+{% extends 'partials/base.html' %} 
+{% load static %} 
+{% block title %} VROOM - User profile{% endblock %} 
 
-<div class="container">
-  <h2>User Profile</h2>
-  {% for message in messages %} {% if message.tags == 'error' %}
-  <div class="alert alert-danger" role="alert">{{ message }}</div>
-  {% elif message.tags == 'success' %}
-  <div class="alert alert-success" role="alert">{{ message }}</div>
-  {% endif %} {% endfor %}
+{% block content %}
+<div class="main-container">
+  <div class="details">
+    <h2>Staff Profile</h2>
+    {% for message in messages %} {% if message.tags == 'error' %}
+    <div class="alert alert-danger" role="alert">{{ message }}</div>
+    {% elif message.tags == 'success' %}
+    <div class="alert alert-success" role="alert">{{ message }}</div>
+    {% endif %} {% endfor %}
 
-  <div class="buttons" style="margin-top: 20px">
-    <button id="profileBtn">Profile</button>
-    <button id="changePasswordBtn">Change Password</button>
-  </div>
+    <button class="button" id="profileBtn">Profile</button>
+    <button class="button" id="changePasswordBtn">Change Password</button>
 
-  <!-- Profile section -->
-  <div id="profileSection" class="section">
-    <h3>Profile Information</h3>
-    <p style="margin-top: 20px; margin-bottom: 10px">
-      First Name: <span id="firstName">{{ user.first_name }}</span>
-    </p>
-    <p style="margin-bottom: 10px">
-      Last Name: <span id="lastName">{{ user.last_name }}</span>
-    </p>
-    <p style="margin-bottom: 10px">
-      Username: <span id="username">{{ user.username }}</span>
-    </p>
-    <p style="margin-bottom: 10px">
-      Email: <span id="email">{{ user.email }}</span>
-    </p>
-    <button id="editProfileBtn">Edit Profile</button>
-    <div id="editProfileForm" style="display: none">
-      <!-- Edit Profile form -->
+    <!-- Profile section -->
+    <div id="profileSection" class="section">
+      <h3>Profile Information</h3>
+      <p style="margin-top: 20px; margin-bottom: 10px">
+        First Name: <span id="firstName">{{ user.first_name }}</span>
+      </p>
+      <p style="margin-bottom: 10px">
+        Last Name: <span id="lastName">{{ user.last_name }}</span>
+      </p>
+      <p style="margin-bottom: 10px">
+        Username: <span id="username">{{ user.username }}</span>
+      </p>
+      <p style="margin-bottom: 10px">
+        Email: <span id="email">{{ user.email }}</span>
+      </p>
+      <button class="button">Edit Profile</button>
+      <div id="editProfileForm" style="display: none">
+        <!-- Edit Profile form -->
+        <form
+          id="updateProfileForm"
+          method="POST"
+          action="{% url 'staff_profile' %}"
+        >
+          {% csrf_token %}
+          <input type="hidden" name="update_profile" />
+          <label for="editFirstName">First Name:</label>
+          <input
+            type="text"
+            id="editFirstName"
+            name="first_name"
+            value="{{ user.first_name }}"
+          /><br />
+
+          <label for="editLastName">Last Name:</label>
+          <input
+            type="text"
+            id="editLastName"
+            name="last_name"
+            value="{{ user.last_name }}"
+          /><br />
+
+          <label for="editEmail">Email:</label>
+          <input
+            type="email"
+            id="editEmail"
+            name="email"
+            value="{{ user.email }}"
+          /><br />
+
+          <button class="button" type="submit">Update Profile</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Change Password section -->
+    <div id="changePasswordSection" class="section" style="display: none">
+      <h3>Change Password</h3>
       <form
-        id="updateProfileForm"
+        id="changePasswordForm"
         method="POST"
-        action="{% url 'user_profile' %}"
+        action="{% url 'staff_profile' %}"
       >
         {% csrf_token %}
-        <input type="hidden" name="update_profile" />
-        <label for="editFirstName">First Name:</label>
+        <input type="hidden" name="change_password" />
+        <label for="oldPassword">Old Password:</label>
         <input
-          type="text"
-          id="editFirstName"
-          name="first_name"
-          value="{{ user.first_name }}"
+          type="password"
+          id="oldPassword"
+          name="old_password"
+          required
         /><br />
 
-        <label for="editLastName">Last Name:</label>
+        <label for="newPassword">New Password:</label>
         <input
-          type="text"
-          id="editLastName"
-          name="last_name"
-          value="{{ user.last_name }}"
+          type="password"
+          id="newPassword"
+          name="new_password1"
+          required
         /><br />
 
-        <label for="editEmail">Email:</label>
+        <label for="confirmPassword">Confirm Password:</label>
         <input
-          type="email"
-          id="editEmail"
-          name="email"
-          value="{{ user.email }}"
+          type="password"
+          id="confirmPassword"
+          name="new_password2"
+          required
         /><br />
 
-        <button type="submit">Update Profile</button>
+        <button class="button" type="submit">Update Password</button>
       </form>
     </div>
-  </div>
-
-  <!-- Change Password section -->
-  <div id="changePasswordSection" class="section" style="display: none">
-    <h3>Change Password</h3>
-    <form
-      id="changePasswordForm"
-      method="POST"
-      action="{% url 'user_profile' %}"
-    >
-      {% csrf_token %}
-      <input type="hidden" name="change_password" />
-      <label for="oldPassword">Old Password:</label>
-      <input
-        type="password"
-        id="oldPassword"
-        name="old_password"
-        required
-      /><br />
-
-      <label for="newPassword">New Password:</label>
-      <input
-        type="password"
-        id="newPassword"
-        name="new_password1"
-        required
-      /><br />
-
-      <label for="confirmPassword">Confirm Password:</label>
-      <input
-        type="password"
-        id="confirmPassword"
-        name="new_password2"
-        required
-      /><br />
-
-      <button type="submit">Update Password</button>
-    </form>
   </div>
 </div>
 
@@ -143,10 +145,15 @@ User profile{% endblock %} {% block content %}
     font-family: "Montserrat", sans-serif;
   }
 
-  .container {
-    max-width: 600px;
-    margin: 60px auto 0;
-    padding: 20px;
+  .main-container {
+    width: 90vw;
+    margin: 0 5%;
+    margin-top: 9.8vh;
+    min-height: 65.6vh;
+  }
+
+  .details {
+    padding: 40px;
   }
 
   h2,
@@ -154,8 +161,20 @@ User profile{% endblock %} {% block content %}
     color: #16425b;
   }
 
-  .buttons button {
+  .button {
+    padding: 8px 16px;
+    border: none;
+    background-color: var(--lapis);
+    color: var(--platinum);
+    cursor: pointer;
+    border-radius: 5px;
     margin-right: 10px;
+    font-size: medium;
+    margin-top: 20px;
+  }
+
+  .button:hover {
+    background-color: var(--indigo);
   }
 
   .section {

@@ -3,7 +3,7 @@
 {% block title %} VROOM - Signup {%endblock %} 
 
 {% block content %}
-<div class="container">
+<div class="main-container">
   <div class="left-panel" style="margin-left: 80px">
     <img src="{% static 'img/vehicle.jpg' %}" alt="Vehicle Image" />
   </div>
@@ -61,7 +61,7 @@
           required
         />
       </div>
-      <button type="submit">Register</button>
+      <button class="button" type="submit">Register</button>
 
       <div class="login-link">
         <p>Already have an account? <a href="{% url 'login' %}">Sign In</a></p>
@@ -86,11 +86,14 @@
     padding: 0;
   }
 
-  .container {
+  .main-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    width: 90vw;
+    margin: 0 5%;
+    margin-top: 9.8vh;
+    min-height: 65.6vh;
   }
 
   .left-panel {
@@ -127,17 +130,19 @@
     border: 1px solid #ccc;
   }
 
-  button {
-    width: 100%;
-    padding: 10px;
+  .button {
+    padding: 8px 16px;
     border: none;
-    border-radius: 5px;
-    background-color: #2f6690;
-    color: #fff;
+    background-color: var(--lapis);
+    color: var(--platinum);
     cursor: pointer;
+    border-radius: 5px;
+    margin-right: 10px;
+    font-size: medium;
+    margin-top: 20px;
   }
 
-  button:hover {
+  .b:hover {
     background-color: #16425b;
   }
 
