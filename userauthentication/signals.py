@@ -6,6 +6,7 @@ from .models import Distributor, Vroom_User
 @receiver(post_save, sender=User)
 def create_or_update_user_profile(sender, instance, created, **kwargs):
     if created:
+        print('done cretae')
         email = instance.email.lower() 
         # Check if the email domain is associated with a distributor
         if email.endswith('.vroom@gmail.com'):

@@ -23,6 +23,7 @@ Carlisting! VROOM {% endblock %} {% block content%}
   <div class="cards-container">
     <!-- Cards will be dynamically added here -->
     {% for item in items %}
+    {% if item.availability %}
     <div class="card">
       <img src="{{ item.image.url }}" alt="Car Image" />
       <div class="card-text">
@@ -41,6 +42,7 @@ Carlisting! VROOM {% endblock %} {% block content%}
         </div>
       </div>
     </div>
+    {% endif %}
     {% endfor %}
   </div>
 
@@ -105,7 +107,7 @@ Carlisting! VROOM {% endblock %} {% block content%}
           card.classList.remove("filtered");
           console.log(category);
           console.log(card);
-          var cardCategory = card.querySelector(".car-type").innerHTML; // Assuming category is retrieved from card content
+          var cardCategory = card.querySelector(".car-type").innerHTML; 
           if (category == "All" || category == cardCategory) {
             card.classList.add("filtered");
             card.style.display = "block";
