@@ -18,6 +18,9 @@ from django.contrib.auth.forms import PasswordChangeForm
 from .forms import UserProfileForm 
 from django.contrib.auth import update_session_auth_hash
 
+
+
+
 # Create your views here.
 def signup(request):
     if request.method == "POST":
