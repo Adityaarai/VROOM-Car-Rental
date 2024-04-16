@@ -1,46 +1,38 @@
 {% extends 'partials/base.html' %} 
 {% load static %} 
-{% block title %} VROOM - About Us{% endblock %}
-{% block content %}
-<body>
-<div class="container">
-  <h1>VROOM</h1>
-  <section class="about-us">
-    <p>Set Out on an Exciting and Beautiful Adventure in Nepal! Explore a country with striking scenery, towering mountains, and a rich cultural history. With the finest car rental services available in Nepal, Vroom Rental, your reliable travel companion, is here to make your trip there unforgettable.</p>
-    <ul>
-      <li>We provide luxury and comfortable vehicles</li>
-      <li>Our vehicles are always in excellent condition</li>
-      <li>We have experienced drivers for Nepal tour and trekking destinations</li>
-      <li>All of our vehicles are insured</li>
-      <li>We provide reasonable prices and excellent value for money</li>
-      <li>We have a team with years of experience</li>
-    </ul>
-  </section>
-</div>
-</body>
+{% block title %} About
+Us{% endblock %} {% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us - Vroom Rental</title>
   <style>
     body {
       margin: 0;
-      padding-top: 0;
+      padding: 0;
       overflow-x: hidden;
       font-family: "Montserrat", sans-serif;
-      background-image: url('aboutusimg1.jpg'); 
+      background-image: url('/static/img/aboutusimg1.jpg'); 
       background-size: cover; 
       background-position: center; 
       background-attachment: fixed; 
     }
-
+    
     .container {
-      position: absolute; 
-      top: 60%; 
-      left: 50%; 
-      transform: translate(-50%, -50%); 
-      padding: 50px;
+      padding: 10px;
       color: #ffffff; 
       text-align: center;
-      background-color: rgba(0, 0, 0, 0.5); 
       max-width: 800px; 
+      margin: 0 auto; 
+      margin-top: 10%; 
+      margin-bottom: 10%; 
+      background-color: rgba(0, 0, 0, 0.5); 
+      border-radius: 10px;
     }
+
 
     .about-us h1 {
       margin-bottom: 30px;
@@ -66,4 +58,24 @@
       font-size: 1.2rem;
     }
   </style>
+</head>
+<body>
+  <div class="container">
+    <h1>VROOM</h1>
+    <section class="about-us">
+      <p>Set Out on an Exciting and Beautiful Adventure in Nepal! Explore a country with striking scenery, towering mountains, and a rich cultural history. With the finest car rental services available in Nepal, Vroom Rental, your reliable travel companion, is here to make your trip there unforgettable.</p>
+      <ul>
+        <li>We provide luxury and comfortable vehicles</li>
+        <li>Our vehicles are always in excellent condition</li>
+        <li>We have experienced drivers for Nepal tour and trekking destinations</li>
+        <li>All of our vehicles are insured</li>
+        <li>We provide reasonable prices and excellent value for money</li>
+        <li>We have a team with years of experience</li>
+      </ul>
+    </section>
+  </div>
+
+</body>
+</html>
+
 {% endblock %}
