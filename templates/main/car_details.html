@@ -1,34 +1,60 @@
-{% extends 'partials/base.html' %} 
-{% load static %} 
-{% block title %} VROOM - Car Details{% endblock %}
-{% block content %}
+{% extends 'partials/base.html' %} {% load static %} {% block title %} VROOM -
+Car Details{% endblock %} {% block content %}
+<div class="main-container">
     <div id="main">
+        {% if details %}
+        {% for detail in details %}
+
         <div id="image">
-            <img src="/img/ev.png" alt="car image" />
-        </div>
-        <div id="details">
+            <img src="{{ detail.image }}" alt="Car Image" />
+          </div>
+          <div id="details">
             <div id="model">
-                <p>Model</p>
+              <p>{{ detail.car_model }}</p>
+            </div>
+            <div id="name">
+              <p>{{ detail.renter_name }}</p>
             </div>
             <div id="price">
-                <p>price</p>
+              <p>{{ detail.price }}</p>
             </div>
-            <label for="bookingStartDate">Booking Start Date:</label><br>
-            <input type="date" id="bookingStartDate" name="bookingStartDate"><br>
-            <label for="bookingEndDate">Booking End Date:</label><br>
-            <input type="date" id="bookingEndDate" name="bookingEndDate"><br><br>
-            <button id="home" href="{% url 'carlisting' %}" >Back</button>
-            <button id="book">Book</button>
-            <div class="popup" id="popup">
-                <div class="popup-content">
-                    <span class="close" onclick="closePopup()">&times;</span>
-                    <h2>Booking Requested</h2>
-                    <p>Your booking request has been submitted.</p>
-                </div>
-            </div>
-        </div>
-    </div>
+        
+        <form id="booking-form" method="post">
+            {% csrf_token %}
 
+        <!-- hidden fields for identififying product -->
+        <input type="hidden" id="renter_contact" name="renter_contact" value="{{ detail.renter_contact }}">
+        <input type="hidden" id="car_model" name="car_model" value="{{ detail.car_model }}">
+        <input type="hidden" id="renter_name" name="renter_name" value="{{ detail.renter_name }}">
+
+
+          <label for="bookingStartDate">Booking Start Date:</label><br />
+          <input type="date" id="bookingStartDate" name="bookingStartDate" /><br />
+          <label for="bookingEndDate">Booking End Date:</label><br />
+          <input type="date" id="bookingEndDate" name="bookingEndDate" /><br /><br />
+          <a href="{% url 'carlisting' %}?value=All">
+            <button id="home">Back</button>
+          </a>
+          <button id="book" type="submit">Book</button>
+        </form>
+          {% endfor %}
+        {% else %}
+        <h1>Car not available or booking completed</h1>
+        {% endif %}
+
+          <!-- popup -->
+          <div class="popup" id="popup">
+            <div class="popup-content">
+              <span class="close" onclick="closePopup()">&times;</span>
+              <h2>Booking Requested</h2>
+              <p>Your booking request has been submitted.</p>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+      
+</div>
     <script>
         // Function to display the popup
         function showPopup() {
@@ -45,6 +71,7 @@
     </script>
     
 <style>
+
     :root {
         --indigo: #16425b;
         --lapis: #2f6690;
@@ -53,9 +80,16 @@
         --platinum: #d9dcd6;
         --darkgray: #b4b4b3;
     }
+
+    .main-container {
+    width: 90vw;
+    margin: 0 5%;
+    margin-top: 10vh;
+    min-height: 65.4vh;
+    padding-top: 5vh;
+  }
     #main{
         width: 80vw;
-        margin-left: 10vw;
         height: 50vh;
         display: flex;
         justify-content: space-between;
