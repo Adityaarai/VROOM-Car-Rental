@@ -14,7 +14,8 @@
             <div class="login-form">
                 <span class="close" onclick="closePopup()">&times;</span>
                 <h3>Login</h3>
-                <form action="/login" method="post">
+                <form action="{% url 'login' %}" method="post">
+                  {% csrf_token %}
                     <label for="username">Username</label><br>
                     <input type="text" id="username" name="username"><br>
                     <label for="password">Password</label><br>
