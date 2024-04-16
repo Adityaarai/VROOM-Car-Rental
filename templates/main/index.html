@@ -11,29 +11,27 @@
     {% else %}
     <button id="bookBtn">Book Now</button>
     {% endif %}
-
-    <!-- login popup -->
-    <div id="loginPopup" class="popup">
-      <div class="popup-content">
-        <img src="/static/img/loginpopup.jpg" alt="Image" class="popup-img" />
-        <div class="login-form">
-          <span class="close" onclick="closePopup()">&times;</span>
-          <h3>Login</h3>
-          <form action="/login" method="post">
-            <label for="username">Username</label><br />
-            <input type="text" id="username" name="username" /><br />
-            <label for="password">Password</label><br />
-            <input type="password" id="password" name="password" /><br /><br />
-            <input type="submit" value="Login" class="loginSubmit" /><br />
-            <a href="{% url 'reset_password' %}">Forgot your password?</a>
-            <a class="title" href="{% url 'signup' %}">Sign Up</a>
-          </form>
+        <div id="loginPopup" class="popup">
+          <div class="popup-content">
+            <img src="/static/img/loginpopup.jpg" alt="Image" class="popup-img">
+            <div class="login-form">
+                <span class="close" onclick="closePopup()">&times;</span>
+                <h3>Login</h3>
+                <form action="{% url 'login' %}" method="post">
+                  {% csrf_token %}
+                    <label for="username">Username</label><br>
+                    <input type="text" id="username" name="username"><br>
+                    <label for="password">Password</label><br>
+                    <input type="password" id="password" name="password"><br><br>
+                    <input type="submit" value="Login" class="loginSubmit"><br>
+                    <a href="{% url 'reset_password' %}">Forgot your password?</a>
+                    <a class="title" href="{% url 'signup' %}">Sign Up</a>
+                </form>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-    <!-- login popup -->
-  </div>
-</div>
 
 <div id="types">
   <p id="title">Categories</p>
