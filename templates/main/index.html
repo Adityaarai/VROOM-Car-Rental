@@ -20,7 +20,7 @@
                     <label for="password">Password</label><br>
                     <input type="password" id="password" name="password"><br><br>
                     <input type="submit" value="Login" class="loginSubmit"><br>
-                    <a href="{% url 'password_reset' %}">Forgot your password?</a>
+                    <a href="{% url 'reset_password' %}">Forgot your password?</a>
                     <a class="title" href="{% url 'signup' %}">Sign Up</a>
                 </form>
             </div>
@@ -167,7 +167,7 @@
 </script>
 
 <style>
-  @import url("https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Play:wght@400;700&display=swap");
+  
 
   :root {
     --indigo: #16425b;
@@ -182,7 +182,6 @@
       margin: 0;
       padding-top: 0;
       overflow-x: hidden;
-      font-family: "Montserrat", sans-serif;
   }
 
   .popup {

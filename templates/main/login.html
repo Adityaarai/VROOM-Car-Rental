@@ -2,7 +2,7 @@
 {% load static %} 
 {% block title %} VROOM - Sigin{% endblock %}
 {% block content %}
-<div class="container">
+<div class="main-container">
   <div class="left-panel" style="margin-right: 50px">
     <img src="{% static 'img/vehicle.jpg' %}" alt="Vehicle Image" />
   </div>
@@ -40,9 +40,8 @@
       <div class="signup-link">
         <p>
           Don't have an account yet?
-          <button type="button">
-            <a class="title" href="{% url 'signup' %}">Sign Up</a>
-          </button>
+          
+            <a class="title" href="{% url 'signup' %}"><button type="button">Sign Up</button></a>
         </p>
       </div>
     </form>
@@ -71,11 +70,14 @@
       padding: 0;
   }
 
-  .container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
+  .main-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 90vw;
+    margin: 0 5%;
+    margin-top: 9.8vh;
+    min-height: 65.6vh;
   }
 
   .left-panel {
