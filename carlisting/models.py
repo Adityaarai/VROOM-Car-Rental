@@ -28,11 +28,10 @@ class CarDetail(models.Model):
 class CarOrder(models.Model):
     product = models.ForeignKey(CarDetail, on_delete=models.CASCADE)
     distributor = models.ForeignKey(User, models.CASCADE, null=True)
-    number_of_days = models.PositiveIntegerField(null=True)
-    start_date = models.DateTimeField(auto_now_add=True)
+    start_date = models.DateTimeField(null=True)
     end_date = models.DateTimeField(null=True)
-    rentee_name = models.CharField(max_length=100)
-    verified = models.BooleanField(default=False)
+    rentee_email = models.CharField(max_length=100)
+    verified = models.BooleanField(default=False, null=True)
     
     # display what is shown in the order name
     def __str__(self):
