@@ -58,97 +58,90 @@
   </div>
 </div>
 <style>
+  :root {
+    --primary-color: #2f6690;
+    --secondary-color: #16425b;
+    --alert-danger: red;
+    --alert-success: green;
+  }
+
   body {
-    font-family: "Montserrat", sans-serif;
-    margin: 0;
-    padding: 0;
+      font-family: "Montserrat", sans-serif;
+      margin: 0;
+      padding: 0;
   }
 
   .container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
   }
 
   .left-panel {
-    flex: 1;
+      flex: 1;
   }
 
   img {
-    max-width: 100%;
+      max-width: 100%;
   }
 
   .form-group {
-    margin-bottom: 15px;
+      margin-bottom: 15px;
   }
 
   .right-panel h2 {
-    margin-top: 0;
-    margin-bottom: 50px;
+      margin-top: 0;
+      margin-bottom: 50px;
   }
 
   input[type="email"],
   input[type="password"] {
-    width: 100%;
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    margin-bottom: 10px;
-  }
-
-  button {
-    width: 100%;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    background-color: #2f6690;
-    color: #fff;
-    cursor: pointer;
-  }
-
-  button:hover {
-    background-color: #16425b;
+      width: 100%;
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      margin-bottom: 10px;
   }
 
   button,
   .signup-link button {
-    width: 100%;
-    padding: 15px;
-    margin-top: 10px;
-    border: none;
-    border-radius: 5px;
-    background-color: #2f6690;
-    color: #fff;
-    cursor: pointer;
+      width: 100%;
+      padding: 15px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 5px;
+      background-color: var(--primary-color);
+      color: #fff;
+      cursor: pointer;
   }
 
   button:hover,
   .signup-link button:hover {
-    background-color: #16425b;
-    color: #fff;
+      background-color: var(--secondary-color);
   }
 
   .title {
-    color: #fff;
+      color: #fff;
   }
 
   /* Customizing alert colors */
   .alert-danger {
-    color: red;
-    font-weight: bold;
+      color: var(--alert-danger);
+      font-weight: bold;
   }
 
   .alert-success {
-    color: green;
-    font-weight: bold;
+      color: var(--alert-success);
+      font-weight: bold;
   }
 
   /* Adjusting message display */
   .message {
-    margin-top: 20px;
-    max-width: 300px; /* Adjust as needed */
-    word-wrap: break-word; /* Allow long messages to wrap */
+      margin-top: 20px;
+      max-width: 300px; 
+      word-wrap: break-word; 
   }
+
 </style>
 {% endblock %}

@@ -10,24 +10,27 @@
       <ul class="nav-list">
         <li><a href="{% url 'index' %}">Home</a></li>
         <li><a href="{% url 'about_us' %}">About Us</a></li>
-        <li><a href="{% url 'carlisting' %}">Car Listings</a></li>
-        {% if user.is_authenticated %}
-          <li class="profile-icon">
-            <a href="#" class="profile-dropdown">
-              <img src="{% static 'img/profileicon.png' %}" alt="User profile icon">
-              <ul class="dropdown-menu">
-                {% if user.is_staff %}
-                  <li><a href="{% url 'staff_profile' %}">My Profile</a></li>
-                {% else %}
-                  <li><a href="{% url 'user_profile' %}">My Profile</a></li>
-                {% endif %}
-                <li><a href="{% url 'logout' %}">Logout</a></li>
-              </ul>
-            </a>
-          </li>
+        <li><a href="{% url 'carlisting' %}?value=All">Book Cars</a></li>
+        {% if user.is_authenticated%}
+        <li class="profile-icon">
+          <a href="#" class="profile-dropdown">
+            <img
+              src="{% static 'img/profileicon.png' %}"
+              alt="User profile icon"
+            />
+            <ul class="dropdown-menu">
+              {% if user.is_staff %}
+              <li><a href="{% url 'staff_profile' %}">My Profile</a></li>
+              {% else %}
+              <li><a href="{% url 'user_profile' %}">My Profile</a></li>
+              {% endif %}
+              <li><a href="{% url 'logout' %}">Logout</a></li>
+            </ul>
+          </a>
+        </li>
         {% else %}
-          <li><a href="{% url 'signup' %}">SignUp</a></li>
-          <li><a href="{% url 'login' %}">Login</a></li>
+        <li><a href="{% url 'signup' %}">SignUp</a></li>
+        <li><a href="{% url 'login' %}">Login</a></li>
         {% endif %}
       </ul>
     </div>
@@ -50,31 +53,7 @@
       document.getElementById("navbar").classList.remove("scrolled");
     }
   }
-
-  document.addEventListener("DOMContentLoaded", function() {
-    var profileIcons = document.querySelectorAll('.profile-icon');
-
-    profileIcons.forEach(function(profileIcon) {
-      var profileDropdown = profileIcon.querySelector('.profile-dropdown');
-      var dropdownMenu = profileIcon.querySelector('.dropdown-menu');
-
-      profileDropdown.addEventListener('click', function(event) {
-        event.preventDefault(); // Prevent default action
-        event.stopPropagation(); // Stop event propagation
-
-        dropdownMenu.classList.toggle('show');
-      });
-
-      // Close dropdown when clicking outside
-      window.addEventListener('click', function(event) {
-        if (!profileIcon.contains(event.target)) {
-          dropdownMenu.classList.remove('show');
-        }
-      });
-    });
-  });
 </script>
-
 <style>
   #navbar {
     position: fixed;
@@ -102,6 +81,31 @@
   }
 </style>
 {% endif %}
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    var profileIcons = document.querySelectorAll(".profile-icon");
+
+    profileIcons.forEach(function (profileIcon) {
+      var profileDropdown = profileIcon.querySelector(".profile-dropdown");
+      var dropdownMenu = profileIcon.querySelector(".dropdown-menu");
+
+      profileDropdown.addEventListener("click", function (event) {
+        event.preventDefault(); // Prevent default action
+        event.stopPropagation(); // Stop event propagation
+
+        dropdownMenu.classList.toggle("show");
+      });
+
+      // Close dropdown when clicking outside
+      window.addEventListener("click", function (event) {
+        if (!profileIcon.contains(event.target)) {
+          dropdownMenu.classList.remove("show");
+        }
+      });
+    });
+  });
+</script>
 
 <style>
   @import url("https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Play:wght@400;700&display=swap");
@@ -133,8 +137,10 @@
     justify-content: space-between;
   }
 
-  .nav-right {
+  .nav-right,
+  .nav-left {
     padding: 10px;
+    padding-top: 0;
   }
 
   .nav-list {
@@ -143,15 +149,19 @@
   }
 
   .nav-list li {
-    margin: 0 10px; 
+    height: 40px;
+    padding-top: 10px;
+    margin: 0 10px;
   }
 
   .nav-list li a {
     color: var(--platinum);
+    margin-right: 20px;
     font-weight: 400;
     font-size: 1.3em;
     position: relative;
     transition: color 0.3s ease;
+    padding-right: 10px;
   }
 
   .nav-list li a:hover {
@@ -176,11 +186,13 @@
     transform: scaleX(1);
   }
 
-  .nav-left h1{
+  .nav-left h1 {
     color: var(--platinum);
+    padding: 10px 20px ;
   }
 
-  .profile-icon img{
+  .profile-icon img {
+    margin-top: -10px;
     width: 40px;
     height: 40px;
   }
@@ -188,12 +200,12 @@
   .dropdown-menu {
     display: none;
     position: absolute;
-    background-color: #16425b; /* Change background color */
-    color: #fff ; /* Change text color */
+    background-color: #16425b; 
+    color: #fff; 
     min-width: 160px;
     z-index: 1;
-    top: calc(100% + 10px); 
-    right: 0; /* Position to the right */
+    top: calc(100% + 10px);
+    right: 0; 
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   }
 

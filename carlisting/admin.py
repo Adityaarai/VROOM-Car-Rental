@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import CarDetails, CarOrders
+from .models import CarDetail, CarOrder
 from django.contrib.auth.models import Group
 
 # changing admin site header
@@ -11,11 +11,11 @@ class CardetailsAdmin(admin.ModelAdmin):
     list_filter = ['car_type', 'car_model', 'availability']
 
 class CarordersAdmin(admin.ModelAdmin):
-    list_display = ('product', 'distributor', 'date', 'number_of_days', 'status')
-    list_filter = ['distributor']
+    list_display = ('product', 'distributor', 'start_date', 'end_date', 'verified')
+    list_filter = ['distributor', 'verified']
 
 
 # Register your models here.
-admin.site.register(CarDetails, CardetailsAdmin)
-admin.site.register(CarOrders, CarordersAdmin)
+admin.site.register(CarDetail, CardetailsAdmin)
+admin.site.register(CarOrder, CarordersAdmin)
 admin.site.unregister(Group)
