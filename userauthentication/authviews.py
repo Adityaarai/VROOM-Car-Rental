@@ -18,9 +18,6 @@ from django.contrib.auth.forms import PasswordChangeForm
 from .forms import UserProfileForm 
 from django.contrib.auth import update_session_auth_hash
 
-
-
-
 # Create your views here.
 def signup(request):
     if request.method == "POST":
@@ -175,10 +172,34 @@ def user_profile_view(request):
 
     return render(request, 'main/user_profile.html', {'user': user})
 
+@login_required
+def staff_profile_view(request):
+    user = request.user
+    
+    if request.method == 'POST':
+        form = PasswordChangeForm(user, request.POST)
+
+        if 'update_profile' in request.POST:  # Check if the profile update form is submitted
+            profile_form = UserProfileForm(request.POST, instance=user)
+            if profile_form.is_valid():
+                profile_form.save()
+                messages.success(request, "Profile information updated successfully.")
+            else:
+                messages.error(request, "Failed to update profile information. Please check the provided data.")
+
+        elif 'change_password' in request.POST:  # Check if the change password form is submitted
+            form = PasswordChangeForm(user, request.POST)
+            if form.is_valid():
+                form.save()
+                update_session_auth_hash(request, form.user)
+                messages.success(request, "Password updated successfully.")
+            else:
+                for field, errors in form.errors.items():
+                    for error in errors:
+                        messages.error(request, f"{field}: {error}")
+
+    return render(request, 'main/staff_profile.html', {'user': user})
+
 def logout_view(request):
     logout(request)
     return redirect('index')
-
-def staff_profile_view(request):
-    # Add your staff profile logic here
-    return render(request, 'main/staff_profile.html')

@@ -10,7 +10,7 @@
       <ul class="nav-list">
         <li><a href="{% url 'index' %}">Home</a></li>
         <li><a href="{% url 'about_us' %}">About Us</a></li>
-        <li><a href="{% url 'carlisting' %}?value=All">Car Listings</a></li>
+        <li><a href="{% url 'carlisting' %}?value=All">Book Cars</a></li>
         {% if user.is_authenticated%}
         <li class="profile-icon">
           <a href="#" class="profile-dropdown">
@@ -59,7 +59,7 @@
     position: fixed;
     width: 100%;
     top: 0;
-    height: 60px;
+    height: 9vh;
     background-color: transparent;
     padding: 20px 10px 10px 10px;
     transition: background-color 0.3s ease;
@@ -73,7 +73,7 @@
     position: fixed;
     width: 100%;
     top: 0;
-    height: 60px;
+    height: 9vh;
     background-color: var(--indigo);
     padding: 20px 10px 10px 10px;
     transition: background-color 0.3s ease;
@@ -108,17 +108,7 @@
 </script>
 
 <style>
-  @import url("https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Play:wght@400;700&display=swap");
-
-  * {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    text-decoration: none;
-    font-family: "Montserrat", sans-serif;
-  }
-
-  :root {
+    :root {
     --indigo: #16425b;
     --lapis: #2f6690;
     --cerulean: #3a7ca5;
@@ -137,8 +127,10 @@
     justify-content: space-between;
   }
 
-  .nav-right {
+  .nav-right,
+  .nav-left {
     padding: 10px;
+    padding-top: 0;
   }
 
   .nav-list {
@@ -147,15 +139,19 @@
   }
 
   .nav-list li {
+    height: 40px;
+    padding-top: 10px;
     margin: 0 10px;
   }
 
   .nav-list li a {
     color: var(--platinum);
+    margin-right: 20px;
     font-weight: 400;
     font-size: 1.3em;
     position: relative;
     transition: color 0.3s ease;
+    padding-right: 10px;
   }
 
   .nav-list li a:hover {
@@ -182,9 +178,11 @@
 
   .nav-left h1 {
     color: var(--platinum);
+    padding: 10px 20px ;
   }
 
   .profile-icon img {
+    margin-top: -10px;
     width: 40px;
     height: 40px;
   }
@@ -192,12 +190,12 @@
   .dropdown-menu {
     display: none;
     position: absolute;
-    background-color: #16425b; /* Change background color */
-    color: #fff; /* Change text color */
+    background-color: #16425b; 
+    color: #fff; 
     min-width: 160px;
     z-index: 1;
     top: calc(100% + 10px);
-    right: 0; /* Position to the right */
+    right: 0; 
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   }
 
