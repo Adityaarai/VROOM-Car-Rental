@@ -1,13 +1,12 @@
-{% extends 'partials/base.html' %} 
-{% load static %} 
-{% block title %} VROOM - Sigin{% endblock %}
-{% block content %}
+{% extends 'partials/base.html' %} {% load static %} {% block title %} VROOM -
+SignIn{% endblock %} {% block content %}
 <div class="main-container">
   <div class="left-panel" style="margin-right: 50px">
     <img src="{% static 'img/vehicle.jpg' %}" alt="Vehicle Image" />
   </div>
 
   <div class="right-panel" style="margin-right: 190px">
+    <!-- login block -->
     <h2>Login</h2>
     <form id="signin-form" method="post">
       {% csrf_token %}
@@ -35,24 +34,26 @@
       <div class="form-group">
         <a href="{% url 'reset_password' %}">Forgot your password?</a>
       </div>
-      
+
       <button type="submit">Sign In</button>
+
       <div class="signup-link">
         <p>
           Don't have an account yet?
-          
-            <a class="title" href="{% url 'signup' %}"><button type="button">Sign Up</button></a>
+
+          <a class="title" href="{% url 'signup' %}"
+            ><button type="button">Sign Up</button></a
+          >
         </p>
       </div>
     </form>
+    <!-- login block -->
     <div class="message">
-      {% for message in messages %} 
-      	{% if message.tags == 'error' %}
-        	<div class="alert alert-danger" role="alert">{{ message }}</div>
-        {% elif message.tags == 'success' %}
-        	<div class="alert alert-success" role="alert">{{ message }}</div>
-        {% endif %} 
-      {% endfor %}
+      {% for message in messages %} {% if message.tags == 'error' %}
+      <div class="alert alert-danger" role="alert">{{ message }}</div>
+      {% elif message.tags == 'success' %}
+      <div class="alert alert-success" role="alert">{{ message }}</div>
+      {% endif %} {% endfor %}
     </div>
   </div>
 </div>
@@ -65,9 +66,9 @@
   }
 
   body {
-      font-family: "Montserrat", sans-serif;
-      margin: 0;
-      padding: 0;
+    font-family: "Montserrat", sans-serif;
+    margin: 0;
+    padding: 0;
   }
 
   .main-container {
@@ -81,69 +82,68 @@
   }
 
   .left-panel {
-      flex: 1;
+    flex: 1;
   }
 
   img {
-      max-width: 100%;
+    max-width: 100%;
   }
 
   .form-group {
-      margin-bottom: 15px;
+    margin-bottom: 15px;
   }
 
   .right-panel h2 {
-      margin-top: 0;
-      margin-bottom: 50px;
+    margin-top: 0;
+    margin-bottom: 50px;
   }
 
   input[type="email"],
   input[type="password"] {
-      width: 100%;
-      padding: 10px;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-      margin-bottom: 10px;
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
   }
 
   button,
   .signup-link button {
-      width: 100%;
-      padding: 15px;
-      margin-top: 10px;
-      border: none;
-      border-radius: 5px;
-      background-color: var(--primary-color);
-      color: #fff;
-      cursor: pointer;
+    width: 100%;
+    padding: 15px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: var(--primary-color);
+    color: #fff;
+    cursor: pointer;
   }
 
   button:hover,
   .signup-link button:hover {
-      background-color: var(--secondary-color);
+    background-color: var(--secondary-color);
   }
 
   .title {
-      color: #fff;
+    color: #fff;
   }
 
   /* Customizing alert colors */
   .alert-danger {
-      color: var(--alert-danger);
-      font-weight: bold;
+    color: var(--alert-danger);
+    font-weight: bold;
   }
 
   .alert-success {
-      color: var(--alert-success);
-      font-weight: bold;
+    color: var(--alert-success);
+    font-weight: bold;
   }
 
   /* Adjusting message display */
   .message {
-      margin-top: 20px;
-      max-width: 300px; 
-      word-wrap: break-word; 
+    margin-top: 20px;
+    max-width: 300px;
+    word-wrap: break-word;
   }
-
 </style>
 {% endblock %}
