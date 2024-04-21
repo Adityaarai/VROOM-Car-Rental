@@ -2,6 +2,7 @@
 Carlisting! VROOM {% endblock %} {% block content%}
 
 <div class="main-container">
+  <!-- filter to navigate different catogeries of cars -->
   <div class="filter">
     <button class="filter-btn" data-category="All">All</button>
     <button class="filter-btn" data-category="SUV">SUV</button>
@@ -45,7 +46,7 @@ Carlisting! VROOM {% endblock %} {% block content%}
     {% endif %}
     {% endfor %}
   </div>
-
+  <!-- button to navigate different pages of cars -->
   <div class="page-btn">
     <button id="previousPageBtn">Previous Page</button>
     <h2 class="page-number"></h2>

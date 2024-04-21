@@ -2,7 +2,7 @@
 {% load static %} 
 {% block title %} VROOM - Distributor profile{% endblock %}
 {% block content %}
-
+<!-- main button to navigate between car and booking -->
 <div class="container">
     <button id="car-btn">Car</button>
     <button id="booking-btn">Booking</button>
@@ -11,21 +11,24 @@
 <div id="content" class="container">
     <div id="car-content">
         <div class="all">
+            <!-- filter to navigate different catogeries of cars -->
             <div class="filter">
                 <button class="filter-btn" data-category="all">All</button>
                 <button class="filter-btn" data-category="SUV">SUV</button>
                 <button class="filter-btn" data-category="EV">EV</button>
                 <button class="filter-btn" data-category="Truck">Truck</button>
                 <button class="filter-btn" data-category="Sedan">Sedan</button>
+                <!-- buttons to add car -->
                 <button id="car-add-btn">Add</button>
             </div>
-        
+            
             <div class="cards-container">
                 <div class="card">
                     <img src="https://via.placeholder.com/150" alt="Car Image">
                     <div class="card-content">
                         <p class="model">Model Name</p>
                         <p class="price">$20,000</p>
+                        <!-- buttons to remove car -->
                         <button class="cardbtn">Remove</button>
                     </div>
                 </div>
@@ -54,11 +57,12 @@
                     </div>
                 </div>
             </div>
-        
+            <!-- button to navigate different pages of cars -->
             <div class="page-btn">
                 <button id="previousPageBtn">Previous Page</button>
                 <button id="nextPageBtn">Next Page</button>
             </div>
+            <!-- popup to add car -->
             <div class="popup" id="addCarPopup">
               <div class="popup-content">
                 <span class="close" onclick="closePopup('addCarPopup')">&times;</span>
@@ -83,10 +87,10 @@
     </div>
     <div id="booking-content">
         <h2>Booking Information</h2>
-
+        <!-- buttons to add and delete booking -->
         <button id="booking-add-btn">Add</button>
         <button id="booking-delete-btn">Delete</button>
-        
+        <!-- table to show booking information -->
         <table>
             <thead>
                 <tr>
@@ -148,7 +152,7 @@
             </tbody>
         </table>
         
-        
+        <!-- popup to add booking -->
         <div class="popup" id="addBookingPopup">
             <div class="popup-content">
                 <span class="close" onclick="closePopup('addBookingPopup')">&times;</span>
@@ -169,7 +173,7 @@
             </div>
         </div>
         
-        
+        <!-- popup to delete booking -->
         <div class="popup" id="deleteBookingPopup">
           <div class="popup-content">
             <span class="close" onclick="closePopup('deleteBookingPopup')">&times;</span>
