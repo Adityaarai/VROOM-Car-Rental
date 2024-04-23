@@ -27,7 +27,7 @@
           <form id="signin-form" method="post">
             {% csrf_token %}
             <div class="form-group">
-              <label for="email">Email</label>
+              <label for="email">Email</label><br>
               <input
                 type="email"
                 name="email"
@@ -47,11 +47,12 @@
               />
             </div>
             <div class="form-group">
-              <a href="{% url 'reset_password' %}">Forgot your password?</a>
-            </div>
+              <a href="{% url 'reset_password' %}">Forgot your password?</a><a class="title" href="{% url 'signup' %}">Sign Up</a>
 
+            </div>
+            
+            
             <button type="submit">Sign In</button>
-            <a class="title" href="{% url 'signup' %}">Sign Up</a>
           </form>
           <div class="message">
             {% for message in messages %} {% if message.tags == 'error' %}
@@ -255,21 +256,22 @@
     font-weight: 400;
   }
 
-  .login-form h3 {
+  .login-form h2 {
     margin-top: 30%;
     margin-bottom: 40px;
   }
 
-  .login-form input[type="text"],
+  .login-form input[type="email"],
   .login-form input[type="password"] {
     height: 30px;
-    width: 300px;
+    width: 340px;
     font-size: 20px;
+    margin-bottom: 10px;
   }
 
-  .loginSubmit {
+  .login-form button {
     height: 60px;
-    width: 300px;
+    width: 340px;
     font-size: 20px;
     background-color: var(--indigo);
     color: var(--platinum);
