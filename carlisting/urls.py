@@ -10,3 +10,5 @@ urlpatterns = [
     path('staff-profile/', views.staffprofile, name = 'staff_profile'),
     path('orders/', views.orders, name = 'orders'),
 ]
+
+
