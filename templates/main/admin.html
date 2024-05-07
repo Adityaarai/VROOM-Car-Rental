@@ -2,6 +2,7 @@
 {% load static %} 
 {% block title %} VROOM - Distributor profile{% endblock %}
 {% block content %}
+<!-- main button to navigate between distibutor and user -->
 <div class="container">
     <button id="distributor-btn">Distributor</button>
     <button id="user-btn">User</button>
@@ -10,10 +11,10 @@
 <div id="content" class="container">
     <div id="distributor-content">
         <h2>Distributor Information</h2>
-
+        <!-- buttons to add and delete distributor -->
         <button id="distributor-add-btn">Add</button>
         <button id="distributor-delete-btn">Delete</button>
-
+        <!-- table to show distibutor information -->
         <table>
             <tr>
                 <th>Distributor ID</th>
@@ -52,7 +53,7 @@
                 <td>345-678-9012</td>
             </tr>
         </table>
-
+        <!-- popup to add distributor -->
         <div class="popup" id="addDistributorPopup">
             <div class="popup-content">
                 <span class="close" onclick="closePopup('addDistributorPopup')">&times;</span>
@@ -68,7 +69,7 @@
                 </form>
             </div>
         </div>
-
+        <!-- popup to delete distributor -->
         <div class="popup" id="deleteDistributorPopup">
             <div class="popup-content">
                 <span class="close" onclick="closePopup('deleteDistributorPopup')">&times;</span>
@@ -82,10 +83,10 @@
 
     <div id="user-content">
         <h2>User Information</h2>
-
+        <!-- buttons to add and delete user -->
         <button id="user-add-btn">Add</button>
         <button id="user-delete-btn">Delete</button>
-
+        <!-- table to show user information -->
         <table>
             <tr>
                 <th>User ID</th>
@@ -124,7 +125,7 @@
                 <td>********</td>
             </tr>
         </table>
-
+        <!-- popup to add user -->
         <div class="popup" id="addUserPopup">
             <div class="popup-content">
                 <span class="close" onclick="closePopup('addUserPopup')">&times;</span>
@@ -140,7 +141,7 @@
                 </form>
             </div>
         </div>
-
+        <!-- popup to delete user -->
         <div class="popup" id="deleteUserPopup">
             <div class="popup-content">
                 <span class="close" onclick="closePopup('deleteUserPopup')">&times;</span>

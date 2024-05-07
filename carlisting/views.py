@@ -1,10 +1,8 @@
 from django.shortcuts import render, redirect, HttpResponse
 from .models import CarDetail, CarOrder
-
-# Create your views here.
-def index(request):
-    return render(request, 'main/index.html')
-        
+from django.contrib import messages
+from django.contrib.auth import authenticate, login as auth_login, logout
+     
 def carlisting(request):
     items = CarDetail.objects.all()
 
@@ -61,6 +59,29 @@ def orders(request):
             'details': details_list,
         }
         return render(request, 'main/car_details.html', context)
+
+
+# Create your views here.
+def index(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        password = request.POST['password']
+
+        user = authenticate(request, username=email, password=password)
+        
+        if user is not None:
+            auth_login(request, user)
+            fname = user.first_name
+            # messages.success(request, "Logged In Sucessfully!!")
+            return render(request, "main/index.html")
+            
+        # If no user was authenticated, show error message
+        else:
+            messages.error(request, "Invalid email or password!")
+            return redirect('index')
+    else:
+        return render(request, "main/index.html")
+            
 
 def about_us(request):
     return render(request, 'main/about.html')

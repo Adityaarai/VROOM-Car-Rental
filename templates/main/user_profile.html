@@ -1,8 +1,6 @@
-{% extends 'partials/base.html' %} 
-{% load static %} 
-{% block title %} VROOM - User profile{% endblock %} 
+{% extends 'partials/base.html' %} {% load static %} {% block title %} VROOM -
+User profile{% endblock %} {% block content %}
 
-{% block content %}
 <div class="main-container">
   <div class="details">
     <h2>User Profile</h2>
@@ -30,13 +28,13 @@
       <p style="margin-bottom: 10px">
         Email: <span id="email">{{ user.email }}</span>
       </p>
-      <button class="button">Edit Profile</button>
+      <button class="button" id="editProfileBtn">Edit Profile</button>
       <div id="editProfileForm" style="display: none">
         <!-- Edit Profile form -->
         <form
           id="updateProfileForm"
           method="POST"
-          action="{% url 'staff_profile' %}"
+          action="{% url 'user_profile' %}"
         >
           {% csrf_token %}
           <input type="hidden" name="update_profile" />
@@ -75,7 +73,7 @@
       <form
         id="changePasswordForm"
         method="POST"
-        action="{% url 'staff_profile' %}"
+        action="{% url 'user_profile' %}"
       >
         {% csrf_token %}
         <input type="hidden" name="change_password" />

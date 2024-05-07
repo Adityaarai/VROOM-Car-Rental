@@ -19,3 +19,4 @@ class CarordersAdmin(admin.ModelAdmin):
 admin.site.register(CarDetail, CardetailsAdmin)
 admin.site.register(CarOrder, CarordersAdmin)
 admin.site.unregister(Group)
+

@@ -4,7 +4,7 @@ Car Details{% endblock %} {% block content %}
     <div id="main">
         {% if details %}
         {% for detail in details %}
-
+        <!--  Car Image -->
         <div id="image">
             <img src="{{ detail.image }}" alt="Car Image" />
           </div>
@@ -27,7 +27,7 @@ Car Details{% endblock %} {% block content %}
         <input type="hidden" id="car_model" name="car_model" value="{{ detail.car_model }}">
         <input type="hidden" id="renter_name" name="renter_name" value="{{ detail.renter_name }}">
 
-
+          <!--  Date and Time Picker -->
           <label for="bookingStartDate">Booking Start Date:</label><br />
           <input type="date" id="bookingStartDate" name="bookingStartDate" /><br />
           <label for="bookingEndDate">Booking End Date:</label><br />
