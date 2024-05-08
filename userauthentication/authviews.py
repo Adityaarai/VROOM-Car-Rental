@@ -180,7 +180,7 @@ def staff_profile_view(request):
             else:
                 messages.error(request, "Failed to update profile information. Please check the provided data.")
             
-            # Update username if it's changed
+            # Update username if it's changed 
             new_username = request.POST.get('username')
             if new_username != user.username:
                 user.username = new_username
