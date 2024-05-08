@@ -1,22 +1,25 @@
-{% extends 'partials/base.html' %} {% load static %} {% block title %} VROOM -
-SignIn{% endblock %} {% block content %}
+{% extends 'partials/base.html' %}
+{% load static %} 
+{% block title %} VROOM - SignIn {% endblock %} 
+
+{% block content %}
 <div class="main-container">
-  <div class="left-panel" style="margin-right: 50px">
+  <div class="left-panel" style="margin-left: 70px">
     <img src="{% static 'img/vehicle.jpg' %}" alt="Vehicle Image" />
   </div>
 
-  <div class="right-panel" style="margin-right: 190px">
+  <div class="right-panel" style="margin-right: 210px">
     <!-- login block -->
     <h2>Login</h2>
     <form id="signin-form" method="post">
       {% csrf_token %}
       <div class="form-group">
-        <label for="email">Email</label>
+        <label for="username_or_email">Username or Email</label>
         <input
-          type="email"
-          name="email"
-          id="email"
-          placeholder="Enter your email"
+          type="text"
+          name="username_or_email"
+          id="username_or_email"
+          placeholder="Enter your username or email"
           required
         />
       </div>
@@ -57,6 +60,7 @@ SignIn{% endblock %} {% block content %}
     </div>
   </div>
 </div>
+
 <style>
   :root {
     --primary-color: #2f6690;
@@ -100,6 +104,15 @@ SignIn{% endblock %} {% block content %}
 
   input[type="email"],
   input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+  }
+
+  #username_or_email,
+  #password {
     width: 100%;
     padding: 10px;
     border-radius: 5px;
