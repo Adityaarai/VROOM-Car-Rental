@@ -92,3 +92,6 @@ def userprofile(request):
 def staffprofile(request):
    return render(request, 'main/staff_profile.html')
 
+def adminprofile(request):
+   return render(request, 'main/admin.html')
+
