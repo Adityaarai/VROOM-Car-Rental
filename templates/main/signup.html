@@ -1,6 +1,6 @@
 {% extends 'partials/base.html' %} 
 {% load static %} 
-{% block title %} VROOM - Signup {%endblock %} 
+{% block title %} VROOM - Signup {% endblock %} 
 
 {% block content %}
 <div class="main-container">
@@ -28,6 +28,16 @@
           name="lastname"
           id="lastname"
           placeholder="Enter your last name"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input
+          type="text"
+          name="username"
+          id="username"
+          placeholder="Enter your username"
           required
         />
       </div>

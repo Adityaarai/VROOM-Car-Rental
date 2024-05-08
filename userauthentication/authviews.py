@@ -22,15 +22,19 @@ from django.contrib.auth import update_session_auth_hash
 def signup(request):
     if request.method == "POST":
         email = request.POST['email']
+        username = request.POST['username']
         firstname = request.POST['firstname']
         lastname = request.POST['lastname']
         pass1 = request.POST['password']
         pass2 = request.POST['confirm_password']
-        
-        check = True
 
         if User.objects.filter(email=email):
             messages.error(request, "Email already registered!")
+            check = False
+            return redirect('signup')
+        
+        if User.objects.filter(username=username):  # Check if the username is already taken
+            messages.error(request, "Username already taken!")
             check = False
             return redirect('signup')
         
@@ -55,78 +59,61 @@ def signup(request):
             messages.error(request, "Only Gmail addresses are allowed")
             return redirect('signup')
 
-        if (check):
-            myuser = User.objects.create_user(email=email, password=pass1, username=email)  # Set email as username
-            myuser.first_name = firstname
-            myuser.last_name = lastname
-            myuser.is_active = False
+        myuser = User.objects.create_user(username=username, email=email, password=pass1)
+        myuser.first_name = firstname
+        myuser.last_name = lastname
+        myuser.save()
+            
+        messages.success(request, "Your account has been successfully created. Welcome!")
 
-            myuser.save()
+        # Welcome Email
+        subject = "Welcome to VROOM-Car-Rental-Service!!"
+        message = f"""Hello {myuser.first_name}!!
 
-            messages.success(request, "Your account has been successfully created. We have sent you a confirmation email, please confirm your email in order to activate your account.")
-
-            # Welcome Email
-            subject = "Welcome to VROOM-Car-Rental-Service!!"
-            message = f"""Hello {myuser.first_name}!!
 Welcome to VROOM-Car-Rental-Service!!
-Thank you for visiting our website.
-We will be sending you a confirmation email shortly after this email, please visit the link in the email in order to activate your account.
 
-Thank you for joining the VROOM team!!
+Thank you for visiting our website and joining the VROOM team!!
+
 Best regards,
 VROOM-Car-Rental-Service"""
 
-            from_email = settings.EMAIL_HOST_USER
-            to_list = [myuser.email]
-            send_mail(subject, message, from_email, to_list, fail_silently=True)
-
-            # Email address confirmation Email
-            current_site = get_current_site(request)
-            email_subject = "Confirm your Email @ VROOM-Car-Rental-Service Login!!"
-            message2 = render_to_string('main/email_confirmation.html',{
-                'name': myuser.first_name,
-                'domain': current_site.domain,
-                'uid': urlsafe_base64_encode(force_bytes(myuser.pk)),
-                'token': generate_token.make_token(myuser)
-            })
-
-            email = EmailMessage(
-                email_subject,
-                message2,
-                settings.EMAIL_HOST_USER,
-                [myuser.email],
-            )
-            email.fail_silently = True
-            email.send()
-
-            return redirect('login')
+        from_email = settings.EMAIL_HOST_USER
+        to_list = [myuser.email]
+        send_mail(subject, message, from_email, to_list, fail_silently=True) 
+        
+        return redirect('login')
     
     return render(request, 'main/signup.html')
 
 def login(request):
     if request.method == 'POST':
-        email = request.POST.get('email')
+        username_or_email = request.POST.get('username_or_email')
         password = request.POST['password']
 
-        user = authenticate(request, username=email, password=password)
+        # Try to authenticate user by username
+        user = authenticate(request, username=username_or_email, password=password)
+        
+        # If username authentication fails, try email authentication
+        if user is None:
+            user = User.objects.filter(email=username_or_email).first()
+            if user:
+                user = authenticate(request, username=user.username, password=password)
         
         if user is not None:
             auth_login(request, user)
             fname = user.first_name
-            # messages.success(request, "Logged In Sucessfully!!")
+            # messages.success(request, "Logged In Successfully!!")
             return render(request, "main/index.html")
-            
-        # If no user was authenticated, show error message
         else:
-            messages.error(request, "Invalid email or password!")
+            messages.error(request, "Invalid username/email or password!")
             return redirect('login')
     
     # Clear all messages before rendering the sign-in page
     setattr(request, 'messages', [])
 
-     # If there's a username parameter in the URL, pre-fill the sign-in form
-    email = request.GET.get('email', '')
-    return render(request, 'main/login.html', {'email': email})
+    # If there's a username or email parameter in the URL, pre-fill the sign-in form
+    username_or_email = request.GET.get('username_or_email', '')
+    return render(request, 'main/login.html', {'username_or_email': username_or_email})
 
 def activate(request, uidb64, token):
     try:
@@ -159,6 +146,12 @@ def user_profile_view(request):
             else:
                 messages.error(request, "Failed to update profile information. Please check the provided data.")
 
+            # Update username if it's changed
+            new_username = request.POST.get('username')
+            if new_username != user.username:
+                user.username = new_username
+                user.save()
+
         elif 'change_password' in request.POST:  # Check if the change password form is submitted
             form = PasswordChangeForm(user, request.POST)
             if form.is_valid():
@@ -186,6 +179,12 @@ def staff_profile_view(request):
                 messages.success(request, "Profile information updated successfully.")
             else:
                 messages.error(request, "Failed to update profile information. Please check the provided data.")
+            
+            # Update username if it's changed
+            new_username = request.POST.get('username')
+            if new_username != user.username:
+                user.username = new_username
+                user.save()
 
         elif 'change_password' in request.POST:  # Check if the change password form is submitted
             form = PasswordChangeForm(user, request.POST)
