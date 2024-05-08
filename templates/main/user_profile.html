@@ -54,6 +54,14 @@ User profile{% endblock %} {% block content %}
             value="{{ user.last_name }}"
           /><br />
 
+          <label for="editUsername">Username:</label>
+          <input
+            type="text"
+            id="editUsername" 
+            name="username"
+            value="{{ user.username }}"
+          /><br />
+
           <label for="editEmail">Email:</label>
           <input
             type="email"
