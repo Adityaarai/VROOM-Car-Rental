@@ -4,11 +4,38 @@
 {% block content %}
 <!-- main button to navigate between car and booking -->
 <div class="container">
+    <button id="default-btn">Dashboard</button>
     <button id="car-btn">Car</button>
     <button id="booking-btn">Booking</button>
 </div>
 
 <div id="content" class="container">
+    <div id="default-content">
+        <!-- Default dashboard content goes here -->
+         <!-- Default dashboard content goes here -->
+         <div class="card" style="background-color: #FFD700;">
+            <h3>Input Car Information</h3>
+            <form id="carForm">
+                <label for="carModel">Model:</label><br>
+                <input type="text" id="carModel" name="carModel"><br>
+                <label for="carPrice">Price:</label><br>
+                <input type="text" id="carPrice" name="carPrice"><br>
+                <!-- Add more input fields as needed -->
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+        <div class="card" style="background-color: #FF6347;">
+            <h3>Input Booking Information</h3>
+            <form id="bookingForm">
+                <label for="userID">User ID:</label><br>
+                <input type="number" id="userID" name="userID"><br>
+                <label for="username">Username:</label><br>
+                <input type="text" id="username" name="username"><br>
+                <!-- Add more input fields as needed -->
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
     <div id="car-content">
         <div class="all">
             <!-- filter to navigate different catogeries of cars -->
@@ -189,12 +216,21 @@
 
 <script>
     // JavaScript to toggle content based on button clicks
+
+    document.getElementById("default-btn").addEventListener("click", function() {
+        document.getElementById("default-content").style.display = "block";
+        document.getElementById("car-content").style.display = "none";
+        document.getElementById("booking-content").style.display = "none";
+    });
+
     document.getElementById("car-btn").addEventListener("click", function() {
+        document.getElementById("default-content").style.display = "none";
         document.getElementById("car-content").style.display = "block";
         document.getElementById("booking-content").style.display = "none";
     });
 
     document.getElementById("booking-btn").addEventListener("click", function() {
+        document.getElementById("default-content").style.display = "none";
         document.getElementById("car-content").style.display = "none";
         document.getElementById("booking-content").style.display = "block";
     });
