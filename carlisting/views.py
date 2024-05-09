@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, HttpResponse
-from .models import CarDetail, CarOrder
+from .models import CarDetail, CarOrder, User
 from django.contrib import messages
 from django.contrib.auth import authenticate, login as auth_login, logout
      
@@ -93,5 +93,11 @@ def staffprofile(request):
    return render(request, 'main/staff_profile.html')
 
 def adminprofile(request):
-   return render(request, 'main/admin.html')
+  users = User.objects.all()
+
+  context = {
+    'users': users,
+  }
+
+  return render(request, 'main/admin.html', context)
 

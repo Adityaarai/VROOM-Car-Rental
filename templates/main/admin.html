@@ -1,172 +1,148 @@
-{% extends 'partials/base.html' %} {% load static %} {% block title %} VROOM -
-Distributor profile{% endblock %} {% block content %}
-<!-- main button to navigate between distibutor and user -->
-<div class="container">
-  <button id="distributor-btn">Distributor</button>
-  <button id="user-btn">User</button>
-</div>
+{% load static %}
 
-<div id="content" class="container">
-  <div id="distributor-content">
-    <h2>Distributor Information</h2>
-    <!-- buttons to add and delete distributor -->
-    <button id="distributor-add-btn">Add</button>
-    <button id="distributor-delete-btn">Delete</button>
-    <!-- table to show distibutor information -->
-    <table>
-      <tr>
-        <th>Distributor ID</th>
-        <th>Distributor Name</th>
-        <th>Password</th>
-        <th>Contact Number</th>
-      </tr>
-      <tr>
-        <td>1</td>
-        <td>Distributor1</td>
-        <td>********</td>
-        <td>123-456-7890</td>
-      </tr>
-      <tr>
-        <td>2</td>
-        <td>Distributor2</td>
-        <td>********</td>
-        <td>456-789-0123</td>
-      </tr>
-      <tr>
-        <td>3</td>
-        <td>Distributor3</td>
-        <td>********</td>
-        <td>789-012-3456</td>
-      </tr>
-      <tr>
-        <td>4</td>
-        <td>Distributor4</td>
-        <td>********</td>
-        <td>012-345-6789</td>
-      </tr>
-      <tr>
-        <td>5</td>
-        <td>Distributor5</td>
-        <td>********</td>
-        <td>345-678-9012</td>
-      </tr>
-    </table>
-    <!-- popup to add distributor -->
-    <div class="popup" id="addDistributorPopup">
-      <div class="popup-content">
-        <span class="close" onclick="closePopup('addDistributorPopup')"
-          >&times;</span
-        >
-        <h2>Add Distributor</h2>
-        <form id="addDistributorForm">
-          <label for="distributorName">Distributor Name:</label><br />
-          <input
-            type="text"
-            id="distributorName"
-            name="distributorName"
-          /><br />
-          <label for="location">Location:</label><br />
-          <input type="text" id="location" name="location" /><br />
-          <label for="password">Password:</label><br />
-          <input type="password" id="password" name="password" /><br /><br />
-          <label for="contactNumber">Contact Number:</label><br />
-          <input
-            type="text"
-            id="contactNumber"
-            name="contactNumber"
-          /><br /><br />
-          <button type="submit">Add Distributor</button>
-        </form>
-      </div>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VROOM - admin dashboard</title>
+  </head>
+  <body>
+    <!-- main button to navigate between distibutor and user -->
+    <div class="container">
+      <button id="distributor-btn">Distributor</button>
+      <button id="user-btn">User</button>
     </div>
-    <!-- popup to delete distributor -->
-    <div class="popup" id="deleteDistributorPopup">
-      <div class="popup-content">
-        <span class="close" onclick="closePopup('deleteDistributorPopup')"
-          >&times;</span
-        >
-        <h2>Delete Distributor</h2>
-        <label for="distributorID">Distributor ID:</label><br />
-        <input type="text" id="distributorID" name="distributorID" />
-        <button onclick="deleteDistributor()">Delete</button>
-      </div>
-    </div>
-  </div>
 
-  <div id="user-content">
-    <h2>User Information</h2>
-    <!-- buttons to add and delete user -->
-    <button id="user-add-btn">Add</button>
-    <button id="user-delete-btn">Delete</button>
-    <!-- table to show user information -->
-    <table>
-      <tr>
-        <th>User ID</th>
-        <th>Username</th>
-        <th>Email</th>
-        <th>Password</th>
-      </tr>
-      <tr>
-        <td>1</td>
-        <td>JohnDoe</td>
-        <td>john@example.com</td>
-        <td>********</td>
-      </tr>
-      <tr>
-        <td>2</td>
-        <td>JaneSmith</td>
-        <td>jane@example.com</td>
-        <td>********</td>
-      </tr>
-      <tr>
-        <td>3</td>
-        <td>Alex123</td>
-        <td>alex@example.com</td>
-        <td>********</td>
-      </tr>
-      <tr>
-        <td>4</td>
-        <td>Admin1</td>
-        <td>admin@example.com</td>
-        <td>********</td>
-      </tr>
-      <tr>
-        <td>5</td>
-        <td>TestUser</td>
-        <td>testuser@example.com</td>
-        <td>********</td>
-      </tr>
-    </table>
-    <!-- popup to add user -->
-    <div class="popup" id="addUserPopup">
-      <div class="popup-content">
-        <span class="close" onclick="closePopup('addUserPopup')">&times;</span>
-        <h2>Add User</h2>
-        <form id="addUserForm">
-          <label for="username">Username:</label><br />
-          <input type="text" id="username" name="username" /><br />
-          <label for="email">Email:</label><br />
-          <input type="email" id="email" name="email" /><br />
-          <label for="password">Password:</label><br />
-          <input type="password" id="password" name="password" /><br /><br />
-          <button type="submit">Add User</button>
-        </form>
+    <div id="content" class="container">
+      <div id="distributor-content">
+        <h2>Distributor Information</h2>
+        <!-- buttons to add and delete distributor -->
+        <button id="distributor-add-btn">Add</button>
+        <button id="distributor-delete-btn">Delete</button>
+        <!-- table to show distibutor information -->
+        <table>
+          <tr>
+            <th>Distributor ID</th>
+            <th>Distributor Name</th>
+            <th>Password</th>
+            <th>Contact Number</th>
+          </tr>
+          {% for user in users %} {% if '.vroom@gmail.com' in user.email %}
+          <tr>
+            <td>{{ user.username }}</td>
+            <td>{{ user.email }}</td>
+            <td>********</td>
+            <td>123-456-7890</td>
+          </tr>
+          {% endif %} {% endfor %}
+        </table>
+        <!-- popup to add distributor -->
+        <div class="popup" id="addDistributorPopup">
+          <div class="popup-content">
+            <span class="close" onclick="closePopup('addDistributorPopup')"
+              >&times;</span
+            >
+            <h2>Add Distributor</h2>
+            <form id="addDistributorForm">
+              <label for="distributorName">Distributor Name:</label><br />
+              <input
+                type="text"
+                id="distributorName"
+                name="distributorName"
+              /><br />
+              <label for="location">Location:</label><br />
+              <input type="text" id="location" name="location" /><br />
+              <label for="password">Password:</label><br />
+              <input
+                type="password"
+                id="password"
+                name="password"
+              /><br /><br />
+              <label for="contactNumber">Contact Number:</label><br />
+              <input
+                type="text"
+                id="contactNumber"
+                name="contactNumber"
+              /><br /><br />
+              <button type="submit">Add Distributor</button>
+            </form>
+          </div>
+        </div>
+        <!-- popup to delete distributor -->
+        <div class="popup" id="deleteDistributorPopup">
+          <div class="popup-content">
+            <span class="close" onclick="closePopup('deleteDistributorPopup')"
+              >&times;</span
+            >
+            <h2>Delete Distributor</h2>
+            <label for="distributorID">Distributor ID:</label><br />
+            <input type="text" id="distributorID" name="distributorID" />
+            <button onclick="deleteDistributor()">Delete</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="user-content">
+        <h2>User Information</h2>
+        <!-- buttons to add and delete user -->
+        <button id="user-add-btn">Add</button>
+        <button id="user-delete-btn">Delete</button>
+        <!-- table to show user information -->
+        <table>
+          <tr>
+            <th>User ID</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Password</th>
+          </tr>
+          {% for user in users %} {% if not user.is_staff %}
+          <tr>
+            <td>id</td>
+            <td>{{ user.first_name }} {{ user.last_name }}</td>
+            <td>{{ user.email }}</td>
+            <td>********</td>
+          </tr>
+          {% endif %} {% endfor %}
+        </table>
+        <!-- popup to add user -->
+        <div class="popup" id="addUserPopup">
+          <div class="popup-content">
+            <span class="close" onclick="closePopup('addUserPopup')"
+              >&times;</span
+            >
+            <h2>Add User</h2>
+            <form id="addUserForm">
+              <label for="username">Username:</label><br />
+              <input type="text" id="username" name="username" /><br />
+              <label for="email">Email:</label><br />
+              <input type="email" id="email" name="email" /><br />
+              <label for="password">Password:</label><br />
+              <input
+                type="password"
+                id="password"
+                name="password"
+              /><br /><br />
+              <button type="submit">Add User</button>
+            </form>
+          </div>
+        </div>
+        <!-- popup to delete user -->
+        <div class="popup" id="deleteUserPopup">
+          <div class="popup-content">
+            <span class="close" onclick="closePopup('deleteUserPopup')"
+              >&times;</span
+            >
+            <h2>Delete User</h2>
+            <label for="userID">User ID:</label><br />
+            <input type="text" id="userID" name="userID" />
+            <button onclick="deleteUser()">Delete</button>
+          </div>
+        </div>
       </div>
     </div>
-    <!-- popup to delete user -->
-    <div class="popup" id="deleteUserPopup">
-      <div class="popup-content">
-        <span class="close" onclick="closePopup('deleteUserPopup')"
-          >&times;</span
-        >
-        <h2>Delete User</h2>
-        <label for="userID">User ID:</label><br />
-        <input type="text" id="userID" name="userID" />
-        <button onclick="deleteUser()">Delete</button>
-      </div>
-    </div>
-  </div>
-</div>
+  </body>
+</html>
 
 <script>
   // JavaScript to toggle content based on button clicks
@@ -182,9 +158,9 @@ Distributor profile{% endblock %} {% block content %}
     document.getElementById("user-content").style.display = "block";
   });
 
-  window.addEventListener("DOMContentLoaded", function () {
-    var allButton = document.querySelector('.filter-btn[data-category="all"]');
-    allButton.click();
+  document.addEventListener("DOMContentLoaded", function () {
+    var disButton = document.getElementById("distributor-btn");
+    disButton.click();
   });
 
   // Distributor add button and popup
@@ -426,4 +402,3 @@ Distributor profile{% endblock %} {% block content %}
     text-decoration: none;
   }
 </style>
-{% endblock %}

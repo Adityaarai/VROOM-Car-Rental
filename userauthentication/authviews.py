@@ -103,7 +103,12 @@ def login(request):
             auth_login(request, user)
             fname = user.first_name
             # messages.success(request, "Logged In Successfully!!")
-            return render(request, "main/index.html")
+            if user.is_authenticated and user.is_staff and user.is_superuser:
+                return redirect('admin_profile')
+            elif user.is_staff:
+                return redirect('staff_profile')
+            else:
+                return redirect('index')
         else:
             messages.error(request, "Invalid username/email or password!")
             return redirect('login')
