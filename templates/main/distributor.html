@@ -2,199 +2,234 @@
 {% load static %} 
 {% block title %} VROOM - Distributor profile{% endblock %}
 {% block content %}
-<!-- main button to navigate between car and booking -->
 <div class="container">
-    <button id="car-btn">Car</button>
-    <button id="booking-btn">Booking</button>
-</div>
+    <!-- main button to navigate between car and booking -->
+    <div class="sidebar">
+        <ul>
+            <li><button id="default-btn">Dashboard</button></li>
+            <li><button id="car-btn">Car</button></li>
+            <li><button id="booking-btn">Booking</button></li>
+        </ul>
+    </div>
 
-<div id="content" class="container">
-    <div id="car-content">
-        <div class="all">
-            <!-- filter to navigate different catogeries of cars -->
-            <div class="filter">
-                <button class="filter-btn" data-category="all">All</button>
-                <button class="filter-btn" data-category="SUV">SUV</button>
-                <button class="filter-btn" data-category="EV">EV</button>
-                <button class="filter-btn" data-category="Truck">Truck</button>
-                <button class="filter-btn" data-category="Sedan">Sedan</button>
-                <!-- buttons to add car -->
-                <button id="car-add-btn">Add</button>
+    <div class="content" >
+        <div id="default-content">
+            <h1>Welcome Distributor!!</h1>
+            <!-- Default dashboard content goes here -->
+            <div id="card">
+                <div class="card" id="car_card">
+                    <h3>Car Information</h3>
+                        <label id="TotalCars">Total Cars:</label>
+                        <label id="Available">Available:</label><br>
+                        <label id="carModels">Models:</label>
+                        <label id="carTypes">Types:</label>
+                        
+                </div>
+                <div class="card" id="book_card" >
+                    <h3>Booking Information</h3>
+                        <label id="bookings">Bookings:</label>
+                        <label id="approved">Approved:</label><br>
+                        <label id="pending">pending:</label>
+                        <label id="paid">Paid:</label><br>
+                </div>
+            </div>
+        </div>
+        <div id="car-content">
+            <div class="all">
+                <!-- filter to navigate different catogeries of cars -->
+                <div class="filter">
+                    <button class="filter-btn" data-category="all">All</button>
+                    <button class="filter-btn" data-category="SUV">SUV</button>
+                    <button class="filter-btn" data-category="EV">EV</button>
+                    <button class="filter-btn" data-category="Truck">Truck</button>
+                    <button class="filter-btn" data-category="Sedan">Sedan</button>
+                    <!-- buttons to add car -->
+                    <button id="car-add-btn">Add</button>
+                </div>
+                
+                <div class="cards-container">
+                    <div class="card">
+                        <img src="https://via.placeholder.com/150" alt="Car Image">
+                        <div class="card-content">
+                            <p class="model">Model Name</p>
+                            <p class="price">$20,000</p>
+                            <!-- buttons to remove car -->
+                            <button class="cardbtn">Remove</button>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <img src="https://via.placeholder.com/150" alt="Car Image">
+                        <div class="card-content">
+                            <p class="model">Model Name</p>
+                            <p class="price">$20,000</p>
+                            <button class="cardbtn">Remove</button>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <img src="https://via.placeholder.com/150" alt="Car Image">
+                        <div class="card-content">
+                            <p class="model">Model Name</p>
+                            <p class="price">$20,000</p>
+                            <button class="cardbtn">Remove</button>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <img src="https://via.placeholder.com/150" alt="Car Image">
+                        <div class="card-content">
+                            <p class="model">Model Name</p>
+                            <p class="price">$20,000</p>
+                            <button class="cardbtn">Remove</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- button to navigate different pages of cars -->
+                <div class="page-btn">
+                    <button id="previousPageBtn">Previous Page</button>
+                    <button id="nextPageBtn">Next Page</button>
+                </div>
+                <!-- popup to add car -->
+                <div class="popup" id="addCarPopup">
+                <div class="popup-content">
+                    <span class="close" onclick="closePopup('addCarPopup')">&times;</span>
+                    <h2>Add Car</h2>
+                    <form id="addCarForm">
+                        <label for="renterName">Renter Name:</label><br>
+                        <input type="text" id="renterName" name="renterName"><br>
+                        <label for="contactNumber">Contact Number:</label><br>
+                        <input type="text" id="contactNumber" name="contactNumber"><br>
+                        <label for="model">Model:</label><br>
+                        <input type="text" id="model" name="model"><br>
+                        <label for="price">Price:</label><br>
+                        <input type="text" id="price" name="price"><br>
+                        <label for="carImage">Car Image:</label><br>
+                        <input type="file" id="carImage" name="carImage"><br><br>
+                        <button type="submit">Add Car</button>
+                    </form>
+                    
+                </div>
+                </div>
+            </div>
+        </div>
+        <div id="booking-content">
+            <h2>Booking Information</h2>
+            <!-- buttons to add and delete booking -->
+            <button id="booking-add-btn">Add</button>
+            <button id="booking-delete-btn">Delete</button>
+            <!-- table to show booking information -->
+            <table>
+                <thead>
+                    <tr>
+                        <th>Booking ID</th>
+                        <th>User ID</th>
+                        <th>Username</th>
+                        <th>Car Model</th>
+                        <th>Booking Start Date</th>
+                        <th>Booking End Date</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>JohnDoe</td>
+                        <td>Toyota Corolla</td>
+                        <td>2024-04-15</td>
+                        <td>2024-04-20</td>
+                        <td>Active</td> 
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>2</td>
+                        <td>JaneSmith</td>
+                        <td>Honda Civic</td>
+                        <td>2024-04-18</td>
+                        <td>2024-04-25</td>
+                        <td>Active</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>3</td>
+                        <td>Alex123</td>
+                        <td>Ford Mustang</td>
+                        <td>2024-04-22</td>
+                        <td>2024-04-30</td>
+                        <td>Active</td> 
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>4</td>
+                        <td>Admin1</td>
+                        <td>BMW X5</td>
+                        <td>2024-04-25</td>
+                        <td>2024-05-02</td>
+                        <td>Active</td> 
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>5</td>
+                        <td>TestUser</td>
+                        <td>Mercedes Benz C-Class</td>
+                        <td>2024-04-28</td>
+                        <td>2024-05-05</td>
+                        <td>Active</td> 
+                    </tr>
+                </tbody>
+            </table>
+            
+            <!-- popup to add booking -->
+            <div class="popup" id="addBookingPopup">
+                <div class="popup-content">
+                    <span class="close" onclick="closePopup('addBookingPopup')">&times;</span>
+                    <h2>Add Booking</h2>
+                    <form id="addBookingForm">
+                        <label for="userID">User ID:</label><br>
+                        <input type="number" id="userID" name="userID"><br>
+                        <label for="username">Username:</label><br>
+                        <input type="text" id="username" name="username"><br>
+                        <label for="carModel">Car Model:</label><br>
+                        <input type="text" id="carModel" name="carModel"><br>
+                        <label for="bookingStartDate">Booking Start Date:</label><br>
+                        <input type="date" id="bookingStartDate" name="bookingStartDate"><br>
+                        <label for="bookingEndDate">Booking End Date:</label><br>
+                        <input type="date" id="bookingEndDate" name="bookingEndDate"><br><br>
+                        <button type="submit">Add Booking</button>
+                    </form>
+                </div>
             </div>
             
-            <div class="cards-container">
-                <div class="card">
-                    <img src="https://via.placeholder.com/150" alt="Car Image">
-                    <div class="card-content">
-                        <p class="model">Model Name</p>
-                        <p class="price">$20,000</p>
-                        <!-- buttons to remove car -->
-                        <button class="cardbtn">Remove</button>
-                    </div>
-                </div>
-                <div class="card">
-                    <img src="https://via.placeholder.com/150" alt="Car Image">
-                    <div class="card-content">
-                        <p class="model">Model Name</p>
-                        <p class="price">$20,000</p>
-                        <button class="cardbtn">Remove</button>
-                    </div>
-                </div>
-                <div class="card">
-                    <img src="https://via.placeholder.com/150" alt="Car Image">
-                    <div class="card-content">
-                        <p class="model">Model Name</p>
-                        <p class="price">$20,000</p>
-                        <button class="cardbtn">Remove</button>
-                    </div>
-                </div>
-                <div class="card">
-                    <img src="https://via.placeholder.com/150" alt="Car Image">
-                    <div class="card-content">
-                        <p class="model">Model Name</p>
-                        <p class="price">$20,000</p>
-                        <button class="cardbtn">Remove</button>
-                    </div>
-                </div>
-            </div>
-            <!-- button to navigate different pages of cars -->
-            <div class="page-btn">
-                <button id="previousPageBtn">Previous Page</button>
-                <button id="nextPageBtn">Next Page</button>
-            </div>
-            <!-- popup to add car -->
-            <div class="popup" id="addCarPopup">
-              <div class="popup-content">
-                <span class="close" onclick="closePopup('addCarPopup')">&times;</span>
-                <h2>Add Car</h2>
-                <form id="addCarForm">
-                    <label for="renterName">Renter Name:</label><br>
-                    <input type="text" id="renterName" name="renterName"><br>
-                    <label for="contactNumber">Contact Number:</label><br>
-                    <input type="text" id="contactNumber" name="contactNumber"><br>
-                    <label for="model">Model:</label><br>
-                    <input type="text" id="model" name="model"><br>
-                    <label for="price">Price:</label><br>
-                    <input type="text" id="price" name="price"><br>
-                    <label for="carImage">Car Image:</label><br>
-                    <input type="file" id="carImage" name="carImage"><br><br>
-                    <button type="submit">Add Car</button>
-                </form>
-                
-              </div>
-            </div>
-        </div>
-    </div>
-    <div id="booking-content">
-        <h2>Booking Information</h2>
-        <!-- buttons to add and delete booking -->
-        <button id="booking-add-btn">Add</button>
-        <button id="booking-delete-btn">Delete</button>
-        <!-- table to show booking information -->
-        <table>
-            <thead>
-                <tr>
-                    <th>Booking ID</th>
-                    <th>User ID</th>
-                    <th>Username</th>
-                    <th>Car Model</th>
-                    <th>Booking Start Date</th>
-                    <th>Booking End Date</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>1</td>
-                    <td>JohnDoe</td>
-                    <td>Toyota Corolla</td>
-                    <td>2024-04-15</td>
-                    <td>2024-04-20</td>
-                    <td>Active</td> 
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>2</td>
-                    <td>JaneSmith</td>
-                    <td>Honda Civic</td>
-                    <td>2024-04-18</td>
-                    <td>2024-04-25</td>
-                    <td>Active</td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>3</td>
-                    <td>Alex123</td>
-                    <td>Ford Mustang</td>
-                    <td>2024-04-22</td>
-                    <td>2024-04-30</td>
-                    <td>Active</td> 
-                </tr>
-                <tr>
-                    <td>4</td>
-                    <td>4</td>
-                    <td>Admin1</td>
-                    <td>BMW X5</td>
-                    <td>2024-04-25</td>
-                    <td>2024-05-02</td>
-                    <td>Active</td> 
-                </tr>
-                <tr>
-                    <td>5</td>
-                    <td>5</td>
-                    <td>TestUser</td>
-                    <td>Mercedes Benz C-Class</td>
-                    <td>2024-04-28</td>
-                    <td>2024-05-05</td>
-                    <td>Active</td> 
-                </tr>
-            </tbody>
-        </table>
-        
-        <!-- popup to add booking -->
-        <div class="popup" id="addBookingPopup">
+            <!-- popup to delete booking -->
+            <div class="popup" id="deleteBookingPopup">
             <div class="popup-content">
-                <span class="close" onclick="closePopup('addBookingPopup')">&times;</span>
-                <h2>Add Booking</h2>
-                <form id="addBookingForm">
-                    <label for="userID">User ID:</label><br>
-                    <input type="number" id="userID" name="userID"><br>
-                    <label for="username">Username:</label><br>
-                    <input type="text" id="username" name="username"><br>
-                    <label for="carModel">Car Model:</label><br>
-                    <input type="text" id="carModel" name="carModel"><br>
-                    <label for="bookingStartDate">Booking Start Date:</label><br>
-                    <input type="date" id="bookingStartDate" name="bookingStartDate"><br>
-                    <label for="bookingEndDate">Booking End Date:</label><br>
-                    <input type="date" id="bookingEndDate" name="bookingEndDate"><br><br>
-                    <button type="submit">Add Booking</button>
-                </form>
+                <span class="close" onclick="closePopup('deleteBookingPopup')">&times;</span>
+                <h2>Delete Booking</h2>
+                <label for="BookingID">Booking ID:</label><br>
+                <input type="BookingID" id="BookingID" name="BookingID">
+                <button onclick="deleteUser()">Delete</button>
             </div>
+            </div>
+            
         </div>
-        
-        <!-- popup to delete booking -->
-        <div class="popup" id="deleteBookingPopup">
-          <div class="popup-content">
-            <span class="close" onclick="closePopup('deleteBookingPopup')">&times;</span>
-            <h2>Delete Booking</h2>
-            <label for="BookingID">Booking ID:</label><br>
-            <input type="BookingID" id="BookingID" name="BookingID">
-            <button onclick="deleteUser()">Delete</button>
-          </div>
-        </div>
-        
     </div>
 </div>
 
 <script>
     // JavaScript to toggle content based on button clicks
+
+    document.getElementById("default-btn").addEventListener("click", function() {
+        document.getElementById("default-content").style.display = "block";
+        document.getElementById("car-content").style.display = "none";
+        document.getElementById("booking-content").style.display = "none";
+    });
+
     document.getElementById("car-btn").addEventListener("click", function() {
+        document.getElementById("default-content").style.display = "none";
         document.getElementById("car-content").style.display = "block";
         document.getElementById("booking-content").style.display = "none";
     });
 
     document.getElementById("booking-btn").addEventListener("click", function() {
+        document.getElementById("default-content").style.display = "none";
         document.getElementById("car-content").style.display = "none";
         document.getElementById("booking-content").style.display = "block";
     });
@@ -256,32 +291,79 @@
 }
 
 body {
+    background-color: var(--platinum);
     margin: 0;
     padding-top: 0;
     overflow-x: hidden;
     font-family: "Montserrat", sans-serif;
 }
 
-.container {
-    display: flex;
-    justify-content: center;
-    margin-top: 50px;
+.sidebar {
+    float: left;
+    width: 15vw;
+    background-color: var(--lapis);
+    height: 100%;
 }
 
-.container button {
+.sidebar ul {
+    margin-top: 40px;
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin-bottom: 10px;
+}
+
+.content {
+    float: left;
+    width: 80%;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.sidebar button {
     padding: 10px 20px;
     margin: 0 10px;
-    font-size: 16px;
+    font-size: 20px;
     cursor: pointer;
     border: none;
-    background-color: var(--lapis);
+    /* background-color: var(--lapis); */
+    background-color: var(--darkgray);
     color: white;
     border-radius: 5px;
     outline: none;
+    margin-left: 2.5vw;
+    margin-top: 30px;
+    width: 10vw;
+    height: 45px;
 }
 
-.container button:hover {
+.sidebar button:hover {
     background-color: var(--indigo);
+}
+
+#default-content #card{
+    display: flex;
+}
+
+#car_card,
+#book_card{
+    width: 40vw;
+    height: 20vh;
+}
+
+#car_card{
+    background-color:var(--skyblue);
+}
+
+#book_card{
+    background-color: var(--platinum);
+}
+
+#TotalCars,#carModels,#bookings,#pending{
+    padding-right: 10vw;
+    /* padding-bottom: 5vh; */
 }
 
 #car-content,
