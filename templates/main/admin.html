@@ -5,12 +5,14 @@
 <div class="container">
   <!-- main button to navigate between car and booking -->
   <div class="sidebar">
+      <h1 id="logo">VROOM</h1>
       <ul>
           <li><button id="default-btn">Dashboard</button></li>
           <li><button id="distributor-btn">Distributor</button></li>
           <li><button id="user-btn">User</button></li>
-          <li><button id="logout">Log Out</button></li>
+          
       </ul>
+      <button id="logout">Log Out</button>
   </div>
 
   <div class="content">
@@ -228,70 +230,90 @@
     --darkgreen: darkgreen;
     --crimson: crimson;
   }
+/* Reset default margin, padding, and overflow */
+body {
+  margin: 0;
+  padding-top: 0;
+  overflow-x: hidden;
+  font-family: "Montserrat", sans-serif;
+}
 
-  body {
-    margin: 0;
-    padding-top: 0;
-    overflow-x: hidden;
-    font-family: "Montserrat", sans-serif;
-  }
+/* Logo styles */
+#logo {
+  color: var(--platinum);
+  padding: 30px 20px 0px 80px;
+}
 
-  .sidebar {
-    float: left;
-    width: 15vw;
-    background-color: var(--lapis);
-    height: 100%;
+/* Sidebar styles */
+.sidebar {
+  float: left;
+  width: 20vw;
+  background-color: var(--lapis);
+  height: 100vh;
 }
 
 .sidebar ul {
-    margin-top: 40px;
-    list-style-type: none;
-    padding: 0;
+  margin-top: 40px;
+  list-style-type: none;
+  padding: 0;
 }
 
 .sidebar ul li {
-    margin-bottom: 10px;
-}
-
-.content {
-    float: left;
-    width: 80%;
-    padding: 20px;
-    box-sizing: border-box;
+  margin-bottom: 10px;
 }
 
 .sidebar button {
-    padding: 10px 20px;
-    margin: 0 10px;
-    font-size: 20px;
-    cursor: pointer;
-    border: none;
-    /* background-color: var(--lapis); */
-    background-color: var(--darkgray);
-    color: white;
-    border-radius: 5px;
-    outline: none;
-    margin-left: 2.5vw;
-    margin-top: 30px;
-    width: 10vw;
-    height: 45px;
+  padding: 10px 20px;
+  margin: 0 10px;
+  font-size: 20px;
+  cursor: pointer;
+  border: none;
+  background-color: var(--darkgray);
+  color: white;
+  border-radius: 5px;
+  outline: none;
+  margin-left: 2.5vw;
+  margin-top: 30px;
+  width: 15vw;
+  height: 45px;
 }
 
 .sidebar button:hover {
-    background-color: var(--indigo);
+  background-color: var(--indigo);
 }
 
+/* Content styles */
+.content {
+  float: left;
+  width: 80%;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* Card styles */
 .card {
-    height: 35vh;
-    width: 18vw;
-    margin: 10px;
-    background-color: var(--platinum);
-    border: 1px solid var(--platinum);
-    padding: 20px;
-    margin-bottom: 20px;
-    border-radius: 5px;
-    box-sizing: border-box;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  height: 35vh;
+  width: 18vw;
+  margin: 10px;
+  background-color: var(--platinum);
+  border: 1px solid var(--platinum);
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  box-sizing: border-box;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+  
+
+/* Log Out button styles */
+#logout {
+  bottom: 0;
+  left: 0;
+  background-color: var(--red); /* Example background color */
+}
+
+#logout:hover {
+  background-color: var(--crimson); /* Example hover background color */
 }
 
 
