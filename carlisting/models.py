@@ -36,3 +36,5 @@ class CarOrder(models.Model):
     # display what is shown in the order name
     def __str__(self):
         return f'{self.product} distributed by {self.distributor}.'
+
+        

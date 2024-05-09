@@ -21,6 +21,8 @@
             <ul class="dropdown-menu">
               {% if user.is_staff %}
               <li><a href="{% url 'staff_profile' %}">My Profile</a></li>
+              {% elif user.is_staff and user.is_superuser %}
+              <li><a href="{% url 'admin_profile' %}">My Profile</a></li>
               {% else %}
               <li><a href="{% url 'user_profile' %}">My Profile</a></li>
               {% endif %}
@@ -108,7 +110,7 @@
 </script>
 
 <style>
-    :root {
+  :root {
     --indigo: #16425b;
     --lapis: #2f6690;
     --cerulean: #3a7ca5;
@@ -178,7 +180,7 @@
 
   .nav-left h1 {
     color: var(--platinum);
-    padding: 10px 20px ;
+    padding: 10px 20px;
   }
 
   .profile-icon img {
@@ -190,12 +192,12 @@
   .dropdown-menu {
     display: none;
     position: absolute;
-    background-color: #16425b; 
-    color: #fff; 
+    background-color: #16425b;
+    color: #fff;
     min-width: 160px;
     z-index: 1;
     top: calc(100% + 10px);
-    right: 0; 
+    right: 0;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   }
 
@@ -210,5 +212,4 @@
   .dropdown-menu li:last-child {
     margin-left: 40px; /* Adjusted margin to push 'logout' a bit to the right */
   }
-
 </style>
