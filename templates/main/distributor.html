@@ -5,11 +5,13 @@
 <div class="container">
     <!-- main button to navigate between car and booking -->
     <div class="sidebar">
+        <h1 id="logo">VROOM</h1>
         <ul>
             <li><button id="default-btn">Dashboard</button></li>
             <li><button id="car-btn">Car</button></li>
             <li><button id="booking-btn">Booking</button></li>
         </ul>
+        <button id="logout">Log Out</button>
     </div>
 
     <div class="content" >
@@ -288,19 +290,27 @@
     --green: #4CAF50;
     --darkgreen: darkgreen;
     --crimson: crimson;
+    --white:#ffffff;
 }
 
 body {
-    background-color: var(--platinum);
+    background-color: var(--white);
     margin: 0;
     padding-top: 0;
     overflow-x: hidden;
     font-family: "Montserrat", sans-serif;
 }
 
+#logo {
+  color: var(--platinum);
+  padding-top: 50px;
+  text-align: center;
+  font-size: 3rem;
+}
+
 .sidebar {
     float: left;
-    width: 15vw;
+    width: 20vw;
     background-color: var(--lapis);
     height: 100%;
 }
@@ -335,13 +345,24 @@ body {
     outline: none;
     margin-left: 2.5vw;
     margin-top: 30px;
-    width: 10vw;
+    width: 15vw;
     height: 45px;
 }
 
 .sidebar button:hover {
     background-color: var(--indigo);
 }
+
+#logout {
+  bottom: 0;
+  left: 0;
+  background-color: var(--red); /* Example background color */
+}
+
+#logout:hover {
+  background-color: var(--crimson); /* Example hover background color */
+}
+
 
 #default-content #card{
     display: flex;
