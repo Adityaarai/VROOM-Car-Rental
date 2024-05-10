@@ -27,7 +27,39 @@ Payment! VROOM {% endblock %} {% block content%}
     </div>
   </div>
 
+  <script>
+    document.getElementById('payment-form').addEventListener('submit', function(event) {
+      event.preventDefault();
+      const cardNumber = document.getElementById('card-number').value;
+      const expiryDate = document.getElementById('expiry-date').value;
+      const cvv = document.getElementById('cvv').value;
+
+      // Basic validation
+      if (!cardNumber || !expiryDate || !cvv) {
+        alert('Please fill in all fields.');
+        return;
+      }
+
+      alert('Payment successful! Thank you for renting with us.');
+    });
+  </script>
+
+
   <style>
+    :root {
+    --indigo: #16425b;
+    --lapis: #2f6690;
+    --cerulean: #3a7ca5;
+    --skyblue: #81c3d7;
+    --platinum: #d9dcd6;
+    --darkgray: #b4b4b3;
+    --red: #f44336;
+    --green: #4caf50;
+    --darkgreen: darkgreen;
+    --crimson: crimson;
+    --white: white;
+     }
+
     body {
       font-family: "Montserrat", sans-serif;
       margin: 0;
@@ -51,7 +83,7 @@ Payment! VROOM {% endblock %} {% block content%}
 
     .car-details, .payment-form {
       padding: 20px;
-      border: 1px solid #ccc;
+      border: 1px solid var(--white);
       border-radius: 5px;
     }
 
@@ -63,18 +95,18 @@ Payment! VROOM {% endblock %} {% block content%}
       width: 100%; 
       padding: 10px;
       font-size: 16px;
-      border: 1px solid #ccc;
+      border: 1px solid var(--white);
       border-radius: 5px;
     }
 
     .payment-form button {
-      background-color: #4CAF50;
-      color: white;
+      background-color: var(--green);
+      color: var(--white);
       cursor: pointer;
     }
 
     .payment-form button:hover {
-      background-color: #45a049;
+      background-color: var(--darkgreen);
     }
   </style>
 {% endblock %}
