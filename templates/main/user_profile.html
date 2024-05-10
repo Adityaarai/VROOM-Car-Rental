@@ -209,7 +209,7 @@ User profile{% endblock %} {% block content %}
 
   h2,
   h3 {
-    color: #16425b;
+    color: var(--indigo);
   }
 
   .button {
@@ -249,14 +249,14 @@ User profile{% endblock %} {% block content %}
 
   form button {
     padding: 8px 20px;
-    background-color: #16425b;
-    color: #fff;
+    background-color: var(--indigo);
+    color: var(--white);
     border: none;
     cursor: pointer;
   }
 
   form button:hover {
-    background-color: #2f6690;
+    background-color: var(--lapis);
   }
 
   /* Customizing alert colors */
@@ -280,15 +280,13 @@ User profile{% endblock %} {% block content %}
   #car-add-btn {
     margin-top: 2vh;
     background-color: var(--green);
-    padding: 8px 16px;
+    padding: 8px 27px;
     border: none;
-    color: var(--platinum);
+    color: var(--white);
     cursor: pointer;
     border-radius: 5px;
     margin-right: 10px;
     font-size: medium;
-    height: 3vh;
-    width: 10vw;
   }
 
   #car-add-btn:hover {
