@@ -1,6 +1,30 @@
 {% extends 'partials/base.html' %} {% load static %} {% block title %}
 Payment! VROOM {% endblock %} {% block content%}
 
-
+<h1>Car Rental Payment</h1>
+  <div class="container">
+    <div class="car-image">
+      <img src="car-image.jpg" alt="Car Image">
+    </div>
+    <div class="car-details">
+      <h2>Car Details</h2>
+      <p><strong>Model:</strong> Toyota Camry</p>
+      <p><strong>Price:</strong> $50 per day</p>
+      <p><strong>Pickup Date:</strong> <input type="date" id="pick-date"></p>
+      <p><strong>Drop-off Date:</strong> <input type="date" id="drop-date"></p>
+    </div>
+    <div class="payment-form">
+      <h2>Payment Information</h2>
+      <form id="payment-form">
+        <label for="card-number">Card Number:</label>
+        <label type="text" id="card-number" placeholder="Enter card number" required>
+        <label for="expiry-date">Expiry Date:</label>
+        <label type="text" id="expiry-date" placeholder="MM/YY" required>
+        <label for="cvv">CVV:</label>
+        <label type="text" id="cvv" placeholder="Enter CVV" required>
+        <button type="submit">Pay Now</button>
+      </form>
+    </div>
+  </div>
 
 {% endblock %}
