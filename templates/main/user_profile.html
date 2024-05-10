@@ -112,10 +112,41 @@ User profile{% endblock %} {% block content %}
         <button class="button" type="submit">Update Password</button>
       </form>
     </div>
-  </div>
+
+
+    <button id="car-add-btn">Add Car</button>
+   
+</div>
+    <!-- Popup to add car -->
+    <div class="popup" id="addCarPopup">
+      <div class="popup-content" style="display: none;">
+        <span class="close" onclick="closePopup('addCarPopup')">&times;</span>
+        <h2>Add Car</h2>
+        <form id="addCarForm">
+          <label for="renterName">Renter Name:</label><br>
+          <input type="text" id="renterName" name="renterName"><br>
+          <label for="contactNumber">Contact Number:</label><br>
+          <input type="text" id="contactNumber" name="contactNumber"><br>
+          <label for="model">Model:</label><br>
+          <input type="text" id="model" name="model"><br>
+          <label for="price">Price:</label><br>
+          <input type="text" id="price" name="price"><br>
+          <label for="carImage">Car Image:</label><br>
+          <input type="file" id="carImage" name="carImage"><br><br>
+          <button type="submit">Add Car</button>
+        </form>
+      </div>
 </div>
 
 <script>
+ const carAddBtn = document.getElementById("car-add-btn");
+  const addCarPopup = document.getElementById("addCarPopup");
+
+  carAddBtn.addEventListener("click", () => {
+    addCarPopup.style.display = "block";
+  });
+
+
   document.addEventListener("DOMContentLoaded", function () {
     var editProfileBtn = document.getElementById("editProfileBtn");
     var editProfileForm = document.getElementById("editProfileForm");
@@ -147,6 +178,20 @@ User profile{% endblock %} {% block content %}
 </script>
 
 <style>
+  :root {
+    --indigo: #16425b;
+    --lapis: #2f6690;
+    --cerulean: #3a7ca5;
+    --skyblue: #81c3d7;
+    --platinum: #d9dcd6;
+    --darkgray: #b4b4b3;
+    --red: #f44336;
+    --green: #4CAF50;
+    --darkgreen: darkgreen;
+    --crimson: crimson;
+    --white:#ffffff;
+}
+
   body {
     font-family: "Montserrat", sans-serif;
   }
@@ -216,12 +261,12 @@ User profile{% endblock %} {% block content %}
 
   /* Customizing alert colors */
   .alert-danger {
-    color: red;
+    color: var(--red);
     font-weight: bold;
   }
 
   .alert-success {
-    color: green;
+    color: var(--green);
     font-weight: bold;
   }
 
@@ -230,6 +275,24 @@ User profile{% endblock %} {% block content %}
     margin-top: 20px;
     max-width: 300px;
     word-wrap: break-word; /* Allow long messages to wrap */
+  }
+
+  #car-add-btn {
+    margin-top: 2vh;
+    background-color: var(--green);
+    padding: 8px 16px;
+    border: none;
+    color: var(--platinum);
+    cursor: pointer;
+    border-radius: 5px;
+    margin-right: 10px;
+    font-size: medium;
+    height: 3vh;
+    width: 10vw;
+  }
+
+  #car-add-btn:hover {
+      background-color: var(--darkgreen);
   }
 </style>
 {% endblock %}
