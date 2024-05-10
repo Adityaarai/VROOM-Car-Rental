@@ -4,27 +4,77 @@ Payment! VROOM {% endblock %} {% block content%}
 <h1>Car Rental Payment</h1>
   <div class="container">
     <div class="car-image">
-      <img src="car-image.jpg" alt="Car Image">
+      <img src="car.png" alt="Car Image">
     </div>
     <div class="car-details">
       <h2>Car Details</h2>
       <p><strong>Model:</strong> Toyota Camry</p>
       <p><strong>Price:</strong> $50 per day</p>
-      <p><strong>Pickup Date:</strong> <input type="date" id="pick-date"></p>
-      <p><strong>Drop-off Date:</strong> <input type="date" id="drop-date"></p>
+      <p><strong>Pickup Date:</strong> <label type="date" id="pick-date">2024/00/00</p>
+      <p><strong>Drop-off Date:</strong> <label type="date" id="drop-date">2024/00/00</p>
     </div>
     <div class="payment-form">
       <h2>Payment Information</h2>
       <form id="payment-form">
         <label for="card-number">Card Number:</label>
-        <label type="text" id="card-number" placeholder="Enter card number" required>
+        <input type="text" id="card-number" placeholder="Enter card number" required>
         <label for="expiry-date">Expiry Date:</label>
-        <label type="text" id="expiry-date" placeholder="MM/YY" required>
+        <input type="text" id="expiry-date" placeholder="MM/YY" required>
         <label for="cvv">CVV:</label>
-        <label type="text" id="cvv" placeholder="Enter CVV" required>
+        <input type="text" id="cvv" placeholder="Enter CVV" required>
         <button type="submit">Pay Now</button>
       </form>
     </div>
   </div>
 
+  <style>
+    body {
+      font-family: "Montserrat", sans-serif;
+      margin: 0;
+      padding: 20px;
+    }
+
+    img{
+        height: 100%;
+        width: 100%;
+    }
+
+    h1, h2 {
+      text-align: center;
+    }
+
+    .container {
+      display: grid;
+      grid-template-columns: 45vw 30vw 20vw;
+      gap: 20px;
+    }
+
+    .car-details, .payment-form {
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .car-details p, .payment-form label, .payment-form input {
+      margin-bottom: 10px;
+    }
+
+    .payment-form input[type="text"], .payment-form input[type="date"], .payment-form button {
+      width: 100%; 
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .payment-form button {
+      background-color: #4CAF50;
+      color: white;
+      cursor: pointer;
+    }
+
+    .payment-form button:hover {
+      background-color: #45a049;
+    }
+  </style>
 {% endblock %}
