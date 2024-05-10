@@ -115,36 +115,39 @@ User profile{% endblock %} {% block content %}
 
 
     <button id="car-add-btn">Add Car</button>
-   
-</div>
-    <!-- Popup to add car -->
+    <!-- popup to add car -->
     <div class="popup" id="addCarPopup">
-      <div class="popup-content" style="display: none;">
-        <span class="close" onclick="closePopup('addCarPopup')">&times;</span>
-        <h2>Add Car</h2>
-        <form id="addCarForm">
-          <label for="renterName">Renter Name:</label><br>
-          <input type="text" id="renterName" name="renterName"><br>
-          <label for="contactNumber">Contact Number:</label><br>
-          <input type="text" id="contactNumber" name="contactNumber"><br>
-          <label for="model">Model:</label><br>
-          <input type="text" id="model" name="model"><br>
-          <label for="price">Price:</label><br>
-          <input type="text" id="price" name="price"><br>
-          <label for="carImage">Car Image:</label><br>
-          <input type="file" id="carImage" name="carImage"><br><br>
-          <button type="submit">Add Car</button>
-        </form>
+      <div class="popup-content" >
+          <span class="close" id="close" onclick="closePopup('addCarPopup')">&times;</span>
+          <h2>Add Car</h2>
+          <form id="addCarForm">
+              <label for="renterName">Renter Name:</label><br>
+              <input type="text" id="renterName" name="renterName"><br>
+              <label for="contactNumber">Contact Number:</label><br>
+              <input type="text" id="contactNumber" name="contactNumber"><br>
+              <label for="model">Model:</label><br>
+              <input type="text" id="model" name="model"><br>
+              <label for="price">Price:</label><br>
+              <input type="text" id="price" name="price"><br>
+              <label for="carImage">Car Image:</label><br>
+              <input type="file" id="carImage" name="carImage"><br><br>
+              <button type="submit">Add Car</button>
+          </form>
+          
       </div>
+  </div>
+    
 </div>
 
 <script>
- const carAddBtn = document.getElementById("car-add-btn");
-  const addCarPopup = document.getElementById("addCarPopup");
 
-  carAddBtn.addEventListener("click", () => {
-    addCarPopup.style.display = "block";
-  });
+  document.getElementById("car-add-btn").addEventListener("click", function() {
+        document.getElementById("addCarPopup").style.display = "block";
+    });
+
+  function closePopup(id) {
+      document.getElementById(id).style.display = "none";
+    }
 
 
   document.addEventListener("DOMContentLoaded", function () {
@@ -277,6 +280,16 @@ User profile{% endblock %} {% block content %}
     word-wrap: break-word; /* Allow long messages to wrap */
   }
 
+  #addCarPopup{
+    display: none;
+  }
+
+  #close{
+    float: right;
+    font-size: 30px;
+    cursor: pointer;
+  }
+
   #car-add-btn {
     margin-top: 2vh;
     background-color: var(--green);
@@ -285,7 +298,7 @@ User profile{% endblock %} {% block content %}
     color: var(--white);
     cursor: pointer;
     border-radius: 5px;
-    margin-right: 10px;
+    margin: 10px 0px 10px;
     font-size: medium;
   }
 
