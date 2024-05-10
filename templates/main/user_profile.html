@@ -28,7 +28,7 @@ User profile{% endblock %} {% block content %}
       <p style="margin-bottom: 10px">
         Email: <span id="email">{{ user.email }}</span>
       </p>
-      <button class="button" id="editProfileBtn">Edit Profile</button>
+      <button class="button" id="editProfileBtn">Edit Profile</button><button id="car-add-btn">Add Car</button>
       <div id="editProfileForm" style="display: none">
         <!-- Edit Profile form -->
         <form
@@ -112,41 +112,97 @@ User profile{% endblock %} {% block content %}
         <button class="button" type="submit">Update Password</button>
       </form>
     </div>
+
+
+    
+    <!-- popup to add car -->
+    <div class="popup" id="addCarPopup">
+      <div class="popup-content" >
+          <span class="close" id="close" onclick="closePopup('addCarPopup')">&times;</span>
+          <h2>Add Car</h2>
+          <form id="addCarForm">
+              <label for="renterName">Renter Name:</label><br>
+              <input type="text" id="renterName" name="renterName"><br>
+              <label for="contactNumber">Contact Number:</label><br>
+              <input type="text" id="contactNumber" name="contactNumber"><br>
+              <label for="model">Model:</label><br>
+              <input type="text" id="model" name="model"><br>
+              <label for="price">Price:</label><br>
+              <input type="text" id="price" name="price"><br>
+              <label for="carImage">Car Image:</label><br>
+              <input type="file" id="carImage" name="carImage"><br><br>
+              <button type="submit" id="car_done">Add Car</button>
+          </form>
+          
+      </div>
   </div>
+    
 </div>
 
 <script>
+
+
+  function closePopup(id) {
+      document.getElementById(id).style.display = "none";
+    }
+
+
   document.addEventListener("DOMContentLoaded", function () {
     var editProfileBtn = document.getElementById("editProfileBtn");
     var editProfileForm = document.getElementById("editProfileForm");
     var changePasswordBtn = document.getElementById("changePasswordBtn");
-    var changePasswordSection = document.getElementById(
-      "changePasswordSection"
-    );
+    var changePasswordSection = document.getElementById("changePasswordSection");
     var profileSection = document.getElementById("profileSection");
     var profileBtn = document.getElementById("profileBtn");
+    var addCar = document.getElementById("addCarPopup");
+    var addBtn = document.getElementById("car-add-btn");
 
     profileBtn.addEventListener("click", function () {
       editProfileForm.style.display = "none";
       changePasswordSection.style.display = "none";
       profileSection.style.display = "block";
+      addCar.style.display = "none";
     });
 
     editProfileBtn.addEventListener("click", function () {
       editProfileForm.style.display = "block";
       changePasswordSection.style.display = "none";
       profileSection.style.display = "block";
+      addCar.style.display = "none";
     });
 
     changePasswordBtn.addEventListener("click", function () {
       editProfileForm.style.display = "none";
       changePasswordSection.style.display = "block";
       profileSection.style.display = "none";
+      addCar.style.display = "none";
     });
+
+    addBtn.addEventListener("click", function () {
+      editProfileForm.style.display = "none";
+      changePasswordSection.style.display = "none";
+      profileSection.style.display = "block";
+      addCar.style.display = "block";
+    });
+
   });
 </script>
 
 <style>
+  :root {
+    --indigo: #16425b;
+    --lapis: #2f6690;
+    --cerulean: #3a7ca5;
+    --skyblue: #81c3d7;
+    --platinum: #d9dcd6;
+    --darkgray: #b4b4b3;
+    --red: #f44336;
+    --green: #4CAF50;
+    --darkgreen: darkgreen;
+    --crimson: crimson;
+    --white:#ffffff;
+}
+
   body {
     font-family: "Montserrat", sans-serif;
   }
@@ -164,7 +220,7 @@ User profile{% endblock %} {% block content %}
 
   h2,
   h3 {
-    color: #16425b;
+    color: var(--indigo);
   }
 
   .button {
@@ -204,24 +260,24 @@ User profile{% endblock %} {% block content %}
 
   form button {
     padding: 8px 20px;
-    background-color: #16425b;
-    color: #fff;
+    background-color: var(--indigo);
+    color: var(--white);
     border: none;
     cursor: pointer;
   }
 
   form button:hover {
-    background-color: #2f6690;
+    background-color: var(--lapis);
   }
 
   /* Customizing alert colors */
   .alert-danger {
-    color: red;
+    color: var(--red);
     font-weight: bold;
   }
 
   .alert-success {
-    color: green;
+    color: var(--green);
     font-weight: bold;
   }
 
@@ -231,5 +287,45 @@ User profile{% endblock %} {% block content %}
     max-width: 300px;
     word-wrap: break-word; /* Allow long messages to wrap */
   }
+
+  #addCarPopup{
+    display: none;
+  }
+
+  #close{
+    float: right;
+    font-size: 30px;
+    cursor: pointer;
+  }
+
+  #car-add-btn {
+    margin-top: 2vh;
+    background-color: var(--lapis);
+    padding: 8px 27px;
+    border: none;
+    color: var(--white);
+    cursor: pointer;
+    border-radius: 5px;
+    margin: 10px 0px 10px;
+    font-size: medium;
+  }
+
+  #car_done{
+    margin-top: 2vh;
+    background-color: var(--green);
+    padding: 8px 27px;
+    border: none;
+    color: var(--white);
+    cursor: pointer;
+    border-radius: 5px;
+    margin: 10px 0px 10px;
+    font-size: medium;
+  }
+
+  #car_done:hover {
+      background-color: var(--darkgreen);
+  }
+
+
 </style>
 {% endblock %}

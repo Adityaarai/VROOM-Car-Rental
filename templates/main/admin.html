@@ -1,159 +1,164 @@
-{% load static %}
+{% extends 'partials/base.html' %} 
+{% load static %} 
+{% block title %} VROOM - Admin profile{% endblock %}
+{% block content %}
+<div class="container">
+  <!-- main button to navigate between car and booking -->
+  <div class="sidebar">
+      <h1 id="logo">VROOM</h1>
+      <ul>
+          <li><button id="default-btn">Dashboard</button></li>
+          <li><button id="distributor-btn">Distributor</button></li>
+          <li><button id="user-btn">User</button></li>
+          
+      </ul>
+      <button id="logout">Log Out</button>
+  </div>
 
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>VROOM - admin dashboard</title>
-  </head>
-  <body>
-    <!-- main button to navigate between distibutor and user -->
-    <div class="container">
-      <button id="distributor-btn">Distributor</button>
-      <button id="user-btn">User</button>
-    </div>
+  <div class="content">
+      <div id="default-content">
+          <h1>Welcome Admin!!</h1>
+          <!-- Default dashboard content goes here -->
+          <div id="card">
+              <div class="card" id="distributor_card">
+                  <h3>Distributor Information</h3>
+                  <label id="TotalDistributors">Total Distributors:</label>
+                  <label id="Available">Available:</label><br>
+                  <label id="carModels">Models:</label>
+                  <label id="carTypes">Types:</label>
+              </div>
+              <div class="card" id="user_card">
+                  <h3>User Information</h3>
+                  <label id="TotalUsers">Total Users:</label>
+                  <label id="approved">Approved:</label><br>
+                  <label id="pending">pending:</label>
+                  <label id="paid">Paid:</label><br>
+              </div>
+          </div>
+      </div>
 
-    <div id="content" class="container">
       <div id="distributor-content">
-        <h2>Distributor Information</h2>
-        <!-- buttons to add and delete distributor -->
-        <button id="distributor-add-btn">Add</button>
-        <button id="distributor-delete-btn">Delete</button>
-        <!-- table to show distibutor information -->
-        <table>
-          <tr>
-            <th>Distributor ID</th>
-            <th>Distributor Name</th>
-            <th>Password</th>
-            <th>Contact Number</th>
-          </tr>
-          {% for user in users %} {% if '.vroom@gmail.com' in user.email %}
-          <tr>
-            <td>{{ user.username }}</td>
-            <td>{{ user.email }}</td>
-            <td>********</td>
-            <td>123-456-7890</td>
-          </tr>
-          {% endif %} {% endfor %}
-        </table>
-        <!-- popup to add distributor -->
-        <div class="popup" id="addDistributorPopup">
-          <div class="popup-content">
-            <span class="close" onclick="closePopup('addDistributorPopup')"
-              >&times;</span
-            >
-            <h2>Add Distributor</h2>
-            <form id="addDistributorForm">
-              <label for="distributorName">Distributor Name:</label><br />
-              <input
-                type="text"
-                id="distributorName"
-                name="distributorName"
-              /><br />
-              <label for="location">Location:</label><br />
-              <input type="text" id="location" name="location" /><br />
-              <label for="password">Password:</label><br />
-              <input
-                type="password"
-                id="password"
-                name="password"
-              /><br /><br />
-              <label for="contactNumber">Contact Number:</label><br />
-              <input
-                type="text"
-                id="contactNumber"
-                name="contactNumber"
-              /><br /><br />
-              <button type="submit">Add Distributor</button>
-            </form>
+          <h2>Distributor Information</h2>
+          <!-- buttons to add and delete distributor -->
+          <button id="distributor-add-btn">Add</button>
+          <button id="distributor-delete-btn">Delete</button>
+          <!-- table to show distributor information -->
+          <table>
+              <tr>
+                  <th>Distributor ID</th>
+                  <th>Distributor Name</th>
+                  <th>Password</th>
+                  <th>Contact Number</th>
+              </tr>
+              {% for user in users %} {% if '.vroom@gmail.com' in user.email %}
+              <tr>
+                  <td>{{ user.username }}</td>
+                  <td>{{ user.email }}</td>
+                  <td>********</td>
+                  <td>123-456-7890</td>
+              </tr>
+              {% endif %} {% endfor %}
+          </table>
+          <!-- popup to add distributor -->
+          <div class="popup" id="addDistributorPopup">
+              <div class="popup-content">
+                  <span class="close" onclick="closePopup('addDistributorPopup')">&times;</span>
+                  <h2>Add Distributor</h2>
+                  <form id="addDistributorForm">
+                      <label for="distributorName">Distributor Name:</label><br>
+                      <input type="text" id="distributorName" name="distributorName"><br>
+                      <label for="location">Location:</label><br>
+                      <input type="text" id="location" name="location"><br>
+                      <label for="password">Password:</label><br>
+                      <input type="password" id="password" name="password"><br><br>
+                      <label for="contactNumber">Contact Number:</label><br>
+                      <input type="text" id="contactNumber" name="contactNumber"><br><br>
+                      <button type="submit">Add Distributor</button>
+                  </form>
+              </div>
           </div>
-        </div>
-        <!-- popup to delete distributor -->
-        <div class="popup" id="deleteDistributorPopup">
-          <div class="popup-content">
-            <span class="close" onclick="closePopup('deleteDistributorPopup')"
-              >&times;</span
-            >
-            <h2>Delete Distributor</h2>
-            <label for="distributorID">Distributor ID:</label><br />
-            <input type="text" id="distributorID" name="distributorID" />
-            <button onclick="deleteDistributor()">Delete</button>
+          <!-- popup to delete distributor -->
+          <div class="popup" id="deleteDistributorPopup">
+              <div class="popup-content">
+                  <span class="close" onclick="closePopup('deleteDistributorPopup')">&times;</span>
+                  <h2>Delete Distributor</h2>
+                  <label for="distributorID">Distributor ID:</label><br>
+                  <input type="text" id="distributorID" name="distributorID">
+                  <button onclick="deleteDistributor()">Delete</button>
+              </div>
           </div>
-        </div>
       </div>
 
       <div id="user-content">
-        <h2>User Information</h2>
-        <!-- buttons to add and delete user -->
-        <button id="user-add-btn">Add</button>
-        <button id="user-delete-btn">Delete</button>
-        <!-- table to show user information -->
-        <table>
-          <tr>
-            <th>User ID</th>
-            <th>Username</th>
-            <th>Email</th>
-            <th>Password</th>
-          </tr>
-          {% for user in users %} {% if not user.is_staff %}
-          <tr>
-            <td>id</td>
-            <td>{{ user.first_name }} {{ user.last_name }}</td>
-            <td>{{ user.email }}</td>
-            <td>********</td>
-          </tr>
-          {% endif %} {% endfor %}
-        </table>
-        <!-- popup to add user -->
-        <div class="popup" id="addUserPopup">
-          <div class="popup-content">
-            <span class="close" onclick="closePopup('addUserPopup')"
-              >&times;</span
-            >
-            <h2>Add User</h2>
-            <form id="addUserForm">
-              <label for="username">Username:</label><br />
-              <input type="text" id="username" name="username" /><br />
-              <label for="email">Email:</label><br />
-              <input type="email" id="email" name="email" /><br />
-              <label for="password">Password:</label><br />
-              <input
-                type="password"
-                id="password"
-                name="password"
-              /><br /><br />
-              <button type="submit">Add User</button>
-            </form>
+          <h2>User Information</h2>
+          <!-- buttons to add and delete user -->
+          <button id="user-add-btn">Add</button>
+          <button id="user-delete-btn">Delete</button>
+          <!-- table to show user information -->
+          <table>
+              <tr>
+                  <th>User ID</th>
+                  <th>Username</th>
+                  <th>Email</th>
+                  <th>Password</th>
+              </tr>
+              {% for user in users %} {% if not user.is_staff %}
+              <tr>
+                  <td>id</td>
+                  <td>{{ user.first_name }} {{ user.last_name }}</td>
+                  <td>{{ user.email }}</td>
+                  <td>********</td>
+              </tr>
+              {% endif %} {% endfor %}
+          </table>
+          <!-- popup to add user -->
+          <div class="popup" id="addUserPopup">
+              <div class="popup-content">
+                  <span class="close" onclick="closePopup('addUserPopup')">&times;</span>
+                  <h2>Add User</h2>
+                  <form id="addUserForm">
+                      <label for="username">Username:</label><br>
+                      <input type="text" id="username" name="username"><br>
+                      <label for="email">Email:</label><br>
+                      <input type="email" id="email" name="email"><br>
+                      <label for="password">Password:</label><br>
+                      <input type="password" id="password" name="password"><br><br>
+                      <button type="submit">Add User</button>
+                  </form>
+              </div>
           </div>
-        </div>
-        <!-- popup to delete user -->
-        <div class="popup" id="deleteUserPopup">
-          <div class="popup-content">
-            <span class="close" onclick="closePopup('deleteUserPopup')"
-              >&times;</span
-            >
-            <h2>Delete User</h2>
-            <label for="userID">User ID:</label><br />
-            <input type="text" id="userID" name="userID" />
-            <button onclick="deleteUser()">Delete</button>
+          <!-- popup to delete user -->
+          <div class="popup" id="deleteUserPopup">
+              <div class="popup-content">
+                  <span class="close" onclick="closePopup('deleteUserPopup')">&times;</span>
+                  <h2>Delete User</h2>
+                  <label for="userID">User ID:</label><br>
+                  <input type="text" id="userID" name="userID">
+                  <button onclick="deleteUser()">Delete</button>
+              </div>
           </div>
-        </div>
       </div>
-    </div>
-  </body>
-</html>
+  </div>
+</div>
+
 
 <script>
   // JavaScript to toggle content based on button clicks
-  document
-    .getElementById("distributor-btn")
-    .addEventListener("click", function () {
+
+  document.getElementById("default-btn").addEventListener("click", function() {
+        document.getElementById("default-content").style.display = "block";
+        document.getElementById("distributor-content").style.display = "none";
+        document.getElementById("user-content").style.display = "none";
+    });
+
+  document.getElementById("distributor-btn").addEventListener("click", function () {
+    document.getElementById("default-content").style.display = "none";
       document.getElementById("distributor-content").style.display = "block";
       document.getElementById("user-content").style.display = "none";
     });
 
   document.getElementById("user-btn").addEventListener("click", function () {
+    document.getElementById("default-content").style.display = "none";
     document.getElementById("distributor-content").style.display = "none";
     document.getElementById("user-content").style.display = "block";
   });
@@ -225,50 +230,124 @@
     --darkgreen: darkgreen;
     --crimson: crimson;
   }
+/* Reset default margin, padding, and overflow */
+body {
+  margin: 0;
+  padding-top: 0;
+  overflow-x: hidden;
+  font-family: "Montserrat", sans-serif;
+}
 
-  body {
-    margin: 0;
-    padding-top: 0;
-    overflow-x: hidden;
-    font-family: "Montserrat", sans-serif;
-  }
+/* Logo styles */
+#logo {
+  color: var(--platinum);
+  padding-top: 50px;
+  text-align: center;
+  font-size: 3rem;
+}
 
-  .container {
+/* Sidebar styles */
+.sidebar {
+  float: left;
+  width: 20vw;
+  background-color: var(--lapis);
+  height: 100vh;
+}
+
+.sidebar ul {
+  margin-top: 40px;
+  list-style-type: none;
+  padding: 0;
+}
+
+.sidebar ul li {
+  margin-bottom: 10px;
+}
+
+.sidebar button {
+  padding: 10px 20px;
+  margin: 0 10px;
+  font-size: 20px;
+  cursor: pointer;
+  border: none;
+  background-color: var(--darkgray);
+  color: white;
+  border-radius: 5px;
+  outline: none;
+  margin-left: 2.5vw;
+  margin-top: 30px;
+  width: 15vw;
+  height: 45px;
+}
+
+.sidebar button:hover {
+  background-color: var(--indigo);
+}
+
+/* Content styles */
+.content {
+  float: left;
+  width: 80%;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* Card styles */
+.card {
+  height: 35vh;
+  width: 18vw;
+  margin: 10px;
+  background-color: var(--platinum);
+  border: 1px solid var(--platinum);
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  box-sizing: border-box;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+  
+
+/* Log Out button styles */
+#logout {
+  bottom: 0;
+  left: 0;
+  background-color: var(--red); /* Example background color */
+}
+
+#logout:hover {
+  background-color: var(--crimson); /* Example hover background color */
+}
+
+
+#default-content #card{
     display: flex;
-    justify-content: center;
-    margin-top: 50px;
-  }
+}
 
-  .container button {
-    padding: 10px 20px;
-    margin: 0 10px;
-    font-size: 16px;
-    cursor: pointer;
-    border: none;
-    background-color: var(--lapis);
-    color: white;
-    border-radius: 5px;
-    outline: none;
-  }
+#distributor_card,
+#user_card{
+    width: 40vw;
+    height: 20vh;
+}
 
-  .container button:hover {
-    background-color: var(--indigo);
-  }
+#distributor_card{
+    background-color:var(--skyblue);
+}
 
+#user_card{
+    background-color: var(--platinum);
+}
+
+#TotalDistributors,#TotalUsers{
+    padding-right: 10vw;
+    /* padding-bottom: 5vh; */
+}
   #distributor-content,
   #user-content {
     display: none;
     margin-top: 20px;
   }
 
-  #content {
-    margin-left: 10vw;
-    width: 80vw;
-    padding: 20px;
-    border: 1px solid var(--platinum);
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
+
 
   .filter {
     margin: 40px 2%;
@@ -402,3 +481,4 @@
     text-decoration: none;
   }
 </style>
+{% endblock %}
