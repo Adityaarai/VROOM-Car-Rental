@@ -28,7 +28,7 @@ User profile{% endblock %} {% block content %}
       <p style="margin-bottom: 10px">
         Email: <span id="email">{{ user.email }}</span>
       </p>
-      <button class="button" id="editProfileBtn">Edit Profile</button>
+      <button class="button" id="editProfileBtn">Edit Profile</button><button id="car-add-btn">Add Car</button>
       <div id="editProfileForm" style="display: none">
         <!-- Edit Profile form -->
         <form
@@ -114,7 +114,7 @@ User profile{% endblock %} {% block content %}
     </div>
 
 
-    <button id="car-add-btn">Add Car</button>
+    
     <!-- popup to add car -->
     <div class="popup" id="addCarPopup">
       <div class="popup-content" >
@@ -131,7 +131,7 @@ User profile{% endblock %} {% block content %}
               <input type="text" id="price" name="price"><br>
               <label for="carImage">Car Image:</label><br>
               <input type="file" id="carImage" name="carImage"><br><br>
-              <button type="submit">Add Car</button>
+              <button type="submit" id="car_done">Add Car</button>
           </form>
           
       </div>
@@ -141,9 +141,6 @@ User profile{% endblock %} {% block content %}
 
 <script>
 
-  document.getElementById("car-add-btn").addEventListener("click", function() {
-        document.getElementById("addCarPopup").style.display = "block";
-    });
 
   function closePopup(id) {
       document.getElementById(id).style.display = "none";
@@ -154,29 +151,40 @@ User profile{% endblock %} {% block content %}
     var editProfileBtn = document.getElementById("editProfileBtn");
     var editProfileForm = document.getElementById("editProfileForm");
     var changePasswordBtn = document.getElementById("changePasswordBtn");
-    var changePasswordSection = document.getElementById(
-      "changePasswordSection"
-    );
+    var changePasswordSection = document.getElementById("changePasswordSection");
     var profileSection = document.getElementById("profileSection");
     var profileBtn = document.getElementById("profileBtn");
+    var addCar = document.getElementById("addCarPopup");
+    var addBtn = document.getElementById("car-add-btn");
 
     profileBtn.addEventListener("click", function () {
       editProfileForm.style.display = "none";
       changePasswordSection.style.display = "none";
       profileSection.style.display = "block";
+      addCar.style.display = "none";
     });
 
     editProfileBtn.addEventListener("click", function () {
       editProfileForm.style.display = "block";
       changePasswordSection.style.display = "none";
       profileSection.style.display = "block";
+      addCar.style.display = "none";
     });
 
     changePasswordBtn.addEventListener("click", function () {
       editProfileForm.style.display = "none";
       changePasswordSection.style.display = "block";
       profileSection.style.display = "none";
+      addCar.style.display = "none";
     });
+
+    addBtn.addEventListener("click", function () {
+      editProfileForm.style.display = "none";
+      changePasswordSection.style.display = "none";
+      profileSection.style.display = "block";
+      addCar.style.display = "block";
+    });
+
   });
 </script>
 
@@ -292,6 +300,18 @@ User profile{% endblock %} {% block content %}
 
   #car-add-btn {
     margin-top: 2vh;
+    background-color: var(--lapis);
+    padding: 8px 27px;
+    border: none;
+    color: var(--white);
+    cursor: pointer;
+    border-radius: 5px;
+    margin: 10px 0px 10px;
+    font-size: medium;
+  }
+
+  #car_done{
+    margin-top: 2vh;
     background-color: var(--green);
     padding: 8px 27px;
     border: none;
@@ -302,8 +322,10 @@ User profile{% endblock %} {% block content %}
     font-size: medium;
   }
 
-  #car-add-btn:hover {
+  #car_done:hover {
       background-color: var(--darkgreen);
   }
+
+
 </style>
 {% endblock %}
