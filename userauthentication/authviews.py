@@ -17,8 +17,11 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
 from .forms import UserProfileForm 
 from django.contrib.auth import update_session_auth_hash
+from carlisting.models import CarDetail
+
 
 # Create your views here.
+# View for handling signup functionality
 def signup(request):
     if request.method == "POST":
         email = request.POST['email']
@@ -86,6 +89,7 @@ VROOM-Car-Rental-Service"""
     
     return render(request, 'main/signup.html')
 
+# View for handling login functionality
 def login(request):
     if request.method == 'POST':
         username_or_email = request.POST.get('username_or_email')
@@ -137,6 +141,7 @@ def activate(request, uidb64, token):
     else:
         return render(request, 'main/activation_failed.html')
 
+# View for handling user profile
 @login_required
 def user_profile_view(request):
     user = request.user
@@ -168,10 +173,17 @@ def user_profile_view(request):
                 for field, errors in form.errors.items():
                     for error in errors:
                         messages.error(request, f"{field}: {error}")
+    
+    # Filter CarDetail objects based on renter_name matching the logged-in user's username
+    cars = CarDetail.objects.filter(renter_name=user.username)
 
-    return render(request, 'main/user_profile.html', {'user': user})
+    if not cars:  # If no cars found for the user
+        message = "You haven't added any cars yet."
+        return render(request, 'main/user_profile.html', {'user': user, 'message': message})
+    else:
+        return render(request, 'main/user_profile.html', {'user': user, 'cars': cars})
 
-@login_required
+# View for handling staff profile
 def staff_profile_view(request):
     user = request.user
     
@@ -205,6 +217,45 @@ def staff_profile_view(request):
 
     return render(request, 'main/staff_profile.html', {'user': user})
 
+# View for logging out
+@login_required
 def logout_view(request):
     logout(request)
     return redirect('index')
+
+# View for add cars
+@login_required
+def add_car(request):
+    if request.method == 'POST':
+        contact_number = request.POST.get('contactNumber')
+        car_type = request.POST.get('car_type')
+        model = request.POST.get('model')
+        price = request.POST.get('price')
+        car_image = request.FILES.get('carImage')
+
+        # Assuming the user is authenticated
+        user = request.user
+
+        # Create and save the CarDetail object
+        try:
+            car = CarDetail.objects.create(
+                renter_name=user.username,  # Set the renter_name field to the username of the logged-in user
+                renter_contact=contact_number,
+                car_type=car_type,
+                car_model=model,
+                price=price,
+                image=car_image,
+            )
+            # Adding a success message
+            messages.success(request, 'Car added successfully.')
+        except Exception as e:
+            # Adding an error message
+            messages.error(request, f'Error adding car: {e}')
+        
+        return redirect('user_profile')  # Redirecting to user profile page
+    
+    return render(request, 'user_profile.html')
+
+# View for payment
+def payment_view(request):
+    return render(request, 'main/payment.html')
