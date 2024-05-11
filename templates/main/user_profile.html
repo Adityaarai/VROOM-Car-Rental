@@ -21,6 +21,7 @@ User profile{% endblock %} {% block content %}
       <button class="dropdown-btn1" id="pendingBtn">Pending</button>
       <button class="dropdown-btn2" id="approvedBtn">Approved</button>
       <button class="dropdown-btn3" id="completedBtn">Completed</button>
+      
     </div>
 
     <!-- Profile section -->
@@ -201,6 +202,10 @@ User profile{% endblock %} {% block content %}
         <!-- Booking details will be dynamically added here -->
       </tbody>
     </table>
+
+    <!-- Payment button -->
+    <button id="paymentButton" style="display: none;">Payment</button>
+
   </div>
   
 
@@ -226,6 +231,7 @@ User profile{% endblock %} {% block content %}
     var myBookingsDropdown = document.getElementById("myBookingsDropdown");
     var pendingBtn = document.getElementById("pendingBtn");
     var approvedBtn = document.getElementById("approvedBtn");
+    var paymentBtn = document.getElementById("paymentBtn");
     var completedBtn = document.getElementById("completedBtn");
 
     profileBtn.addEventListener("click", function () {
@@ -360,15 +366,31 @@ User profile{% endblock %} {% block content %}
       // Show the My Bookings section
       document.getElementById("myBookingsSection").style.display = "block";
 
-    });
+      // Hide payment button
+      document.getElementById("paymentButton").style.display = "none";
 
+    });
+    
+    // Event listener for dropdown buttons
     approvedBtn.addEventListener("click", function () {
       // Call displayBookings function with approved bookings data
       displayBookings(bookingsData.approved);
-
+      
       // Show the My Bookings section
       document.getElementById("myBookingsSection").style.display = "block";
 
+      // Show the Payment button only if there are approved bookings
+      if (bookingsData.approved.length > 0) {
+        document.getElementById("paymentButton").style.display = "block";
+      } else {
+        document.getElementById("paymentButton").style.display = "none";
+      }
+    });
+
+    // Event listener for Payment button
+    paymentButton.addEventListener("click", function () {
+      // Redirect to the payment page
+      window.location.href = "payment_view/";
     });
 
     completedBtn.addEventListener("click", function () {
@@ -378,7 +400,9 @@ User profile{% endblock %} {% block content %}
       // Show the My Bookings section
       document.getElementById("myBookingsSection").style.display = "block";
 
-    });
+      // Hide payment button
+      document.getElementById("paymentButton").style.display = "none";
+   });
   });
 });
 
@@ -601,6 +625,30 @@ User profile{% endblock %} {% block content %}
 .dropdown-btn1:active,
 .dropdown-btn2:active,
 .dropdown-btn3:active {
+  background-color: var(--lapis);
+}
+
+/* CSS for payment button */
+#paymentButton {
+  padding: 11px 22px; /* Increasing padding to make the buttons wider */
+  margin-right: 15px; /* Adjusting margin to provide spacing between buttons */
+  border: 1px solid var(--indigo); /* Adding border for better visibility */
+  background-color: var(--platinum); /* Changing background color */
+  color: var(--indigo); /* Changing text color */
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+  margin-top:25px;
+}
+
+/* Hover effect */
+#paymentButton {
+  background-color: var(--indigo);
+  color: var(--platinum);
+}
+
+/* Active state */
+#paymentButton:active {
   background-color: var(--lapis);
 }
 </style>
