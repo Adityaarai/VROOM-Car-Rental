@@ -17,6 +17,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
 from .forms import UserProfileForm 
 from django.contrib.auth import update_session_auth_hash
+from carlisting.models import CarDetail
+
 
 # Create your views here.
 def signup(request):
@@ -207,3 +209,35 @@ def staff_profile_view(request):
 def logout_view(request):
     logout(request)
     return redirect('index')
+
+def add_car(request):
+    if request.method == 'POST':
+        renter_name = request.POST.get('renterName')
+        contact_number = request.POST.get('contactNumber')
+        car_type = request.POST.get('car_type')
+        model = request.POST.get('model')
+        price = request.POST.get('price')
+        car_image = request.FILES.get('carImage')
+
+        # Assuming the user is authenticated
+        user = request.user
+
+        # Create and save the CarDetail object
+        try:
+            car = CarDetail.objects.create(
+                renter_name=renter_name,
+                renter_contact=contact_number,  
+                car_type=car_type,
+                car_model=model,  
+                price=price,
+                image=car_image,  
+            )
+            # Adding a success message
+            messages.success(request, 'Car added successfully.')
+        except Exception as e:
+            # Adding an error message
+            messages.error(request, f'Error adding car: {e}')
+        
+        return redirect('user_profile')  # Redirecting to user profile page
+    
+    return render(request, 'user_profile.html')

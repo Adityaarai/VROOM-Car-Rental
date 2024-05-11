@@ -120,11 +120,14 @@ User profile{% endblock %} {% block content %}
       <div class="popup-content" >
           <span class="close" id="close" onclick="closePopup('addCarPopup')">&times;</span>
           <h2>Add Car</h2>
-          <form id="addCarForm">
+          <form id="addCarForm" method="POST" action="{% url 'add_car' %}" enctype="multipart/form-data">
+            {% csrf_token %}
               <label for="renterName">Renter Name:</label><br>
               <input type="text" id="renterName" name="renterName"><br>
               <label for="contactNumber">Contact Number:</label><br>
               <input type="text" id="contactNumber" name="contactNumber"><br>
+              <label for="car_type">Car Type:</label><br>
+              <input type="text" id="car_type" name="car_type"><br>
               <label for="model">Model:</label><br>
               <input type="text" id="model" name="model"><br>
               <label for="price">Price:</label><br>
