@@ -14,19 +14,20 @@ def carlisting(request):
 
 def orders(request):
     if request.method == 'POST':
+      if request.user.is_authenticated:
         existing_order = CarOrder.objects.filter(rentee_email=request.user.email).first()
         if existing_order:
-            return HttpResponse("You have already placed an order.")
+          return HttpResponse("You have already placed an order.")
 
         startdate = request.POST['bookingStartDate']
-        enddate = request.POST['bookingEndDate'];
+        enddate = request.POST['bookingEndDate']
         renter_name = request.POST['renter_name']
         renter_contact = request.POST['renter_contact']
         car_model = request.POST['car_model']
         rentee_email = request.user.email
 
         product = CarDetail.objects.get(car_model=car_model, renter_name=renter_name, renter_contact=renter_contact)
-        
+                
         order = CarOrder.objects.create(product=product, start_date=startdate, end_date=enddate, rentee_email=rentee_email)
 
         return redirect('orders')
@@ -34,8 +35,6 @@ def orders(request):
     else:
         name = request.GET.get('renter_name')
         model = request.GET.get('car_model')
-        print(name)
-        print(model)
 
         details_queryset = CarDetail.objects.filter(renter_name=name, car_model=model)
 
@@ -52,7 +51,6 @@ def orders(request):
                 'availability': detail.availability,
                 'image': detail.image.url
             }
-            print(detail.image.url)
             details_list.append(detail_dict)
 
         context = {
@@ -89,8 +87,14 @@ def about_us(request):
 def userprofile(request):
    return render(request, 'main/user_profile.html')
 
-def staffprofile(request):
-   return render(request, 'main/staff_profile.html')
+def distributorprofile(request):
+  items = CarDetail.objects.all()
+
+  context = {
+    'items': items,
+  }
+
+  return render(request, 'main/distributor.html', context)
 
 def adminprofile(request):
   users = User.objects.all()

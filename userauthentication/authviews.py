@@ -60,6 +60,7 @@ def signup(request):
             return redirect('signup')
 
         myuser = User.objects.create_user(username=username, email=email, password=pass1)
+
         myuser.first_name = firstname
         myuser.last_name = lastname
         myuser.save()
@@ -103,10 +104,10 @@ def login(request):
             auth_login(request, user)
             fname = user.first_name
             # messages.success(request, "Logged In Successfully!!")
-            if user.is_authenticated and user.is_staff and user.is_superuser:
+            if user.is_staff and user.is_superuser:
                 return redirect('admin_profile')
             elif user.is_staff:
-                return redirect('staff_profile')
+                return redirect('distributor_profile')
             else:
                 return redirect('index')
         else:
