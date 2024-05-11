@@ -1,4 +1,6 @@
 from django.shortcuts import render, redirect, HttpResponse
+from django.urls import reverse
+from django.http import HttpResponseRedirect
 from .models import CarDetail, CarOrder, User
 from django.contrib import messages
 from django.contrib.auth import authenticate, login as auth_login, logout
@@ -13,14 +15,22 @@ def carlisting(request):
     return render(request, 'main/carlisting.html', context)
 
 def orders(request):
+    current_url = request.get_full_path()
+    
     if request.method == 'POST':
       if request.user.is_authenticated:
         existing_order = CarOrder.objects.filter(rentee_email=request.user.email).first()
         if existing_order:
-          return HttpResponse("You have already placed an order.")
+          messages.error(request, "You have already placed an order.")
+          return redirect('orders')
+          
+        startdate = request.POST.get('bookingStartDate')
+        enddate = request.POST.get('bookingEndDate')
 
-        startdate = request.POST['bookingStartDate']
-        enddate = request.POST['bookingEndDate']
+        if not startdate or not enddate:
+          messages.error(request, "Please provide both start date and end date.")
+          return HttpResponseRedirect(current_url)
+          
         renter_name = request.POST['renter_name']
         renter_contact = request.POST['renter_contact']
         car_model = request.POST['car_model']
@@ -30,8 +40,12 @@ def orders(request):
                 
         order = CarOrder.objects.create(product=product, start_date=startdate, end_date=enddate, rentee_email=rentee_email)
 
-        return redirect('orders')
+        messages.success(request, "Your booking has been created successfully")
 
+        return redirect('orders')
+      else:
+        messages.error(request,"You must be logged in to book cars!!")
+        return redirect('login')
     else:
         name = request.GET.get('renter_name')
         model = request.GET.get('car_model')

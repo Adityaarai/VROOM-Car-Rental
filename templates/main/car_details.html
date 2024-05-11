@@ -54,20 +54,21 @@ Car Details{% endblock %} {% block content %}
           id="bookingEndDate"
           name="bookingEndDate"
         /><br /><br />
-        <a href="{% url 'carlisting' %}?value=All">
-          <button id="home">Back</button>
-        </a>
-        {% if user.is_authenticated %}
-        <button id="book" type="submit">Book</button>
-        {% else %}
-        <a href="{% url 'login' %}">
-          <button id="book">Book</button>
-        </a>
-        {% endif %}
+
+        <button id="book" class="button" type="submit">Book</button>
+        {% if messages %} {% for message in messages %}
+        <p class="error">{{ message }}</p>
+        {% endfor %} {% endif %}
       </form>
-      {% endfor %} {% else %}
-      <h1>Car not available or booking completed</h1>
-      {% endif %}
+      <a href="{% url 'carlisting' %}?value=All"
+        ><button class="button">Back</button></a
+      >
+      {% endfor %} {% else %} {% if messages %} {% for message in messages %}
+      <h1 class="error">{{ message }}</h1>
+      {% endfor %} {% endif %}
+      <a href="{% url 'carlisting' %}?value=All"
+        ><button class="button">Return to Carlisting</button></a
+      >{% endif %}
 
       <!-- popup -->
       <div class="popup" id="popup">
@@ -90,9 +91,6 @@ Car Details{% endblock %} {% block content %}
   function closePopup() {
     document.getElementById("popup").style.display = "none";
   }
-
-  // Add event listener to the button
-  document.getElementById("book").addEventListener("click", showPopup);
 </script>
 
 <style>
@@ -112,6 +110,23 @@ Car Details{% endblock %} {% block content %}
     min-height: 65.4vh;
     padding-top: 5vh;
   }
+
+  .button {
+    padding: 8px 16px;
+    border: none;
+    background-color: var(--lapis);
+    color: var(--platinum);
+    cursor: pointer;
+    border-radius: 5px;
+    margin-right: 10px;
+    font-size: medium;
+    margin-top: 20px;
+  }
+
+  .button:hover {
+    background-color: var(--indigo);
+  }
+
   #main {
     width: 80vw;
     height: 50vh;
@@ -133,19 +148,6 @@ Car Details{% endblock %} {% block content %}
     width: 40%;
     font-size: 3vh;
     font-weight: 800;
-  }
-  #details button {
-    background-color: var(--lapis);
-    height: 40px;
-    width: 100px;
-    font-size: 2vh;
-    color: var(--platinum);
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  #details button:hover {
-    background-color: var(--indigo);
   }
   .popup {
     display: none;
