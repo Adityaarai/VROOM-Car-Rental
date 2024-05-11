@@ -1,19 +1,11 @@
 from django.db import models
+from django.contrib.auth.models import User
 
-# Create your models here.
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
+    address = models.CharField(max_length=100, null=True)
+    license_number = models.CharField(max_length=100, null=True)
+    contact = models.CharField(max_length=100, null=True)
 
-# distributor user table model
-class Distributor(models.Model):
-    first_name = models.CharField(max_length=100, null=True)
-    last_name = models.CharField(max_length=100, null=True)
-    contact = models.CharField(max_length=10, null=True)
-    email = models.CharField(max_length=100, null=True)
-    image = models.ImageField(default='static/img/profileicon.png', upload_to='static/img/user_images')
-
-# user table model
-class Vroom_User(models.Model):
-    first_name = models.CharField(max_length=100, null=True)
-    last_name = models.CharField(max_length=100, null=True)
-    contact = models.CharField(max_length=10, null=True)
-    email = models.CharField(max_length=100, null=True)
-    image = models.ImageField(default='static/img/profileicon.png', upload_to='static/img/user_images')
+    def __str__(self):
+        return f'{self.user.username} - Profile'
