@@ -18,9 +18,9 @@ User profile{% endblock %} {% block content %}
 
     <!-- My Bookings dropdown -->
     <div id="myBookingsDropdown" style="display: none;">
-      <button class="dropdown-btn" id="pendingBtn">Pending</button>
-      <button class="dropdown-btn" id="approvedBtn">Approved</button>
-      <button class="dropdown-btn" id="completedBtn">Completed</button>
+      <button class="dropdown-btn1" id="pendingBtn">Pending</button>
+      <button class="dropdown-btn2" id="approvedBtn">Approved</button>
+      <button class="dropdown-btn3" id="completedBtn">Completed</button>
     </div>
 
     <!-- Profile section -->
@@ -122,8 +122,6 @@ User profile{% endblock %} {% block content %}
         <button class="button" type="submit">Update Password</button>
       </form>
     </div>
-
-
     
     <!-- popup to add car -->
     <div class="popup" id="addCarPopup">
@@ -186,8 +184,27 @@ User profile{% endblock %} {% block content %}
     <p>You haven't added any cars yet.</p>
     {% endif %}
   </div>
-</div>
 
+  <!-- My Bookings section -->
+  <div id="myBookingsSection" class="section" style="display: none;">
+    <h3>My Bookings</h3>
+    <table id="bookingDetailsTable">
+      <thead>
+        <tr>
+          <th>Car</th>
+          <th>Start Date</th>
+          <th>End Date</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody id="bookingDetailsBody">
+        <!-- Booking details will be dynamically added here -->
+      </tbody>
+    </table>
+  </div>
+  
+
+</div>
 <script>
   function closePopup(id) {
       document.getElementById(id).style.display = "none";
@@ -207,6 +224,9 @@ User profile{% endblock %} {% block content %}
     var myCarSection = document.getElementById("myCarSection");
     var myBookingsBtn = document.getElementById("myBookingsBtn");
     var myBookingsDropdown = document.getElementById("myBookingsDropdown");
+    var pendingBtn = document.getElementById("pendingBtn");
+    var approvedBtn = document.getElementById("approvedBtn");
+    var completedBtn = document.getElementById("completedBtn");
 
     profileBtn.addEventListener("click", function () {
       editProfileForm.style.display = "none";
@@ -214,6 +234,8 @@ User profile{% endblock %} {% block content %}
       profileSection.style.display = "block";
       addCar.style.display = "none";
       myCarSection.style.display = "none";
+      myBookingsDropdown.style.display = "none";
+      myBookingsSection.style.display = "none";
     });
 
     editProfileBtn.addEventListener("click", function () {
@@ -222,6 +244,8 @@ User profile{% endblock %} {% block content %}
       profileSection.style.display = "block";
       addCar.style.display = "none";
       myCarSection.style.display = "none";
+      myBookingsDropdown.style.display = "none";
+      myBookingsSection.style.display = "none";
     });
 
     changePasswordBtn.addEventListener("click", function () {
@@ -230,6 +254,8 @@ User profile{% endblock %} {% block content %}
       profileSection.style.display = "none";
       addCar.style.display = "none";
       myCarSection.style.display = "none";
+      myBookingsDropdown.style.display = "none";
+      myBookingsSection.style.display = "none";
     });
 
     addBtn.addEventListener("click", function () {
@@ -238,6 +264,7 @@ User profile{% endblock %} {% block content %}
       profileSection.style.display = "block";
       addCar.style.display = "block";
       myCarSection.style.display = "none";
+      myBookingsDropdown.style.display = "none";
     });
 
     function validateAddCarForm() {
@@ -274,42 +301,86 @@ User profile{% endblock %} {% block content %}
       profileSection.style.display = "none";
       addCar.style.display = "none";
       myCarSection.style.display = "block";
+      myBookingsSection.style.display = "none";
+      myBookingsDropdown.style.display = "none";
     });
 
+    // Define the displayBookings function outside of the event listener
+    function displayBookings(bookings) { 
+      const tbody = document.getElementById("bookingDetailsBody");
+      tbody.innerHTML = ""; // Clear existing rows
+
+      bookings.forEach(booking => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${booking.car}</td>
+          <td>${booking.start_date}</td>
+          <td>${booking.end_date}</td>
+          <td>${booking.status}</td>
+    `    ;
+        tbody.appendChild(row);
+      });
+    }
+
+    // Event listener for My Bookings button
     myBookingsBtn.addEventListener("click", function () {
-      // Handle my bookings button click
+      // Toggle the display of the dropdown menu
+      if (myBookingsDropdown.style.display === "none") {
+        myBookingsDropdown.style.display = "block";
+      } else {
+        myBookingsDropdown.style.display = "none";
+      }
+
+      // Hide all other sections
       editProfileForm.style.display = "none";
       changePasswordSection.style.display = "none";
       profileSection.style.display = "none";
       addCar.style.display = "none";
       myCarSection.style.display = "none";
 
-      // Handle My Bookings button click to toggle dropdown visibility
-      if (myBookingsDropdown.style.display === "none") {
-        myBookingsDropdown.style.display = "block";
-      } else {
-        myBookingsDropdown.style.display = "none";
-      }
-    });
+      // Sample data for bookings (simulating backend response)
+      const bookingsData = {
+        pending: [
+        { car: "Toyota Camry", start_date: "2024-05-15", end_date: "2024-05-20", status: "Pending" },
+        { car: "Honda Civic", start_date: "2024-05-18", end_date: "2024-05-25", status: "Pending" }
+      ],
+      approved: [
+        { car: "BMW X5", start_date: "2024-05-22", end_date: "2024-05-28", status: "Approved" }
+      ],
+      completed: [
+        { car: "Tesla Model 3", start_date: "2024-05-10", end_date: "2024-05-15", status: "Completed" }
+      ]
+    };
 
-    // Add event listeners for the dropdown buttons (Pending, Approved, Completed)
-    var pendingBtn = document.getElementById("pendingBtn");
-    var approvedBtn = document.getElementById("approvedBtn");
-    var completedBtn = document.getElementById("completedBtn");
-
+    // Event listener for dropdown buttons
     pendingBtn.addEventListener("click", function () {
-      // Handle Pending button click
-      
+      // Call displayBookings function with pending bookings data
+      displayBookings(bookingsData.pending);
+
+      // Show the My Bookings section
+      document.getElementById("myBookingsSection").style.display = "block";
+
     });
 
     approvedBtn.addEventListener("click", function () {
-      // Handle Approved button click
+      // Call displayBookings function with approved bookings data
+      displayBookings(bookingsData.approved);
+
+      // Show the My Bookings section
+      document.getElementById("myBookingsSection").style.display = "block";
+
     });
 
     completedBtn.addEventListener("click", function () {
-      // Handle Completed button click
+      // Call displayBookings function with completed bookings data
+      displayBookings(bookingsData.completed);
+
+      // Show the My Bookings section
+      document.getElementById("myBookingsSection").style.display = "block";
+
     });
   });
+});
 
 </script>
 
@@ -476,5 +547,61 @@ User profile{% endblock %} {% block content %}
     margin-top: 15px;
   }
 
+  #bookingDetailsTable {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  #bookingDetailsTable th,
+  #bookingDetailsTable td {
+    border: 1px solid #dddddd;
+    padding: 8px;
+    text-align: left;
+  }
+
+  #bookingDetailsTable th {
+    background-color: #f2f2f2;
+  }
+
+  #myBookingsSection {
+    margin-top: 30px;
+  }
+
+  #bookingDetailsTable{
+    margin-top: 15px;
+  }
+
+  #myBookingsDropdown {
+    margin-top: 30px; 
+  }
+
+/* CSS for dropdown buttons */
+.dropdown-btn1,
+.dropdown-btn2,
+.dropdown-btn3 {
+  padding: 11px 22px; /* Increasing padding to make the buttons wider */
+  margin-right: 15px; /* Adjusting margin to provide spacing between buttons */
+  border: 1px solid var(--indigo); /* Adding border for better visibility */
+  background-color: var(--platinum); /* Changing background color */
+  color: var(--indigo); /* Changing text color */
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+/* Hover effect */
+.dropdown-btn1:hover,
+.dropdown-btn2:hover,
+.dropdown-btn3:hover {
+  background-color: var(--indigo);
+  color: var(--platinum);
+}
+
+/* Active state */
+.dropdown-btn1:active,
+.dropdown-btn2:active,
+.dropdown-btn3:active {
+  background-color: var(--lapis);
+}
 </style>
 {% endblock %}
