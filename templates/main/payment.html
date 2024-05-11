@@ -28,12 +28,11 @@ Payment! VROOM {% endblock %} {% block content%}
   <script>
     document.getElementById('payment-form').addEventListener('submit', function(event) {
       event.preventDefault();
-      const cardNumber = document.getElementById('Esewa-number').value;
-      const expiryDate = document.getElementById('Passowrd').value;
-      const cvv = document.getElementById('cvv').value;
+      const esewaNumber = document.getElementById('Esewa-number').value;
+      const password = document.getElementById('Passowrd').value;
 
       // Basic validation
-      if (!cardNumber || !expiryDate || !cvv) {
+      if (!esewaNumber || !password ) {
         alert('Please fill in all fields.');
         return;
       }
