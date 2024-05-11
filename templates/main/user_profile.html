@@ -149,7 +149,7 @@ User profile{% endblock %} {% block content %}
   </div>
 
   <!-- My Car section -->
-  <div id="myCarSection" class="section">
+  <div id="myCarSection" class="section" style="display: none;">
     <h3>My Cars</h3>
     {% if cars %}
     <table id="carDetailsTable">
@@ -266,6 +266,7 @@ User profile{% endblock %} {% block content %}
         event.preventDefault(); // Prevent form submission if validation fails
       }
     });
+    
     myCarBtn.addEventListener("click", function () {
       // Handle My Car button click
       editProfileForm.style.display = "none";
