@@ -10,8 +10,18 @@ User profile{% endblock %} {% block content %}
     <div class="alert alert-success" role="alert">{{ message }}</div>
     {% endif %} {% endfor %}
 
+    <!--buttons in profile page-->
     <button class="button" id="profileBtn">Profile</button>
     <button class="button" id="changePasswordBtn">Change Password</button>
+    <button class="button" id="myCarBtn">My Car</button>
+    <button class="button" id="myBookingsBtn">My Bookings</button>
+
+    <!-- My Bookings dropdown -->
+    <div id="myBookingsDropdown" style="display: none;">
+      <button class="dropdown-btn" id="pendingBtn">Pending</button>
+      <button class="dropdown-btn" id="approvedBtn">Approved</button>
+      <button class="dropdown-btn" id="completedBtn">Completed</button>
+    </div>
 
     <!-- Profile section -->
     <div id="profileSection" class="section">
@@ -149,7 +159,7 @@ User profile{% endblock %} {% block content %}
       document.getElementById(id).style.display = "none";
     }
 
-
+  // Adding event listeners for buttons
   document.addEventListener("DOMContentLoaded", function () {
     var editProfileBtn = document.getElementById("editProfileBtn");
     var editProfileForm = document.getElementById("editProfileForm");
@@ -159,6 +169,9 @@ User profile{% endblock %} {% block content %}
     var profileBtn = document.getElementById("profileBtn");
     var addCar = document.getElementById("addCarPopup");
     var addBtn = document.getElementById("car-add-btn");
+    var myCarBtn = document.getElementById("myCarBtn");
+    var myBookingsBtn = document.getElementById("myBookingsBtn");
+    var myBookingsDropdown = document.getElementById("myBookingsDropdown");
 
     profileBtn.addEventListener("click", function () {
       editProfileForm.style.display = "none";
@@ -187,6 +200,29 @@ User profile{% endblock %} {% block content %}
       profileSection.style.display = "block";
       addCar.style.display = "block";
     });
+
+    myCarBtn.addEventListener("click", function () {
+      // Handle My Car button click
+      editProfileForm.style.display = "none";
+      changePasswordSection.style.display = "none";
+      profileSection.style.display = "none";
+      addCar.style.display = "none";
+
+    });
+
+    myBookingsBtn.addEventListener("click", function () {
+      // Handle My Bookings button click to toggle dropdown visibility
+      if (myBookingsDropdown.style.display === "none") {
+        myBookingsDropdown.style.display = "block";
+      } else {
+        myBookingsDropdown.style.display = "none";
+      }
+    });
+
+    // Add event listeners for the dropdown buttons (Pending, Approved, Completed)
+    var pendingBtn = document.getElementById("pendingBtn");
+    var approvedBtn = document.getElementById("approvedBtn");
+    var completedBtn = document.getElementById("completedBtn");
 
   });
 </script>
