@@ -13,7 +13,7 @@ User profile{% endblock %} {% block content %}
     <!--buttons in profile page-->
     <button class="button" id="profileBtn">Profile</button>
     <button class="button" id="changePasswordBtn">Change Password</button>
-    <button class="button" id="myCarBtn">My Car</button>
+    <button class="button" id="myCarBtn">My Cars</button>
     <button class="button" id="myBookingsBtn">My Bookings</button>
 
     <!-- My Bookings dropdown -->
@@ -149,12 +149,27 @@ User profile{% endblock %} {% block content %}
           
       </div>
   </div>
-    
+
+  <!-- My Car section -->
+  <div id="myCarSection" class="section" style="display: none;">
+    <h3>My Cars</h3>
+    <table id="carDetailsTable">
+      <thead>
+        <tr>
+          <th>Renter Name</th>
+          <th>Contact Number</th>
+          <th>Car Type</th>
+          <th>Model</th>
+          <th>Price</th>
+          <th>Car Image</th>
+        </tr>
+      </thead>
+      <tbody id="carDetailsBody"></tbody>
+    </table>
+  </div>
 </div>
 
 <script>
-
-
   function closePopup(id) {
       document.getElementById(id).style.display = "none";
     }
@@ -170,6 +185,8 @@ User profile{% endblock %} {% block content %}
     var addCar = document.getElementById("addCarPopup");
     var addBtn = document.getElementById("car-add-btn");
     var myCarBtn = document.getElementById("myCarBtn");
+    var myCarSection = document.getElementById("myCarSection");
+    var carDetailsBody = document.getElementById("carDetailsBody");
     var myBookingsBtn = document.getElementById("myBookingsBtn");
     var myBookingsDropdown = document.getElementById("myBookingsDropdown");
 
@@ -178,6 +195,7 @@ User profile{% endblock %} {% block content %}
       changePasswordSection.style.display = "none";
       profileSection.style.display = "block";
       addCar.style.display = "none";
+      myCarSection.style.display = "none";
     });
 
     editProfileBtn.addEventListener("click", function () {
@@ -185,6 +203,7 @@ User profile{% endblock %} {% block content %}
       changePasswordSection.style.display = "none";
       profileSection.style.display = "block";
       addCar.style.display = "none";
+      myCarSection.style.display = "none";
     });
 
     changePasswordBtn.addEventListener("click", function () {
@@ -192,6 +211,7 @@ User profile{% endblock %} {% block content %}
       changePasswordSection.style.display = "block";
       profileSection.style.display = "none";
       addCar.style.display = "none";
+      myCarSection.style.display = "none";
     });
 
     addBtn.addEventListener("click", function () {
@@ -199,6 +219,7 @@ User profile{% endblock %} {% block content %}
       changePasswordSection.style.display = "none";
       profileSection.style.display = "block";
       addCar.style.display = "block";
+      myCarSection.style.display = "none";
     });
 
     myCarBtn.addEventListener("click", function () {
@@ -207,10 +228,48 @@ User profile{% endblock %} {% block content %}
       changePasswordSection.style.display = "none";
       profileSection.style.display = "none";
       addCar.style.display = "none";
+      myCarSection.style.display = "block";
 
-    });
+      // Assuming we have an array of car objects with details
+      var cars = [
+        {
+          renterName: "Song ki",
+          contactNumber: "9876543212",
+          carType: "SUV",
+          model: "Toyota RAV4",
+          price: "Rs.40000.00",
+          carImage: "path_to_image.jpg",
+        },
+      ];
+
+      // Clear previous car details
+      carDetailsBody.innerHTML = "";
+
+      // Populate table with car details
+      cars.forEach(function (car) {
+        var row = carDetailsBody.insertRow();
+        row.insertCell().textContent = car.renterName;
+        row.insertCell().textContent = car.contactNumber;
+        row.insertCell().textContent = car.carType;
+        row.insertCell().textContent = car.model;
+        row.insertCell().textContent = car.price;
+
+        var imageCell = row.insertCell();
+        var carImage = document.createElement("img");
+        carImage.src = car.carImage;
+        carImage.style.width = "100px"; // Adjust image width as needed
+        imageCell.appendChild(carImage);
+      });
+   });
 
     myBookingsBtn.addEventListener("click", function () {
+      // Handle my bookings button click
+      editProfileForm.style.display = "none";
+      changePasswordSection.style.display = "none";
+      profileSection.style.display = "none";
+      addCar.style.display = "none";
+      myCarSection.style.display = "none";
+
       // Handle My Bookings button click to toggle dropdown visibility
       if (myBookingsDropdown.style.display === "none") {
         myBookingsDropdown.style.display = "block";
@@ -224,7 +283,20 @@ User profile{% endblock %} {% block content %}
     var approvedBtn = document.getElementById("approvedBtn");
     var completedBtn = document.getElementById("completedBtn");
 
+    pendingBtn.addEventListener("click", function () {
+      // Handle Pending button click
+      
+    });
+
+    approvedBtn.addEventListener("click", function () {
+      // Handle Approved button click
+    });
+
+    completedBtn.addEventListener("click", function () {
+      // Handle Completed button click
+    });
   });
+
 </script>
 
 <style>
@@ -365,6 +437,30 @@ User profile{% endblock %} {% block content %}
       background-color: var(--darkgreen);
   }
 
+  /* CSS for table */
+  #carDetailsTable {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  #carDetailsTable th,
+  #carDetailsTable td {
+    border: 1px solid #dddddd;
+    padding: 8px;
+    text-align: left;
+  }
+
+  #carDetailsTable th {
+    background-color: #f2f2f2;
+  }
+
+  #myCarSection {
+    margin-top: 30px;
+  }
+
+  #carDetailsTable{
+    margin-top: 15px;
+  }
 
 </style>
 {% endblock %}
