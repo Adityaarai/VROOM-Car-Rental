@@ -169,8 +169,15 @@ def user_profile_view(request):
                 for field, errors in form.errors.items():
                     for error in errors:
                         messages.error(request, f"{field}: {error}")
+    
+    # Filter CarDetail objects based on renter_name matching the logged-in user's username
+    cars = CarDetail.objects.filter(renter_name=user.username)
 
-    return render(request, 'main/user_profile.html', {'user': user})
+    if not cars:  # If no cars found for the user
+        message = "You haven't added any cars yet."
+        return render(request, 'main/user_profile.html', {'user': user, 'message': message})
+    else:
+        return render(request, 'main/user_profile.html', {'user': user, 'cars': cars})
 
 @login_required
 def staff_profile_view(request):
@@ -206,13 +213,14 @@ def staff_profile_view(request):
 
     return render(request, 'main/staff_profile.html', {'user': user})
 
+@login_required
 def logout_view(request):
     logout(request)
     return redirect('index')
 
+@login_required
 def add_car(request):
     if request.method == 'POST':
-        renter_name = request.POST.get('renterName')
         contact_number = request.POST.get('contactNumber')
         car_type = request.POST.get('car_type')
         model = request.POST.get('model')
@@ -225,12 +233,12 @@ def add_car(request):
         # Create and save the CarDetail object
         try:
             car = CarDetail.objects.create(
-                renter_name=renter_name,
-                renter_contact=contact_number,  
+                renter_name=user.username,  # Set the renter_name field to the username of the logged-in user
+                renter_contact=contact_number,
                 car_type=car_type,
-                car_model=model,  
+                car_model=model,
                 price=price,
-                image=car_image,  
+                image=car_image,
             )
             # Adding a success message
             messages.success(request, 'Car added successfully.')

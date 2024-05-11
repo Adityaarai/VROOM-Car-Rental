@@ -132,8 +132,6 @@ User profile{% endblock %} {% block content %}
           <h2>Add Car</h2>
           <form id="addCarForm" method="POST" action="{% url 'add_car' %}" enctype="multipart/form-data">
             {% csrf_token %}
-              <label for="renterName">Renter Name:</label><br>
-              <input type="text" id="renterName" name="renterName"><br>
               <label for="contactNumber">Contact Number:</label><br>
               <input type="text" id="contactNumber" name="contactNumber"><br>
               <label for="car_type">Car Type:</label><br>
@@ -151,8 +149,9 @@ User profile{% endblock %} {% block content %}
   </div>
 
   <!-- My Car section -->
-  <div id="myCarSection" class="section" style="display: none;">
+  <div id="myCarSection" class="section">
     <h3>My Cars</h3>
+    {% if cars %}
     <table id="carDetailsTable">
       <thead>
         <tr>
@@ -164,8 +163,28 @@ User profile{% endblock %} {% block content %}
           <th>Car Image</th>
         </tr>
       </thead>
-      <tbody id="carDetailsBody"></tbody>
+      <tbody>
+        {% for car in cars %}
+        <tr>
+          <td>{{ car.renter_name }}</td>
+          <td>{{ car.renter_contact }}</td>
+          <td>{{ car.car_type }}</td>
+          <td>{{ car.car_model }}</td>
+          <td>{{ car.price }}</td>
+          <td>
+            {% if car.image %}
+              <img src="{{ car.image.url }}" alt="Car Image" style="width: 100px;">
+            {% else %}
+              No Image Available
+            {% endif %}
+          </td>
+          </tr>
+        {% endfor %}
+      </tbody>
     </table>
+    {% else %}
+    <p>You haven't added any cars yet.</p>
+    {% endif %}
   </div>
 </div>
 
@@ -186,7 +205,6 @@ User profile{% endblock %} {% block content %}
     var addBtn = document.getElementById("car-add-btn");
     var myCarBtn = document.getElementById("myCarBtn");
     var myCarSection = document.getElementById("myCarSection");
-    var carDetailsBody = document.getElementById("carDetailsBody");
     var myBookingsBtn = document.getElementById("myBookingsBtn");
     var myBookingsDropdown = document.getElementById("myBookingsDropdown");
 
@@ -222,6 +240,32 @@ User profile{% endblock %} {% block content %}
       myCarSection.style.display = "none";
     });
 
+    function validateAddCarForm() {
+      var contactNumber = document.getElementById("contactNumber").value;
+      var carType = document.getElementById("car_type").value;
+      var model = document.getElementById("model").value;
+      var price = document.getElementById("price").value;
+      var carImage = document.getElementById("carImage").value;
+
+      if (!contactNumber || !carType || !model || !price || !carImage) {
+        alert("Please fill in all fields, including the car image.");
+        return false;
+      }
+
+      if (!/^\d{10}$/.test(contactNumber)) {
+        alert("Contact number must be a 10-digit number.");
+        return false;
+      }
+
+      return true;
+    }
+
+    var addCarForm = document.getElementById("addCarForm");
+    addCarForm.addEventListener("submit", function (event) {
+      if (!validateAddCarForm()) {
+        event.preventDefault(); // Prevent form submission if validation fails
+      }
+    });
     myCarBtn.addEventListener("click", function () {
       // Handle My Car button click
       editProfileForm.style.display = "none";
@@ -229,38 +273,7 @@ User profile{% endblock %} {% block content %}
       profileSection.style.display = "none";
       addCar.style.display = "none";
       myCarSection.style.display = "block";
-
-      // Assuming we have an array of car objects with details
-      var cars = [
-        {
-          renterName: "Song ki",
-          contactNumber: "9876543212",
-          carType: "SUV",
-          model: "Toyota RAV4",
-          price: "Rs.40000.00",
-          carImage: "path_to_image.jpg",
-        },
-      ];
-
-      // Clear previous car details
-      carDetailsBody.innerHTML = "";
-
-      // Populate table with car details
-      cars.forEach(function (car) {
-        var row = carDetailsBody.insertRow();
-        row.insertCell().textContent = car.renterName;
-        row.insertCell().textContent = car.contactNumber;
-        row.insertCell().textContent = car.carType;
-        row.insertCell().textContent = car.model;
-        row.insertCell().textContent = car.price;
-
-        var imageCell = row.insertCell();
-        var carImage = document.createElement("img");
-        carImage.src = car.carImage;
-        carImage.style.width = "100px"; // Adjust image width as needed
-        imageCell.appendChild(carImage);
-      });
-   });
+    });
 
     myBookingsBtn.addEventListener("click", function () {
       // Handle my bookings button click
