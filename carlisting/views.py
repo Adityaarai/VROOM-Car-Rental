@@ -23,7 +23,7 @@ def orders(request):
         if existing_order:
           messages.error(request, "You have already placed an order.")
           return redirect('orders')
-          
+
         startdate = request.POST.get('bookingStartDate')
         enddate = request.POST.get('bookingEndDate')
 
@@ -103,9 +103,11 @@ def userprofile(request):
 
 def distributorprofile(request):
   items = CarDetail.objects.all()
+  orders = CarOrder.objects.all()
 
   context = {
     'items': items,
+    'orders': orders,
   }
 
   return render(request, 'main/distributor.html', context)
