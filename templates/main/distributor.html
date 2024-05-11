@@ -1,18 +1,24 @@
-{% extends 'partials/base.html' %} 
-{% load static %} 
-{% block title %} VROOM - Distributor profile{% endblock %}
-{% block content %}
-<div class="container">
-    <!-- main button to navigate between car and booking -->
-    <div class="sidebar">
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VROOM - Distributor Profile</title>
+  </head>
+  <body>
+    <div class="container">
+      <!-- main button to navigate between car and booking -->
+      <div class="sidebar">
         <h1 id="logo">VROOM</h1>
         <ul>
           <li><button id="default-btn">Dashboard</button></li>
           <li><button id="car-btn">Car</button></li>
           <li><button id="booking-btn">Booking</button></li>
         </ul>
-        <button id="logout">Log Out</button>
-    </div>
+        <a href="{% url 'logout' %}">
+          <button id="logout">Log Out</button>
+        </a>
+      </div>
 
       <div class="content">
         <div id="default-content">
@@ -118,61 +124,23 @@
           <table>
             <thead>
               <tr>
-                <th>Booking ID</th>
-                <th>User ID</th>
-                <th>Username</th>
-                <th>Car Model</th>
+                <th>Product</th>
+                <th>Rentee Email</th>
                 <th>Booking Start Date</th>
                 <th>Booking End Date</th>
                 <th>Status</th>
               </tr>
             </thead>
             <tbody>
+              {% for order in orders%}
               <tr>
-                <td>1</td>
-                <td>1</td>
-                <td>JohnDoe</td>
-                <td>Toyota Corolla</td>
-                <td>2024-04-15</td>
-                <td>2024-04-20</td>
-                <td>Active</td>
+                <td>{{ order.product }}</td>
+                <td>{{ order.rentee_email }}</td>
+                <td>{{ order.start_date }}</td>
+                <td>{{ order.end_date }}</td>
+                <td>{{ order.status }}</td>
               </tr>
-              <tr>
-                <td>2</td>
-                <td>2</td>
-                <td>JaneSmith</td>
-                <td>Honda Civic</td>
-                <td>2024-04-18</td>
-                <td>2024-04-25</td>
-                <td>Active</td>
-              </tr>
-              <tr>
-                <td>3</td>
-                <td>3</td>
-                <td>Alex123</td>
-                <td>Ford Mustang</td>
-                <td>2024-04-22</td>
-                <td>2024-04-30</td>
-                <td>Active</td>
-              </tr>
-              <tr>
-                <td>4</td>
-                <td>4</td>
-                <td>Admin1</td>
-                <td>BMW X5</td>
-                <td>2024-04-25</td>
-                <td>2024-05-02</td>
-                <td>Active</td>
-              </tr>
-              <tr>
-                <td>5</td>
-                <td>5</td>
-                <td>TestUser</td>
-                <td>Mercedes Benz C-Class</td>
-                <td>2024-04-28</td>
-                <td>2024-05-05</td>
-                <td>Active</td>
-              </tr>
+              {% endfor %}
             </tbody>
           </table>
 
@@ -407,23 +375,23 @@
     --green: #4caf50;
     --darkgreen: darkgreen;
     --crimson: crimson;
-    --white:#ffffff;
-}
+    --white: #ffffff;
+  }
 
-body {
+  body {
     background-color: var(--white);
     margin: 0;
     padding-top: 0;
     overflow-x: hidden;
     font-family: "Montserrat", sans-serif;
-}
+  }
 
-#logo {
-  color: var(--platinum);
-  padding-top: 50px;
-  text-align: center;
-  font-size: 3rem;
-}
+  #logo {
+    color: var(--platinum);
+    padding-top: 50px;
+    text-align: center;
+    font-size: 3rem;
+  }
 
   .sidebar {
     float: left;
@@ -468,18 +436,17 @@ body {
 
   .sidebar button:hover {
     background-color: var(--indigo);
-}
+  }
 
-#logout {
-  bottom: 0;
-  left: 0;
-  background-color: var(--red); /* Example background color */
-}
+  #logout {
+    bottom: 0;
+    left: 0;
+    background-color: var(--red); /* Example background color */
+  }
 
-#logout:hover {
-  background-color: var(--crimson); /* Example hover background color */
-}
-
+  #logout:hover {
+    background-color: var(--crimson); /* Example hover background color */
+  }
 
   #default-content #card {
     display: flex;
