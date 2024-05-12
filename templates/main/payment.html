@@ -8,10 +8,12 @@ Payment! VROOM {% endblock %} {% block content%}
       </div>
       <div class="car-details">
         <h2>Car Details</h2>
-        <p><strong>Model:</strong> Toyota Camry</p>
-        <p><strong>Price:</strong> $50 per day</p>
-        <p><strong>Pickup Date:</strong> <label type="date" id="pick-date">2024/00/00</p>
-        <p><strong>Drop-off Date:</strong> <label type="date" id="drop-date">2024/00/00</p>
+        <div class="inner-car-details">
+          <p><strong>Model:</strong> </p><p id="model">Toyota Corolla</p>
+          <p><strong>Price:</strong> </p><p id="price">NPR. 10000/day</p>
+          <p><strong>Pickup Date:</strong></p> <label type="date" id="pick-date">2024/00/00</label>
+          <p><strong>Drop-off Date:</strong></p> <label type="date" id="drop-date">2024/00/00</label>
+        </div>
       </div>
       <div class="payment-form">
         <h2>Payment Information</h2>
@@ -89,7 +91,11 @@ Payment! VROOM {% endblock %} {% block content%}
       display: grid;
       grid-template-columns: 40vw 30vw 20vw;
       gap: 20px;
-      margin-bottom: 13.5vh;
+      margin-bottom: 11.9vh;
+    }
+
+    #inner-car-details{
+      padding-left: 100px;
     }
 
     .car-details, .payment-form {
