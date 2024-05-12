@@ -20,7 +20,7 @@
             />
             <ul class="dropdown-menu">
               {% if user.is_staff %}
-              <li><a href="{% url 'staff_profile' %}">My Profile</a></li>
+              <li><a href="{% url 'distributor_profile' %}">My Profile</a></li>
               {% elif user.is_staff and user.is_superuser %}
               <li><a href="{% url 'admin_profile' %}">My Profile</a></li>
               {% else %}
