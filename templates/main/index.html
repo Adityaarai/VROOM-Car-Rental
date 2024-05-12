@@ -24,15 +24,15 @@
         <div class="login-form">
           <span class="close" onclick="closePopup()">&times;</span>
           <h2>Login</h2>
-          <form id="signin-form" method="post">
+          <form id="login-form" method="post" action="{% url 'login' %}">
             {% csrf_token %}
             <div class="form-group">
-              <label for="email">Email</label><br>
+              <label for="username_or_email">Username or Email</label><br>
               <input
-                type="email"
-                name="email"
-                id="email"
-                placeholder="Enter your email"
+                type="text"
+                name="username_or_email"
+                id="username_or_email"
+                placeholder="Enter your username or email"
                 required
               />
             </div>
@@ -189,6 +189,7 @@
     <li>Strive to exceed your expectations.</li>
   </ol>
 </div>
+
 {% if not user.is_authenticated %}
 <script>
   const bookBtn = document.getElementById("bookBtn");
