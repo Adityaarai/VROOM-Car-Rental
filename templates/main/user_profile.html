@@ -39,7 +39,10 @@ User profile{% endblock %} {% block content %}
       <p style="margin-bottom: 10px">
         Email: <span id="email">{{ user.email }}</span>
       </p>
-      <button class="button" id="editProfileBtn">Edit Profile</button><button id="car-add-btn">Add Car</button>
+      <button class="button" id="editProfileBtn">Edit Profile</button>
+      <button id="car-add-btn">Add Car</button>
+      <button id="removeCarBtn">Remove Car</button>
+
       <div id="editProfileForm" style="display: none">
         <!-- Edit Profile form -->
         <form
@@ -147,6 +150,50 @@ User profile{% endblock %} {% block content %}
       </div>
   </div>
 
+<!-- Remove Car section -->
+<div id="removeCarSection" class="section" style="display: none;">
+  <h3>My Cars</h3>
+  {% if cars %}
+  <table id="removeCarDetailsTable">
+    <thead>
+      <tr>
+        <th>Renter Name</th>
+        <th>Contact Number</th>
+        <th>Car Type</th>
+        <th>Model</th>
+        <th>Price</th>
+        <th>Car Image</th>
+        <th>Action</th> <!-- Add Action column for Remove button -->
+      </tr>
+    </thead>
+    <tbody>
+      {% for car in cars %}
+      <tr>
+        <td>{{ car.renter_name }}</td>
+        <td>{{ car.renter_contact }}</td>
+        <td>{{ car.car_type }}</td>
+        <td>{{ car.car_model }}</td>
+        <td>{{ car.price }}</td>
+        <td>
+          {% if car.image %}
+            <img src="{{ car.image.url }}" alt="Car Image" style="width: 100px;">
+          {% else %}
+            No Image Available
+          {% endif %}
+        </td>
+        <td>
+          <button class="removeCarDetailsButton" data-car-id="{{ car.id }}">Remove</button> <!-- Add Remove button -->
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p>You haven't added any cars yet.</p>
+  {% endif %}
+</div>
+
+
   <!-- My Car section -->
   <div id="myCarSection" class="section" style="display: none;">
     <h3>My Cars</h3>
@@ -233,6 +280,7 @@ User profile{% endblock %} {% block content %}
     var approvedBtn = document.getElementById("approvedBtn");
     var paymentBtn = document.getElementById("paymentBtn");
     var completedBtn = document.getElementById("completedBtn");
+    var removeCarBtn = document.getElementById('removeCarBtn');
 
     profileBtn.addEventListener("click", function () {
       editProfileForm.style.display = "none";
@@ -242,6 +290,7 @@ User profile{% endblock %} {% block content %}
       myCarSection.style.display = "none";
       myBookingsDropdown.style.display = "none";
       myBookingsSection.style.display = "none";
+      removeCarSection.style.display = "none";
     });
 
     editProfileBtn.addEventListener("click", function () {
@@ -252,6 +301,7 @@ User profile{% endblock %} {% block content %}
       myCarSection.style.display = "none";
       myBookingsDropdown.style.display = "none";
       myBookingsSection.style.display = "none";
+      removeCarSection.style.display = "none";
     });
 
     changePasswordBtn.addEventListener("click", function () {
@@ -262,6 +312,7 @@ User profile{% endblock %} {% block content %}
       myCarSection.style.display = "none";
       myBookingsDropdown.style.display = "none";
       myBookingsSection.style.display = "none";
+      removeCarSection.style.display = "none";
     });
 
     addBtn.addEventListener("click", function () {
@@ -271,6 +322,7 @@ User profile{% endblock %} {% block content %}
       addCar.style.display = "block";
       myCarSection.style.display = "none";
       myBookingsDropdown.style.display = "none";
+      removeCarSection.style.display = "none";
     });
 
     function validateAddCarForm() {
@@ -300,6 +352,18 @@ User profile{% endblock %} {% block content %}
       }
     });
     
+    // Event listener for Remove Car button
+    removeCarBtn.addEventListener("click", function () {
+      editProfileForm.style.display = "none";
+      changePasswordSection.style.display = "none";
+      profileSection.style.display = "block";
+      addCar.style.display = "none";
+      myCarSection.style.display = "none";
+      myBookingsDropdown.style.display = "none";
+      myBookingsSection.style.display = "none";
+      removeCarSection.style.display = "block";
+    });
+
     myCarBtn.addEventListener("click", function () {
       // Handle My Car button click
       editProfileForm.style.display = "none";
@@ -309,6 +373,7 @@ User profile{% endblock %} {% block content %}
       myCarSection.style.display = "block";
       myBookingsSection.style.display = "none";
       myBookingsDropdown.style.display = "none";
+      removeCarSection.style.display = "none";
     });
 
     // Define the displayBookings function outside of the event listener
@@ -343,6 +408,7 @@ User profile{% endblock %} {% block content %}
       profileSection.style.display = "none";
       addCar.style.display = "none";
       myCarSection.style.display = "none";
+      removeCarSection.style.display = "none";
 
       // Sample data for bookings (simulating backend response)
       const bookingsData = {
@@ -651,5 +717,116 @@ User profile{% endblock %} {% block content %}
 #paymentButton:active {
   background-color: var(--lapis);
 }
+
+/* Adjusting the margin-top for the Remove Car section */
+#removeCarSection {
+  margin-top: 20px;
+}
+
+#removeCarBtn {
+  margin-top: 2vh;
+  background-color: var(--lapis);
+  padding: 8px 27px;
+  border: none;
+  color: var(--white);
+  cursor: pointer;
+  border-radius: 5px;
+  margin-left: 10px;
+  font-size: medium;
+}
+
+#removeCarDetailsTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#removeCarDetailsTable th,
+#removeCarDetailsTable td {
+  border: 1px solid #dddddd;
+  padding: 8px;
+  text-align: left;
+}
+
+#removeCarDetailsTable th {
+  background-color: #f2f2f2;
+}
+
+#removeCarDetailsTable{
+  margin-top: 15px;
+}
+
+.removeCarDetailsButton {
+  padding: 10px 20px; /* Increase padding for larger button size */
+  background-color: var(--red); /* Change background color */
+  color: var(--white); /* Change text color */
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: medium;
+  transition: background-color 0.3s ease; /* Add transition for hover effect */
+}
+
+.removeCarDetailsButton:hover {
+  background-color: var(--crimson); /* Change background color on hover */
+}
+
+#removeCarConfirmation {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: var(--platinum); /* Semi-transparent black background */
+  width: 400px; /* Adjust width as needed */
+  padding: 20px;
+  border-radius: 10px;
+  z-index: 1000; /* Ensure it's above other content */
+  border: 5px solid var(--lapis); /* Decreased border size and changed border color */
+
+}
+
+.popup-content {
+  text-align: center;
+  background-color: var(--platinum); 
+  padding: 20px;
+  border-radius: 10px;
+  color: var(--indigo); /* Text color */
+}
+
+.popup-content h2 {
+  margin-top: 0;
+}
+
+.popup-content p {
+  margin-bottom: 20px;
+}
+
+.close {
+  position: absolute;
+  top: 2px;
+  right: 15px;
+  color: var(--indigo); /* Close button color */
+  font-size: 30px;
+  cursor: pointer;
+}
+
+/* Styling for buttons */
+#confirmRemoveCar,
+#removeCarConfirmation button {
+  padding: 12px 24px; /* Increased padding for larger buttons */
+  background-color: var(--lapis); /* Button background color */
+  color: var(--platinum); /* Button text color */
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: medium; /* Increased font size */
+  margin-right: 10px;
+}
+
+#confirmRemoveCar:hover,
+#removeCarConfirmation button:hover {
+  background-color: var(--indigo); /* Button background color on hover */
+}
+
 </style>
 {% endblock %}

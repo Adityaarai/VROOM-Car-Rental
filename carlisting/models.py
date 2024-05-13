@@ -28,7 +28,7 @@ class CarDetail(models.Model):
     car_type = models.CharField(max_length=100, choices=CAR_TYPE, null=True)
     car_model = models.CharField(max_length=100, null=True)
     price = models.DecimalField(decimal_places=2, max_digits=10, null=True)
-    availability = models.CharField(max_length=20, choices=AVAILABILITY, null=True, default='Unlisted')
+    availability = models.CharField(max_length=20, choices=AVAILABILITY, null=True, default='Available')
     image = models.ImageField(default='static/img/lambo.jpg', upload_to='static/img/car_images')
 
     # display what is shown in the product name
