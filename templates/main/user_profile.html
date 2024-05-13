@@ -193,6 +193,18 @@ User profile{% endblock %} {% block content %}
   {% endif %}
 </div>
 
+<!-- Popup for Remove Car Confirmation -->
+<div id="removeCarConfirmation" class="popup" style="display: none;">
+  <div class="popup-content">
+    <span class="close" onclick="closePopup('removeCarConfirmation')">&times;</span>
+    <h2>Remove Car</h2>
+    <p>Are you sure you want to remove this car?</p>
+    <button id="confirmRemoveCar">Yes</button>
+    <button onclick="closePopup('removeCarConfirmation')">No</button>
+  </div>
+</div>
+  
+
 
   <!-- My Car section -->
   <div id="myCarSection" class="section" style="display: none;">
@@ -362,6 +374,17 @@ User profile{% endblock %} {% block content %}
       myBookingsDropdown.style.display = "none";
       myBookingsSection.style.display = "none";
       removeCarSection.style.display = "block";
+    });
+
+    // Event listener for Remove button in Remove Car Details table
+    document.querySelectorAll('.removeCarDetailsButton').forEach(button => {
+      button.addEventListener('click', function () {
+          document.getElementById('removeCarConfirmation').style.display = 'block';
+          document.getElementById('confirmRemoveCar').addEventListener('click', function () {
+              removeCarFromTable(this.getAttribute('data-car-id'));
+              closePopup('removeCarConfirmation');
+            });
+        });
     });
 
     myCarBtn.addEventListener("click", function () {
@@ -776,8 +799,8 @@ User profile{% endblock %} {% block content %}
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: var(--platinum); /* Semi-transparent black background */
-  width: 400px; /* Adjust width as needed */
+  background-color: #ffff; /* Semi-transparent white background */
+  width: 400px; 
   padding: 20px;
   border-radius: 10px;
   z-index: 1000; /* Ensure it's above other content */
@@ -787,7 +810,7 @@ User profile{% endblock %} {% block content %}
 
 .popup-content {
   text-align: center;
-  background-color: var(--platinum); 
+  background-color: #ffff; 
   padding: 20px;
   border-radius: 10px;
   color: var(--indigo); /* Text color */
