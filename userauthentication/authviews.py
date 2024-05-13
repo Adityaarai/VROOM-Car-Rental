@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.contrib import messages
@@ -17,7 +17,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
 from .forms import UserProfileForm 
 from django.contrib.auth import update_session_auth_hash
-from carlisting.models import CarDetail
+from carlisting.models import CarDetail, CarOrder
 
 
 # Create your views here.
@@ -145,6 +145,9 @@ def activate(request, uidb64, token):
 @login_required
 def user_profile_view(request):
     user = request.user
+
+    # Retrieve logged-in user's email
+    user_email = request.user.email
     
     if request.method == 'POST':
         form = PasswordChangeForm(user, request.POST)
@@ -177,45 +180,14 @@ def user_profile_view(request):
     # Filter CarDetail objects based on renter_name matching the logged-in user's username
     cars = CarDetail.objects.filter(renter_name=user.username)
 
+    # Filter bookings based on user's email and status ("Pending")
+    pending_bookings = CarOrder.objects.filter(rentee_email=user_email, status='Pending')
+
     if not cars:  # If no cars found for the user
         message = "You haven't added any cars yet."
         return render(request, 'main/user_profile.html', {'user': user, 'message': message})
     else:
-        return render(request, 'main/user_profile.html', {'user': user, 'cars': cars})
-
-# View for handling staff profile
-def staff_profile_view(request):
-    user = request.user
-    
-    if request.method == 'POST':
-        form = PasswordChangeForm(user, request.POST)
-
-        if 'update_profile' in request.POST:  # Check if the profile update form is submitted
-            profile_form = UserProfileForm(request.POST, instance=user)
-            if profile_form.is_valid():
-                profile_form.save()
-                messages.success(request, "Profile information updated successfully.")
-            else:
-                messages.error(request, "Failed to update profile information. Please check the provided data.")
-            
-            # Update username if it's changed 
-            new_username = request.POST.get('username')
-            if new_username != user.username:
-                user.username = new_username
-                user.save()
-
-        elif 'change_password' in request.POST:  # Check if the change password form is submitted
-            form = PasswordChangeForm(user, request.POST)
-            if form.is_valid():
-                form.save()
-                update_session_auth_hash(request, form.user)
-                messages.success(request, "Password updated successfully.")
-            else:
-                for field, errors in form.errors.items():
-                    for error in errors:
-                        messages.error(request, f"{field}: {error}")
-
-    return render(request, 'main/staff_profile.html', {'user': user})
+        return render(request, 'main/user_profile.html', {'user': user, 'cars': cars, 'pending_bookings': pending_bookings})
 
 # View for logging out
 @login_required
@@ -256,6 +228,23 @@ def add_car(request):
     
     return render(request, 'user_profile.html')
 
+# View for removing cars
+@login_required
+def remove_car(request):
+    if request.method == 'POST':
+        car_id = request.POST.get('car_id')
+        if car_id:
+            try:
+                car = get_object_or_404(CarDetail, id=car_id)
+                car.delete()
+                # Adding a success message
+                messages.success(request, 'Car successfully removed.')
+            except:
+                # Adding an error message
+                messages.error(request, 'Failed to remove car.')
+    return redirect('user_profile')  # Redirecting to user profile page
+
 # View for payment
 def payment_view(request):
     return render(request, 'main/payment.html')
+
