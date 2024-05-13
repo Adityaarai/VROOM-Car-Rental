@@ -183,11 +183,24 @@ def user_profile_view(request):
     # Filter bookings based on user's email and status ("Pending")
     pending_bookings = CarOrder.objects.filter(rentee_email=user_email, status='Pending')
 
+    # Filter bookings based on user's email and status ("Approved")
+    approved_bookings = CarOrder.objects.filter(rentee_email=user_email, status='Approved')
+
+    # Filter bookings based on user's email and status ("Paid")
+    paid_bookings = CarOrder.objects.filter(rentee_email=user_email, status='Paid')
+
+    # Filter bookings based on user's email and status ("Completed")
+    completed_bookings = CarOrder.objects.filter(rentee_email=user_email, status='Completed')
+
     if not cars:  # If no cars found for the user
         message = "You haven't added any cars yet."
         return render(request, 'main/user_profile.html', {'user': user, 'message': message})
     else:
-        return render(request, 'main/user_profile.html', {'user': user, 'cars': cars, 'pending_bookings': pending_bookings})
+        return render(request, 'main/user_profile.html', {'user': user, 'cars': cars, 
+        'pending_bookings': pending_bookings,
+        'approved_bookings': approved_bookings,
+        'paid_bookings': paid_bookings,
+        'completed_bookings': completed_bookings})
 
 # View for logging out
 @login_required
