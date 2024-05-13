@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, HttpResponse
 from django.urls import reverse
 from django.http import HttpResponseRedirect
 from .models import CarDetail, CarOrder, User
+from userauthentication.models import Profile
 from django.contrib import messages
 from django.contrib.auth import authenticate, login as auth_login, logout
      
@@ -113,10 +114,10 @@ def distributorprofile(request):
   return render(request, 'main/distributor.html', context)
 
 def adminprofile(request):
-  users = User.objects.all()
+  user_details = Profile.objects.all()
 
   context = {
-    'users': users,
+    'user_details': user_details,
   }
 
   return render(request, 'main/admin.html', context)
