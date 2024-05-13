@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.contrib import messages
@@ -18,6 +18,7 @@ from django.contrib.auth.forms import PasswordChangeForm
 from .forms import UserProfileForm 
 from django.contrib.auth import update_session_auth_hash
 from carlisting.models import CarDetail
+
 
 
 # Create your views here.
@@ -255,6 +256,22 @@ def add_car(request):
         return redirect('user_profile')  # Redirecting to user profile page
     
     return render(request, 'user_profile.html')
+
+# View for removing cars
+@login_required
+def remove_car(request):
+    if request.method == 'POST':
+        car_id = request.POST.get('car_id')
+        if car_id:
+            try:
+                car = get_object_or_404(CarDetail, id=car_id)
+                car.delete()
+                # Adding a success message
+                messages.success(request, 'Car successfully removed.')
+            except:
+                # Adding an error message
+                messages.error(request, 'Failed to remove car.')
+    return redirect('user_profile')  # Redirecting to user profile page
 
 # View for payment
 def payment_view(request):

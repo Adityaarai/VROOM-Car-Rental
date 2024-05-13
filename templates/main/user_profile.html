@@ -199,12 +199,14 @@ User profile{% endblock %} {% block content %}
     <span class="close" onclick="closePopup('removeCarConfirmation')">&times;</span>
     <h2>Remove Car</h2>
     <p>Are you sure you want to remove this car?</p>
-    <button id="confirmRemoveCar">Yes</button>
-    <button onclick="closePopup('removeCarConfirmation')">No</button>
+    <form id="removeCarForm" method="POST" action="{% url 'remove_car' %}">
+      {% csrf_token %}
+      <input type="hidden" name="car_id" id="carIdInput">
+      <button type="submit">Yes</button>
+      <button type="button" onclick="closePopup('removeCarConfirmation')">No</button>
+    </form>
   </div>
 </div>
-  
-
 
   <!-- My Car section -->
   <div id="myCarSection" class="section" style="display: none;">
@@ -375,17 +377,18 @@ User profile{% endblock %} {% block content %}
       myBookingsSection.style.display = "none";
       removeCarSection.style.display = "block";
     });
-
+    
     // Event listener for Remove button in Remove Car Details table
-    document.querySelectorAll('.removeCarDetailsButton').forEach(button => {
+    document.querySelectorAll('.removeCarDetailsButton').forEach(button => { 
       button.addEventListener('click', function () {
-          document.getElementById('removeCarConfirmation').style.display = 'block';
-          document.getElementById('confirmRemoveCar').addEventListener('click', function () {
-              removeCarFromTable(this.getAttribute('data-car-id'));
-              closePopup('removeCarConfirmation');
-            });
-        });
+        const carId = this.getAttribute('data-car-id');
+        // Set the value of the hidden input field in the form
+        document.getElementById('carIdInput').value = carId;
+        // Show the confirmation popup
+        document.getElementById('removeCarConfirmation').style.display = 'block';
+      });
     });
+
 
     myCarBtn.addEventListener("click", function () {
       // Handle My Car button click

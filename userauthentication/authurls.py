@@ -22,6 +22,9 @@ urlpatterns = [
          name="password_reset_complete"),
     
     path('add_car/', authviews.add_car, name='add_car'),
+    path('remove_car/', authviews.remove_car, name='remove_car'),
     path('user/profile/payment_view/', authviews.payment_view, name='payment_view'),
+
+
 
 ]
