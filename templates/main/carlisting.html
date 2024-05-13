@@ -14,7 +14,7 @@ Carlisting! VROOM {% endblock %} {% block content%}
 
   <div class="cards-container">
     <!-- Cards will be dynamically added here -->
-    {% for item in items %} {% if item.availability %}
+    {% for item in items %}
     <div class="card">
       <div class="availability-container">
         <a class="availability">Available</a>
@@ -23,6 +23,7 @@ Carlisting! VROOM {% endblock %} {% block content%}
       <div class="card-text">
         <div class="card-details">
           <h2 class="car-model">{{ item.car_model }}</h2>
+          <h2 class="availability">{{ item.availability }}</h2>
           <!-- <h4 class="renter-name">{{ item.renter_name }}</h4> -->
           <h3 class="car-type">{{ item.car_type }}</h3>
           <h4 class="car-price">Rs {{ item.price }} / day</h4>
@@ -34,7 +35,7 @@ Carlisting! VROOM {% endblock %} {% block content%}
         </div>
       </div>
     </div>
-    {% endif %} {% endfor %}
+    {% endfor %}
   </div>
 
 
