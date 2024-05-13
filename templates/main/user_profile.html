@@ -20,7 +20,8 @@ User profile{% endblock %} {% block content %}
     <div id="myBookingsDropdown" style="display: none;">
       <button class="dropdown-btn1" id="pendingBtn">Pending</button>
       <button class="dropdown-btn2" id="approvedBtn">Approved</button>
-      <button class="dropdown-btn3" id="completedBtn">Completed</button>
+      <button class="dropdown-btn3" id="paidBtn">Paid</button>
+      <button class="dropdown-btn4" id="completedBtn">Completed</button>
       
     </div>
 
@@ -247,9 +248,10 @@ User profile{% endblock %} {% block content %}
     {% endif %}
   </div>
 
-  <!-- My Bookings section -->
+  <!-- My Bookings section --> 
   <div id="myBookingsSection" class="section" style="display: none;">
     <h3>My Bookings</h3>
+    {% if pending_bookings %}
     <table id="bookingDetailsTable">
       <thead>
         <tr>
@@ -260,9 +262,17 @@ User profile{% endblock %} {% block content %}
         </tr>
       </thead>
       <tbody id="bookingDetailsBody">
-        <!-- Booking details will be dynamically added here -->
+        {% for booking in pending_bookings %}
+        <tr>
+          <td>{{ booking.product }}</td>
+          <td>{{ booking.start_date }}</td>
+          <td>{{ booking.end_date }}</td>
+          <td>{{ booking.status }}</td>
+        </tr>
+        {% endfor %}
       </tbody>
     </table>
+
 
     <!-- Payment button -->
     <button id="paymentButton" style="display: none;">Payment</button>
@@ -452,9 +462,6 @@ User profile{% endblock %} {% block content %}
 
     // Event listener for dropdown buttons
     pendingBtn.addEventListener("click", function () {
-      // Call displayBookings function with pending bookings data
-      displayBookings(bookingsData.pending);
-
       // Show the My Bookings section
       document.getElementById("myBookingsSection").style.display = "block";
 
@@ -484,6 +491,17 @@ User profile{% endblock %} {% block content %}
       // Redirect to the payment page
       window.location.href = "payment_view/";
     });
+
+    paidBtn.addEventListener("click", function () {
+      // Call displayBookings function with paid bookings data
+      displayBookings(bookingsData.paid);
+
+      // Show the My Bookings section
+      document.getElementById("myBookingsSection").style.display = "block";
+
+      // Hide payment button
+      document.getElementById("paymentButton").style.display = "none";
+   });
 
     completedBtn.addEventListener("click", function () {
       // Call displayBookings function with completed bookings data
@@ -694,7 +712,8 @@ User profile{% endblock %} {% block content %}
 /* CSS for dropdown buttons */
 .dropdown-btn1,
 .dropdown-btn2,
-.dropdown-btn3 {
+.dropdown-btn3,
+.dropdown-btn4 {
   padding: 11px 22px; /* Increasing padding to make the buttons wider */
   margin-right: 15px; /* Adjusting margin to provide spacing between buttons */
   border: 1px solid var(--indigo); /* Adding border for better visibility */
@@ -708,7 +727,8 @@ User profile{% endblock %} {% block content %}
 /* Hover effect */
 .dropdown-btn1:hover,
 .dropdown-btn2:hover,
-.dropdown-btn3:hover {
+.dropdown-btn3:hover,
+.dropdown-btn4:hover {
   background-color: var(--indigo);
   color: var(--platinum);
 }
@@ -716,6 +736,7 @@ User profile{% endblock %} {% block content %}
 /* Active state */
 .dropdown-btn1:active,
 .dropdown-btn2:active,
+.dropdown-btn3:active,
 .dropdown-btn3:active {
   background-color: var(--lapis);
 }
