@@ -248,6 +248,7 @@ User profile{% endblock %} {% block content %}
     {% endif %}
   </div>
 
+  <!--Pending Bookings Section-->
   <div id="pendingSection" class="section" style="display: none;">
     <h3>Pending Bookings</h3>
     {% if pending_bookings %}
@@ -278,6 +279,71 @@ User profile{% endblock %} {% block content %}
     {% endif %}
   </div>
    
+  <!--Approved Bookings Section-->
+  <div id="approvedSection" class="section" style="display: none;">
+    <h3>Approved Bookings</h3>
+    {% if approved_bookings %}
+    <table id="approvedBookingDetailsTable">
+      <thead>
+        <tr>
+          <th>Car</th>
+          <th>Distributor Name</th>
+          <th>Start Date</th>
+          <th>End Date</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for booking in approved_bookings %}
+        <tr>
+          <td>{{ booking.product }}</td>
+          <td>{{ booking.distributor }}</td>
+          <td>{{ booking.start_date }}</td>
+          <td>{{ booking.end_date }}</td>
+          <td>{{ booking.status }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <p>You don't have any approved bookings.</p>
+    {% endif %}
+    <!-- Payment button -->
+    <button class="paymentButton" id="paymentButton">Payment</button>
+  </div>
+
+  <!-- Paid Bookings Section -->
+  <div id="paidSection" class="section" style="display: none;">
+    <h3>Paid Bookings</h3>
+    {% if paid_bookings %}
+    <table id="paidBookingDetailsTable">
+      <thead>
+        <tr>
+          <th>Car</th>
+          <th>Distributor Name</th>
+          <th>Start Date</th>
+          <th>End Date</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for booking in paid_bookings %}
+        <tr>
+          <td>{{ booking.product }}</td>
+          <td>{{ booking.distributor }}</td>
+          <td>{{ booking.start_date }}</td>
+          <td>{{ booking.end_date }}</td>
+          <td>{{ booking.status }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <p>You don't have any paid bookings.</p>
+    {% endif %}
+  </div>
+
+
 </div>
 
 <script>
@@ -301,7 +367,7 @@ User profile{% endblock %} {% block content %}
     var myBookingsDropdown = document.getElementById("myBookingsDropdown");
     var pendingBtn = document.getElementById("pendingBtn");
     var approvedBtn = document.getElementById("approvedBtn");
-    var paymentBtn = document.getElementById("paymentBtn");
+    var paymentBtn = document.getElementById("paymentButton");
     var paidBtn = document.getElementById("paidBtn");
     var completedBtn = document.getElementById("completedBtn");
     var removeCarBtn = document.getElementById('removeCarBtn');
@@ -314,6 +380,9 @@ User profile{% endblock %} {% block content %}
       myCarSection.style.display = "none";
       myBookingsDropdown.style.display = "none";
       removeCarSection.style.display = "none";
+      pendingSection.style.display = "none";
+      approvedSection.style.display = "none";
+      paidSection.style.display = "none";
     });
 
     editProfileBtn.addEventListener("click", function () {
@@ -324,6 +393,9 @@ User profile{% endblock %} {% block content %}
       myCarSection.style.display = "none";
       myBookingsDropdown.style.display = "none";
       removeCarSection.style.display = "none";
+      pendingSection.style.display = "none";
+      approvedSection.style.display = "none";
+      paidSection.style.display = "none";
     });
 
     changePasswordBtn.addEventListener("click", function () {
@@ -334,6 +406,9 @@ User profile{% endblock %} {% block content %}
       myCarSection.style.display = "none";
       myBookingsDropdown.style.display = "none";
       removeCarSection.style.display = "none";
+      pendingSection.style.display = "none";
+      approvedSection.style.display = "none";
+      paidSection.style.display = "none";
     });
 
     addBtn.addEventListener("click", function () {
@@ -344,6 +419,9 @@ User profile{% endblock %} {% block content %}
       myCarSection.style.display = "none";
       myBookingsDropdown.style.display = "none";
       removeCarSection.style.display = "none";
+      pendingSection.style.display = "none";
+      approvedSection.style.display = "none";
+      paidSection.style.display = "none";
     });
 
     function validateAddCarForm() {
@@ -380,7 +458,10 @@ User profile{% endblock %} {% block content %}
       profileSection.style.display = "block";
       addCar.style.display = "none";
       myCarSection.style.display = "none";
-      myBookingsDropdown.style.display = "none"; 
+      myBookingsDropdown.style.display = "none";                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            removeCarSection.style.display = "block";
+      pendingSection.style.display = "none";
+      approvedSection.style.display = "none";
+      paidSection.style.display = "none";
     });
     
     // Event listener for Remove button in Remove Car Details table
@@ -404,9 +485,10 @@ User profile{% endblock %} {% block content %}
       myCarSection.style.display = "block";
       myBookingsDropdown.style.display = "none";
       removeCarSection.style.display = "none";
+      pendingSection.style.display = "none";
+      approvedSection.style.display = "none";
+      paidSection.style.display = "none"
     });
-
-
 
     // Event listener for My Bookings button
     myBookingsBtn.addEventListener("click", function () {
@@ -430,8 +512,34 @@ User profile{% endblock %} {% block content %}
       pendingBtn.addEventListener("click", function () {
         // Show pending section, hide others
         document.getElementById("pendingSection").style.display = "block";
+        document.getElementById("approvedSection").style.display = "none";
+        document.getElementById("paidSection").style.display = "none";
+
+
       });
 
+      // Event listener for dropdown buttons
+      approvedBtn.addEventListener("click", function () {
+        // Show pending section, hide others
+        document.getElementById("approvedSection").style.display = "block";
+        document.getElementById("pendingSection").style.display = "none";
+        document.getElementById("paidSection").style.display = "none";
+
+      });
+    });
+
+    // Event listener for Payment button
+    paymentBtn.addEventListener("click", function () {
+      // Redirect to the payment page
+      window.location.href = "payment.html";
+    });
+
+    // Event listener for the Paid Bookings section
+    paidBtn.addEventListener("click", function () {
+      // Show paid section, hide others
+      document.getElementById("paidSection").style.display = "block";
+      document.getElementById("pendingSection").style.display = "none";
+      document.getElementById("approvedSection").style.display = "none";
     });
   });
 
@@ -674,7 +782,7 @@ User profile{% endblock %} {% block content %}
 }
 
 /* Hover effect */
-#paymentButton {
+#paymentButton:hover {
   background-color: var(--indigo);
   color: var(--platinum);
 }
@@ -794,23 +902,28 @@ User profile{% endblock %} {% block content %}
   background-color: var(--indigo); /* Button background color on hover */
 }
 
-#pendingBookingDetailsTable, #approvedBookingDetailsTable {
+#pendingBookingDetailsTable, #approvedBookingDetailsTable,
+#paidBookingDetailsTable {
     width: 100%;
     border-collapse: collapse;
   }
 
   #pendingBookingDetailsTable th, #approvedBookingDetailsTable th,
-  #pendingBookingDetailsTable td, #approvedBookingDetailsTable td {
+  #paidBookingDetailsTable th,
+  #pendingBookingDetailsTable td, #approvedBookingDetailsTable td,
+  #paidBookingDetailsTable td {
     border: 1px solid #dddddd;
     padding: 8px;
     text-align: left;
   }
 
-  #pendingBookingDetailsTable th, #approvedBookingDetailsTable th {
+  #pendingBookingDetailsTable th, #approvedBookingDetailsTable th,
+  #paidBookingDetailsTable th {
     background-color: #f2f2f2;
   }
 
-  #pendingBookingDetailsTable, #approvedBookingDetailsTable{
+  #pendingBookingDetailsTable, #approvedBookingDetailsTable,
+  #paidBookingDetailsTable{
     margin-top: 15px;
   }
 
