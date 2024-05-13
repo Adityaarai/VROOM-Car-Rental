@@ -8,7 +8,6 @@ urlpatterns = [
     path('login/', authviews.login, name='login'),  
     path('activate/<uidb64>/<token>/', authviews.activate, name='activate'),
     path('user/profile/', authviews.user_profile_view, name='user_profile'),
-    path('staff/profile/', authviews.staff_profile_view, name='staff_profile'),
     path('logout/', authviews.logout_view, name='logout'),
 
     # URLs for password reset using Django's built-in views
@@ -22,6 +21,9 @@ urlpatterns = [
          name="password_reset_complete"),
     
     path('add_car/', authviews.add_car, name='add_car'),
+    path('remove_car/', authviews.remove_car, name='remove_car'),
     path('user/profile/payment_view/', authviews.payment_view, name='payment_view'),
+
+
 
 ]
