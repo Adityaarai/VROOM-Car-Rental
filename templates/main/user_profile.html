@@ -343,7 +343,36 @@ User profile{% endblock %} {% block content %}
     {% endif %}
   </div>
 
-
+  <!--Completed Bookings Section-->
+  <div id="completedSection" class="section" style="display: none;">
+    <h3>Completed Bookings</h3>
+    {% if completed_bookings %}
+    <table id="completedBookingDetailsTable">
+      <thead>
+        <tr>
+          <th>Car</th>
+          <th>Distributor Name</th>
+          <th>Start Date</th>
+          <th>End Date</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for booking in completed_bookings %}
+        <tr>
+          <td>{{ booking.product }}</td>
+          <td>{{ booking.distributor }}</td>
+          <td>{{ booking.start_date }}</td>
+          <td>{{ booking.end_date }}</td>
+          <td>{{ booking.status }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <p>You don't have any completed bookings.</p>
+    {% endif %}
+  </div>
 </div>
 
 <script>
@@ -383,6 +412,7 @@ User profile{% endblock %} {% block content %}
       pendingSection.style.display = "none";
       approvedSection.style.display = "none";
       paidSection.style.display = "none";
+      completedSection.style.display = "none";
     });
 
     editProfileBtn.addEventListener("click", function () {
@@ -396,6 +426,7 @@ User profile{% endblock %} {% block content %}
       pendingSection.style.display = "none";
       approvedSection.style.display = "none";
       paidSection.style.display = "none";
+      completedSection.style.display = "none";
     });
 
     changePasswordBtn.addEventListener("click", function () {
@@ -409,6 +440,7 @@ User profile{% endblock %} {% block content %}
       pendingSection.style.display = "none";
       approvedSection.style.display = "none";
       paidSection.style.display = "none";
+      completedSection.style.display = "none";
     });
 
     addBtn.addEventListener("click", function () {
@@ -422,6 +454,7 @@ User profile{% endblock %} {% block content %}
       pendingSection.style.display = "none";
       approvedSection.style.display = "none";
       paidSection.style.display = "none";
+      completedSection.style.display = "none";
     });
 
     function validateAddCarForm() {
@@ -462,6 +495,7 @@ User profile{% endblock %} {% block content %}
       pendingSection.style.display = "none";
       approvedSection.style.display = "none";
       paidSection.style.display = "none";
+      completedSection.style.display = "none";
     });
     
     // Event listener for Remove button in Remove Car Details table
@@ -487,7 +521,8 @@ User profile{% endblock %} {% block content %}
       removeCarSection.style.display = "none";
       pendingSection.style.display = "none";
       approvedSection.style.display = "none";
-      paidSection.style.display = "none"
+      paidSection.style.display = "none";
+      completedSection.style.display = "none";
     });
 
     // Event listener for My Bookings button
@@ -514,8 +549,7 @@ User profile{% endblock %} {% block content %}
         document.getElementById("pendingSection").style.display = "block";
         document.getElementById("approvedSection").style.display = "none";
         document.getElementById("paidSection").style.display = "none";
-
-
+        document.getElementById("completedSection").style.display = "none";
       });
 
       // Event listener for dropdown buttons
@@ -524,7 +558,7 @@ User profile{% endblock %} {% block content %}
         document.getElementById("approvedSection").style.display = "block";
         document.getElementById("pendingSection").style.display = "none";
         document.getElementById("paidSection").style.display = "none";
-
+        document.getElementById("completedSection").style.display = "none";
       });
     });
 
@@ -538,6 +572,16 @@ User profile{% endblock %} {% block content %}
     paidBtn.addEventListener("click", function () {
       // Show paid section, hide others
       document.getElementById("paidSection").style.display = "block";
+      document.getElementById("pendingSection").style.display = "none";
+      document.getElementById("approvedSection").style.display = "none";
+      document.getElementById("completedSection").style.display = "none";
+    });
+
+    // Event listener for Completed Bookings button
+    completedBtn.addEventListener("click", function () {
+      // Show completed section, hide others
+      document.getElementById("completedSection").style.display = "block";
+      document.getElementById("paidSection").style.display = "none";
       document.getElementById("pendingSection").style.display = "none";
       document.getElementById("approvedSection").style.display = "none";
     });
@@ -903,27 +947,27 @@ User profile{% endblock %} {% block content %}
 }
 
 #pendingBookingDetailsTable, #approvedBookingDetailsTable,
-#paidBookingDetailsTable {
+#paidBookingDetailsTable, #completedBookingDetailsTable {
     width: 100%;
     border-collapse: collapse;
   }
 
   #pendingBookingDetailsTable th, #approvedBookingDetailsTable th,
-  #paidBookingDetailsTable th,
+  #paidBookingDetailsTable th, #completedBookingDetailsTable th,
   #pendingBookingDetailsTable td, #approvedBookingDetailsTable td,
-  #paidBookingDetailsTable td {
+  #paidBookingDetailsTable td, #completedBookingDetailsTable td {
     border: 1px solid #dddddd;
     padding: 8px;
     text-align: left;
   }
 
   #pendingBookingDetailsTable th, #approvedBookingDetailsTable th,
-  #paidBookingDetailsTable th {
+  #paidBookingDetailsTable th, #completedBookingDetailsTable th {
     background-color: #f2f2f2;
   }
 
   #pendingBookingDetailsTable, #approvedBookingDetailsTable,
-  #paidBookingDetailsTable{
+  #paidBookingDetailsTable, #completedBookingDetailsTable {
     margin-top: 15px;
   }
 
