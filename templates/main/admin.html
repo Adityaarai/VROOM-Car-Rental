@@ -1,301 +1,253 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>VROOM - Admin</title>
-  </head>
-  <body>
-    <div class="container">
-      <!-- main button to navigate between car and booking -->
-      <div class="sidebar">
-        <h1 id="logo">VROOM</h1>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-vWtPOzvV2LtoJMdIo6HfT94oZD8/eeFh0I+1wT6h7ggzmg+7Z0WgVpY+P6r+Qv26" crossorigin="anonymous">
+
+  <title>VROOM - Admin</title>
+</head>
+<body>
+  <div class="container">
+    <!-- main button to navigate between car and booking -->
+    <div class="sidebar">
+      <h1 id="logo">VROOM</h1>
         <ul>
-          <li><button id="default-btn">Dashboard</button></li>
-          <li><button id="distributor-btn">Distributor</button></li>
-          <li><button id="user-btn">User</button></li>
+            <li>
+                <a id="default-btn">
+                    <i class="fas fa-house"></i>
+                    <span id="topic">Dashboard</span>
+                </a>
+            </li>
+            <li>
+                <a id="distributor-btn">
+                    <i class="fas fa-users"></i>
+                    <span id="topic">Distributor</span>
+                </a>
+            </li>
+            <li>
+                <a id="user-btn">
+                    <i class="fas fa-user"></i>
+                    <span id="topic">User</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'logout' %}" id="logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span id="topic">Log Out</span>
+                </a>
+            </li>
         </ul>
-        <a href="{% url 'logout' %}">
-          <button id="logout">Log Out</button>
-        </a>
+    </div>
+  
+  
+
+    <!-- setting count variables -->
+    <script>
+      let totalDistributorCount = 0;
+      let totalUserCount = 0;
+    </script>
+
+    <div class="content">
+      <div id="default-content">
+        <h1>Welcome Admin!!</h1>
+        <!-- Default dashboard content goes here -->
+        {% if messages %}
+        {% for message in messages %}
+        {% if message.tags == 'error' %}
+        <p class="error">{{ message }}</p>
+        {% endif %}
+        {% if message.tags == 'success' %}
+        <p class="success">{{ message }}</p>
+        {% endif %}
+        {% endfor %}
+        {% endif %}
+
+        <div id="card">
+          <div class="card" id="distributor_card">
+            <h3>Distributor Information</h3>
+            <label id="TotalDistributors"></label>
+            <label id="Available">Available:</label><br />
+            <label id="carModels">Models:</label>
+            <label id="carTypes">Types:</label>
+          </div>
+          <div class="card" id="user_card">
+            <h3>User Information</h3>
+            <label id="TotalUsers">Total Users:</label>
+            <label id="approved">Approved:</label><br />
+            <label id="pending">pending:</label>
+            <label id="paid">Paid:</label><br />
+          </div>
+        </div>
       </div>
 
-      <!-- setting count variables -->
-      <script>
-        let totalDistributorCount = 0;
-        let totalUserCount = 0;
-      </script>
-
-      <div class="content">
-        <div id="default-content">
-          <h1>Welcome Admin!!</h1>
-          <!-- Default dashboard content goes here -->
-          {% if messages %} 
-            {% for message in messages %} 
-              {% if message.tags == 'error' %}
-                <p class="error">{{ message }}</p>
-              {% endif %} 
-              {% if message.tags == 'success' %}
-                <p class="success">{{ message }}</p>
-              {% endif %}
-            {% endfor %} 
+      <div id="distributor-content">
+        <h2>Distributor Information</h2>
+        <!-- buttons to add and delete distributor -->
+        <button id="distributor-add-btn">Add</button>
+        <button id="distributor-edit-btn">Edit</button>
+        <button id="distributor-delete-btn">Delete</button>
+        <!-- table to show distributor information -->
+        <table>
+          <tr>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Name</th>
+            <th>Contact Number</th>
+            <th>Location Incharge</th>
+          </tr>
+          {% for user_detail in user_details %}
+          {% if '.vroom@gmail.com' in user_detail.user.email and user_detail.user.is_staff %}
+          <script>
+            totalDistributorCount++;
+          </script>
+          <tr>
+            <td>{{ user_detail.user.username }}</td>
+            <td>{{ user_detail.user.email }}</td>
+            <td>{{ user_detail.user.get_full_name }}</td>
+            <td>{{ user_detail.contact }}</td>
+            <td>{{ user_detail.address }}</td>
+          </tr>
           {% endif %}
+          {% endfor %}
+        </table>
 
-          <div id="card">
-            <div class="card" id="distributor_card">
-              <h3>Distributor Information</h3>
-              <label id="TotalDistributors"></label>
-              <label id="Available">Available:</label><br />
-              <label id="carModels">Models:</label>
-              <label id="carTypes">Types:</label>
-            </div>
-            <div class="card" id="user_card">
-              <h3>User Information</h3>
-              <label id="TotalUsers">Total Users:</label>
-              <label id="approved">Approved:</label><br />
-              <label id="pending">pending:</label>
-              <label id="paid">Paid:</label><br />
-            </div>
+        <!-- popup to add distributor -->
+        <div class="popup" id="addDistributorPopup">
+          <div class="popup-content">
+            <span class="close" onclick="closePopup('addDistributorPopup')">&times;</span>
+            <h2>Add Distributor</h2>
+
+            <form id="addDistributorForm" method="post">
+              {% csrf_token %}
+              <label for="distributorFirstName">First Name:</label><br />
+              <input type="text" id="distributorFirstName" name="distributorFirstName" required /><br />
+
+              <label for="distributorLastName">Last Name:</label><br />
+              <input type="text" id="distributorLastName" name="distributorLastName" required /><br />
+
+              <label for="username">Username:</label><br />
+              <input type="text" id="username" name="username" required /><br />
+
+              <label for="email">Email:</label><br />
+              <input type="email" id="email" name="email" required /><br />
+
+              <label for="location">Location Incharge:</label><br />
+              <input type="text" id="location" name="location" required /><br />
+
+              <label for="password">Password:</label><br />
+              <input type="password" id="password" name="password" required /><br />
+
+              <label for="contactNumber">Contact Number:</label><br />
+              <input type="text" id="contactNumber" name="contactNumber" required /><br />
+
+              <button type="submit" name="addDistributor">
+                Add Distributor
+              </button>
+            </form>
           </div>
         </div>
 
-        <div id="distributor-content">
-          <h2>Distributor Information</h2>
-          <!-- buttons to add and delete distributor -->
-          <button id="distributor-add-btn">Add</button>
-          <button id="distributor-delete-btn">Delete</button>
-          <!-- table to show distributor information -->
-          <table>
-            <tr>
-              <th>Username</th>
-              <th>Email</th>
-              <th>Name</th>
-              <th>Contact Number</th>
-              <th>Location Incharge</th>
-            </tr>
-            {% for user_detail in user_details %} 
-            {% if '.vroom@gmail.com' in user_detail.user.email and user_detail.user.is_staff %}
-            <script>
-              totalDistributorCount++;
-            </script>
-            <tr>
-              <td>{{ user_detail.user.username }}</td>
-              <td>{{ user_detail.user.email }}</td>
-              <td>{{ user_detail.user.get_full_name }}</td>
-              <td>{{ user_detail.contact }}</td>
-              <td>{{ user_detail.address }}</td>
-            </tr>
-            {% endif %} 
-            {% endfor %}
-          </table>
-
-          <!-- popup to add distributor -->
-          <div class="popup" id="addDistributorPopup">
-            <div class="popup-content">
-              <span class="close" onclick="closePopup('addDistributorPopup')"
-                >&times;</span
-              >
-              <h2>Add Distributor</h2>
-
-              <form id="addDistributorForm" method="post">
-                {% csrf_token %}
-                <label for="distributorFirstName">First Name:</label><br />
-                <input
-                  type="text"
-                  id="distributorFirstName"
-                  name="distributorFirstName"
-                  required
-                /><br />
-
-                <label for="distributorLastName">Last Name:</label><br />
-                <input
-                  type="text"
-                  id="distributorLastName"
-                  name="distributorLastName"
-                  required
-                /><br />
-
-                <label for="username">Username:</label><br />
-                <input
-                  type="text"
-                  id="username"
-                  name="username"
-                  required
-                /><br />
-
-                <label for="email">Email:</label><br />
-                <input type="email" id="email" name="email" required /><br />
-
-                <label for="location">Location Incharge:</label><br />
-                <input
-                  type="text"
-                  id="location"
-                  name="location"
-                  required
-                /><br />
-
-                <label for="password">Password:</label><br />
-                <input
-                  type="password"
-                  id="password"
-                  name="password"
-                  required
-                /><br />
-
-                <label for="contactNumber">Contact Number:</label><br />
-                <input
-                  type="text"
-                  id="contactNumber"
-                  name="contactNumber"
-                  required
-                /><br />
-
-                <button type="submit" name="addDistributor">
-                  Add Distributor
-                </button>
-              </form>
-            </div>
-          </div>
-
-          <!-- popup to delete distributor -->
-          <div class="popup" id="deleteDistributorPopup">
-            <div class="popup-content">
-              <span class="close" onclick="closePopup('deleteDistributorPopup')"
-                >&times;</span
-              >
-              <h2>Delete Distributor</h2>
-              <form method="POST" id="deleteDistributor">
-                {% csrf_token %}
-                <label for="distributorID">Distributor ID:</label><br />
-                <input type="text" id="distributorID" name="distributorID" />
-                <button type="submit" name="deleteDistributor">Delete</button>
-              </form>
-            </div>
+        <!-- popup to delete distributor -->
+        <div class="popup" id="deleteDistributorPopup">
+          <div class="popup-content">
+            <span class="close" onclick="closePopup('deleteDistributorPopup')">&times;</span>
+            <h2>Delete Distributor</h2>
+            <form method="POST" id="deleteDistributor">
+              {% csrf_token %}
+              <label for="distributorID">Distributor ID:</label><br />
+              <input type="text" id="distributorID" name="distributorID" />
+              <button type="submit" name="deleteDistributor">Delete</button>
+            </form>
           </div>
         </div>
+      </div>
 
-        <div id="user-content">
-          <h2>User Information</h2>
-          <!-- buttons to add and delete user -->
-          <button id="user-add-btn">Add</button>
-          <button id="user-delete-btn">Delete</button>
-          <!-- table to show user information -->
-          <table>
-            <tr>
-              <th>Name</th>
-              <th>Username</th>
-              <th>Email</th>
-              <th>License Number</th>
-              <th>Contact Number</th>
-              <th>Address</th>
-            </tr>
-            {% for user_detail in user_details %} 
-            {% if not user_detail.user.is_staff %}
-            <script>
-              totalUserCount++;
-            </script>
-            <tr>
-              <td>{{ user_detail.user.get_full_name }}</td>
-              <td>{{ user_detail.user.username }}</td>
-              <td>{{ user_detail.user.email }}</td>
-              <td>{{ user_detail.license_number }}</td>
-              <td>{{ user_detail.contact }}</td>
-              <td>{{ user_detail.address }}</td>
-            </tr>
-            {% endif %} 
-            {% endfor %}
-          </table>
-          
-          <!-- popup to add user -->
-          <div class="popup" id="addUserPopup">
-            <div class="popup-content">
-              <span class="close" onclick="closePopup('addUserPopup')"
-                >&times;</span
-              >
-              <h2>Add User</h2>
-              <form id="addUserForm" method="post">
-                {% csrf_token %}
-                <label for="FirstName">First Name:</label><br />
-                <input
-                  type="text"
-                  id="distributorFirstName"
-                  name="distributorFirstName"
-                  required
-                /><br />
+      <div id="user-content">
+        <h2>User Information</h2>
+        <!-- buttons to add ,edit and delete user -->
+        <button id="user-add-btn">Add</button>
+        <button id="user-edit-btn">Edit</button>
+        <button id="user-delete-btn">Delete</button>
+        <!-- table to show user information -->
+        <table>
+          <tr>
+            <th>Name</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>License Number</th>
+            <th>Contact Number</th>
+            <th>Address</th>
+          </tr>
+          {% for user_detail in user_details %}
+          {% if not user_detail.user.is_staff %}
+          <script>
+            totalUserCount++;
+          </script>
+          <tr>
+            <td>{{ user_detail.user.get_full_name }}</td>
+            <td>{{ user_detail.user.username }}</td>
+            <td>{{ user_detail.user.email }}</td>
+            <td>{{ user_detail.license_number }}</td>
+            <td>{{ user_detail.contact }}</td>
+            <td>{{ user_detail.address }}</td>
+          </tr>
+          {% endif %}
+          {% endfor %}
+        </table>
 
-                <label for="LastName">Last Name:</label><br />
-                <input
-                  type="text"
-                  id="distributorLastName"
-                  name="distributorLastName"
-                  required
-                /><br />
+        <!-- popup to add user -->
+        <div class="popup" id="addUserPopup">
+          <div class="popup-content">
+            <span class="close" onclick="closePopup('addUserPopup')">&times;</span>
+            <h2>Add User</h2>
+            <form id="addUserForm" method="post">
+              {% csrf_token %}
+              <label for="FirstName">First Name:</label><br />
+              <input type="text" id="distributorFirstName" name="distributorFirstName" required /><br />
 
-                <label for="username">Username:</label><br />
-                <input
-                  type="text"
-                  id="username"
-                  name="username"
-                  required
-                /><br />
+              <label for="LastName">Last Name:</label><br />
+              <input type="text" id="distributorLastName" name="distributorLastName" required /><br />
 
-                <label for="email">Email:</label><br />
-                <input type="email" id="email" name="email" required /><br />
+              <label for="username">Username:</label><br />
+              <input type="text" id="username" name="username" required /><br />
 
-                <label for="location">Address:</label><br />
-                <input
-                  type="text"
-                  id="location"
-                  name="location"
-                  required
-                /><br />
+              <label for="email">Email:</label><br />
+              <input type="email" id="email" name="email" required /><br />
 
-                <label for="password">Password:</label><br />
-                <input
-                  type="password"
-                  id="password"
-                  name="password"
-                  required
-                /><br />
+              <label for="location">Address:</label><br />
+              <input type="text" id="location" name="location" required /><br />
 
-                <label for="contactNumber">Contact Number:</label><br />
-                <input
-                  type="text"
-                  id="contactNumber"
-                  name="contactNumber"
-                  required
-                /><br />
+              <label for="password">Password:</label><br />
+              <input type="password" id="password" name="password" required /><br />
 
-                <label for="license_number">License Number:</label><br />
-                <input
-                  type="text"
-                  id="license_number"
-                  name="license_number"
-                  required
-                /><br />
+              <label for="contactNumber">Contact Number:</label><br />
+              <input type="text" id="contactNumber" name="contactNumber" required /><br />
 
-                <button type="submit" name="addUser">
-                  Add User
-                </button>
-              </form>
-            </div>
+              <label for="license_number">License Number:</label><br />
+              <input type="text" id="license_number" name="license_number" required /><br />
+
+              <button type="submit" name="addUser">
+                Add User
+              </button>
+            </form>
           </div>
-          <!-- popup to delete user -->
-          <div class="popup" id="deleteUserPopup">
-            <div class="popup-content">
-              <span class="close" onclick="closePopup('deleteUserPopup')"
-                >&times;</span
-              >
-              <h2>Delete User</h2>
-              <label for="userID">User ID:</label><br />
-              <input type="text" id="userID" name="userID" />
-              <button onclick="deleteUser()">Delete</button>
-            </div>
+        </div>
+        <!-- popup to delete user -->
+        <div class="popup" id="deleteUserPopup">
+          <div class="popup-content">
+            <span class="close" onclick="closePopup('deleteUserPopup')">&times;</span>
+            <h2>Delete User</h2>
+            <label for="userID">User ID:</label><br />
+            <input type="text" id="userID" name="userID" />
+            <button onclick="deleteUser()">Delete</button>
           </div>
         </div>
       </div>
     </div>
-  </body>
+  </div>
+</body>
+
 </html>
 
 <script>
@@ -378,6 +330,15 @@
 </script>
 
 <style>
+    /* Font Awesome styles */
+  @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css');
+
+  /* Set Font Awesome solid icons font family and font weight */
+  .fa-solid {
+      font-family: 'Font Awesome 6 Solid';
+      font-weight: 900;
+  }
+
   :root {
     --indigo: #16425b;
     --lapis: #2f6690;
@@ -389,7 +350,10 @@
     --green: #4caf50;
     --darkgreen: darkgreen;
     --crimson: crimson;
+    --white:#fff;
+    --yellow: #yellow;
   }
+
   /* Reset default margin, padding, and overflow */
   body {
     margin: 0;
@@ -401,7 +365,7 @@
   /* Logo styles */
   #logo {
     color: var(--platinum);
-    padding-top: 50px;
+    margin-top: 30px;
     text-align: center;
     font-size: 3rem;
   }
@@ -410,39 +374,45 @@
   .sidebar {
     float: left;
     width: 20vw;
-    background-color: var(--lapis);
+    background-color: var(--indigo);
     height: 100vh;
   }
 
+  .sidebar i{
+    color: var(--white);
+    margin-left: 70px;
+    margin-right: 10px;
+  }
+
   .sidebar ul {
-    margin-top: 40px;
     list-style-type: none;
     padding: 0;
+    margin-top: 10vh;
   }
 
-  .sidebar ul li {
-    margin-bottom: 10px;
+  .sidebar li {
+      margin-bottom: 10px;
   }
 
-  .sidebar button {
-    padding: 10px 20px;
-    margin: 0 10px;
-    font-size: 20px;
-    cursor: pointer;
-    border: none;
-    background-color: var(--darkgray);
-    color: white;
-    border-radius: 5px;
-    outline: none;
-    margin-left: 2.5vw;
-    margin-top: 30px;
-    width: 15vw;
-    height: 45px;
+  .sidebar a {
+      font-size: 30px;
+      width: 20vw;;
+      text-decoration: none;
+      color: #fff;
+      display: block;
+      margin-top: 40px;
   }
 
-  .sidebar button:hover {
-    background-color: var(--indigo);
+  .sidebar a:hover {
+      cursor: pointer;
   }
+
+  /* Log Out button styles */
+  #logout {
+      position: absolute;
+      bottom: 30px;
+      left: 0;
+    }
 
   /* Content styles */
   .content {
@@ -466,16 +436,6 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
 
-  /* Log Out button styles */
-  #logout {
-    bottom: 0;
-    left: 0;
-    background-color: var(--red); /* Example background color */
-  }
-
-  #logout:hover {
-    background-color: var(--crimson); /* Example hover background color */
-  }
 
   #default-content #card {
     display: flex;
@@ -488,7 +448,8 @@
   }
 
   #distributor_card {
-    background-color: var(--skyblue);
+    background-color: var(--cerulean);
+    color: var(--white);
   }
 
   #user_card {
@@ -500,30 +461,11 @@
     padding-right: 10vw;
     /* padding-bottom: 5vh; */
   }
+
   #distributor-content,
   #user-content {
     display: none;
     margin-top: 20px;
-  }
-
-  .filter {
-    margin: 40px 2%;
-    padding-top: 20px;
-  }
-
-  .filter-btn {
-    padding: 8px 16px;
-    border: none;
-    background-color: var(--lapis);
-    color: var(--platinum);
-    cursor: pointer;
-    border-radius: 5px;
-    margin-right: 10px;
-    font-size: medium;
-  }
-
-  .filter-btn:hover {
-    background-color: var(--indigo);
   }
 
   .page-btn {
@@ -547,10 +489,12 @@
   }
 
   #distributor-add-btn,
+  #distributor-edit-btn,
   #distributor-delete-btn,
   #user-add-btn,
+  #user-edit-btn,
   #user-delete-btn {
-    background-color: var(--green);
+    /* background-color: var(--green); */
     border: none;
     color: white;
     padding: 10px 20px;
@@ -563,7 +507,8 @@
     border-radius: 4px;
   }
 
-  #distributor-add-btn {
+  #distributor-add-btn,
+  #user-add-btn {
     background-color: var(--green);
     margin-right: 40px;
   }
@@ -581,6 +526,11 @@
   #distributor-delete-btn:hover,
   #user-delete-btn:hover {
     background-color: var(--crimson);
+  }
+
+  #distributor-edit-btn
+  #user-edit-btn{
+    background-color: yellow;
   }
 
   /* For User Information Edit */
