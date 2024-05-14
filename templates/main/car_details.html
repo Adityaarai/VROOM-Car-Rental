@@ -1,14 +1,18 @@
-{% extends 'partials/base.html' %} {% load static %} {% block title %} VROOM -
-Car Details{% endblock %} {% block content %}
+{% extends 'partials/base.html' %}
+{% load static %}
+{% block title %} VROOM - Car Details{% endblock %}
+{% block content %}
 <div class="main-container">
-    <div id="main">
-        {% if details %}
-        {% for detail in details %}
-        <!--  Car Image -->
-        <div id="image">
+  <div id="main">
+    {% if details %}
+      {% for detail in details %}
+        <div id="heading">Car Details</div>
+        <div id="content">
+          <div id="image">
             <img src="{{ detail.image }}" alt="Car Image" />
           </div>
           <div id="details">
+            <div id="availability">{{ detail.availability }}</div>
             <div id="model">
               <p>{{ detail.car_model }}</p>
             </div>
@@ -16,141 +20,241 @@ Car Details{% endblock %} {% block content %}
               <p>{{ detail.renter_name }}</p>
             </div>
             <div id="price">
-              <p>{{ detail.price }}</p>
+              <p>Rs. {{ detail.price }}</p>
             </div>
-        
-        <form id="booking-form" method="post">
-            {% csrf_token %}
-
-        <!-- hidden fields for identififying product -->
-        <input type="hidden" id="renter_contact" name="renter_contact" value="{{ detail.renter_contact }}">
-        <input type="hidden" id="car_model" name="car_model" value="{{ detail.car_model }}">
-        <input type="hidden" id="renter_name" name="renter_name" value="{{ detail.renter_name }}">
-
-          <!--  Date and Time Picker -->
-          <label for="bookingStartDate">Booking Start Date:</label><br />
-          <input type="date" id="bookingStartDate" name="bookingStartDate" /><br />
-          <label for="bookingEndDate">Booking End Date:</label><br />
-          <input type="date" id="bookingEndDate" name="bookingEndDate" /><br /><br />
-          <a href="{% url 'carlisting' %}?value=All">
-            <button id="home">Back</button>
-          </a>
-          <button id="book" type="submit">Book</button>
-        </form>
-          {% endfor %}
-        {% else %}
-        <h1>Car not available or booking completed</h1>
-        {% endif %}
-
-          <!-- popup -->
-          <div class="popup" id="popup">
-            <div class="popup-content">
-              <span class="close" onclick="closePopup()">&times;</span>
-              <h2>Booking Requested</h2>
-              <p>Your booking request has been submitted.</p>
-            </div>
+            <form id="booking-form" method="post">
+              {% csrf_token %}
+              <input type="hidden" id="renter_contact" name="renter_contact" value="{{ detail.renter_contact }}" />
+              <input type="hidden" id="car_model" name="car_model" value="{{ detail.car_model }}" />
+              <input type="hidden" id="renter_name" name="renter_name" value="{{ detail.renter_name }}" />
+              <label for="bookingStartDate">Booking Start Date:</label>
+              <input type="date" id="bookingStartDate" name="bookingStartDate" />
+              <label for="bookingEndDate">Booking End Date:</label>
+              <input type="date" id="bookingEndDate" name="bookingEndDate" />
+              {% if messages %}
+                {% for message in messages %}
+                  <p class="error">{{ message }}</p>
+                {% endfor %}
+              {% endif %}
+              <div id="buttons">
+                <button id="book" class="button" type="submit">Book</button>
+                <a href="{% url 'carlisting' %}?value=All" class="button">Back</a>
+              </div>
+            </form>
           </div>
         </div>
-        
-      </div>
-      
+      {% endfor %}
+    {% else %}
+      {% if messages %}
+        {% for message in messages %}
+          <h1 class="error">{{ message }}</h1>
+          <a id="thank">Thank you for choosing us for your travels.</a>
+        {% endfor %}
+      {% endif %}
+      <a href="{% url 'carlisting' %}?value=All"><button class="button" id="return">Return to Carlisting</button></a>
+    {% endif %}
+  </div>
 </div>
-    <script>
-        // Function to display the popup
-        function showPopup() {
-            document.getElementById("popup").style.display = "flex";
-        }
 
-        // Function to close the popup
-        function closePopup() {
-            document.getElementById("popup").style.display = "none";
-        }
+<div class="popup" id="popup">
+  <div class="popup-content">
+    <span class="close" onclick="closePopup()">&times;</span>
+    <h2>Booking Requested</h2>
+    <p>Your booking request has been submitted.</p>
+  </div>
+</div>
 
-        // Add event listener to the button
-        document.getElementById("book").addEventListener("click", showPopup);
-    </script>
-    
+<script>
+  function showPopup() {
+    document.getElementById("popup").style.display = "flex";
+  }
+
+  function closePopup() {
+    document.getElementById("popup").style.display = "none";
+  }
+</script>
+
 <style>
+  :root {
+    --indigo: #16425b;
+    --lapis: #2f6690;
+    --cerulean: #3a7ca5;
+    --skyblue: #81c3d7;
+    --platinum: #d9dcd6;
+    --darkgray: #b4b4b3;
+    --red: #f44336;
+    --green: #4caf50;
+    --darkgreen: darkgreen;
+    --crimson: crimson;
+    --white: #ffffff;
+  }
 
-    :root {
-        --indigo: #16425b;
-        --lapis: #2f6690;
-        --cerulean: #3a7ca5;
-        --skyblue: #81c3d7;
-        --platinum: #d9dcd6;
-        --darkgray: #b4b4b3;
-    }
-
-    .main-container {
-    width: 90vw;
-    margin: 0 5%;
-    margin-top: 10vh;
+  .main-container {
+    width: 70vw;
+    margin-top: 12vh;
+    margin-left: 15vw;
+    margin-bottom: 5vh;
     min-height: 65.4vh;
     padding-top: 5vh;
+    padding-bottom: 5vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid var(--indigo);
+    border-radius: 30px;
+    background-color: var(--indigo);
+    color: var(--white);
+    position: relative;
   }
-    #main{
-        width: 80vw;
-        height: 50vh;
-        display: flex;
-        justify-content: space-between;
-        padding: 20px;
-        border: 1px solid black;
-        border-radius: 20px;
-    }
-    #image{
-        width: 50%;
-    }
-    #image img{
-        padding: 5%;
-        width: 90%;
-        height: 90%;
-    }
-    #details{
-        width: 40%;
-        font-size: 3vh;
-        font-weight: 800;
-    }
-    #details button{
-        background-color: var(--lapis);
-        height: 40px;
-        width: 100px;
-        font-size: 2vh;
-        color: var(--platinum);
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
 
-    }
-    #details button:hover{
-        background-color:var(--indigo);
-    }
-    .popup {
-        display: none;
-        position: fixed;
-        z-index: 9999;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        align-items: center;
-        justify-content: center;
-        border-radius: 20px;
-    }
+  #main {
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 
-    .popup-content {
-        background-color: #fefefe;
-        padding: 20px;
-        border-radius: 5px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-        text-align: center;
-    }
+  #heading {
+    font-size: 40px;
+    font-weight: 600;
+    margin-bottom: 8vh;
+  }
 
-    .close {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        cursor: pointer;
-    }
+  #availability {
+    background-color: var(--green);
+    color: var(--white);
+    padding: 5px 10px;
+    border-radius: 5px;
+    position: absolute;
+    top: 50px;
+    right: 50px;
+    font-weight: bold;
+  }
+
+  #content {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  #image img {
+    width: 90%;
+    border-radius: 10px;
+    margin-bottom: 20px;
+  }
+
+  #details {
+    width: 100%;
+    max-width: 400px;
+    text-align: left;
+    font-size: 20px;
+    font-weight: 400;
+    margin-left: 20px;
+    margin-top: -80px;
+  }
+
+  #details #model {
+    font-weight: 800;
+  }
+
+  #details p {
+    margin: 5px 0;
+  }
+
+  #booking-form {
+    margin-top: 20px;
+  }
+
+  label {
+    font-weight: bold;
+  }
+
+  input[type="date"] {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border: 1px solid var(--indigo);
+    border-radius: 5px;
+    font-size: 17px;
+  }
+
+  #buttons {
+    display: flex;
+    flex-direction: row;
+    /* justify-content: space-between; */
+    margin-top: 20px;
+    font-size: 20px;
+  }
+
+  #book{
+    margin-right: 30px;
+    font-size: 20px;
+  }
+
+  .button {
+    background-color: var(--white);
+    color: var(--indigo);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+    text-align: center;
+  }
+
+  .button:hover {
+    background-color: var(--skyblue);
+  }
+
+  .error {
+    margin-top: 10px;
+    margin-bottom: 20px;
+    font-size: 20px;
+    color: var(--red);
+  }
+
+  #thank {
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+
+  #return {
+    margin-top: 10vh;
+    font-size: 17px;
+  }
+
+  .popup {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    align-items: center;
+    justify-content: center;
+    border-radius: 20px;
+  }
+
+  .popup-content {
+    background-color: #fefefe;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    position: relative;
+  }
+
+  .close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+  }
 </style>
 {% endblock %}

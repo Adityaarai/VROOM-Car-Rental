@@ -7,6 +7,17 @@ CAR_TYPE = (
     ('Truck', 'Truck'),
     ('Sedan', 'Sedan'),
 )
+STATUS = (
+    ('Pending', 'Pending'),
+    ('Approved', 'Approved'),
+    ('Paid', 'Paid'),
+    ('Completed', 'Completed'),
+)
+AVAILABILITY = (
+    ('Unlisted', 'Unlisted'),
+    ('Booked', 'Booked'),
+    ('Available', 'Available'),
+)
 
 # Create your models here.
 
@@ -17,7 +28,7 @@ class CarDetail(models.Model):
     car_type = models.CharField(max_length=100, choices=CAR_TYPE, null=True)
     car_model = models.CharField(max_length=100, null=True)
     price = models.DecimalField(decimal_places=2, max_digits=10, null=True)
-    availability = models.BooleanField(default=True)
+    availability = models.CharField(max_length=20, choices=AVAILABILITY, null=True, default='Available')
     image = models.ImageField(default='static/img/lambo.jpg', upload_to='static/img/car_images')
 
     # display what is shown in the product name
@@ -31,7 +42,7 @@ class CarOrder(models.Model):
     start_date = models.DateTimeField(null=True)
     end_date = models.DateTimeField(null=True)
     rentee_email = models.CharField(max_length=100)
-    verified = models.BooleanField(default=False, null=True)
+    status = models.CharField(max_length=100, choices=STATUS, null=True, default='Pending')
     
     # display what is shown in the order name
     def __str__(self):

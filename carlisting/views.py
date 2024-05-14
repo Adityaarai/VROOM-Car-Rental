@@ -1,7 +1,13 @@
 from django.shortcuts import render, redirect, HttpResponse
-from .models import CarDetail, CarOrder
+from django.urls import reverse
+from django.http import HttpResponseRedirect
+from .models import CarDetail, CarOrder, User
+from userauthentication.models import Profile
 from django.contrib import messages
 from django.contrib.auth import authenticate, login as auth_login, logout
+from django.db import IntegrityError
+from django.contrib.auth.models import Permission
+from django.contrib.contenttypes.models import ContentType
      
 def carlisting(request):
     items = CarDetail.objects.all()
@@ -13,29 +19,40 @@ def carlisting(request):
     return render(request, 'main/carlisting.html', context)
 
 def orders(request):
+    current_url = request.get_full_path()
+    
     if request.method == 'POST':
+      if request.user.is_authenticated:
         existing_order = CarOrder.objects.filter(rentee_email=request.user.email).first()
         if existing_order:
-            return HttpResponse("You have already placed an order.")
+          messages.error(request, "You have already placed an order.")
+          return redirect('orders')
 
-        startdate = request.POST['bookingStartDate']
-        enddate = request.POST['bookingEndDate'];
+        startdate = request.POST.get('bookingStartDate')
+        enddate = request.POST.get('bookingEndDate')
+
+        if not startdate or not enddate:
+          messages.error(request, "Please provide both start date and end date.")
+          return HttpResponseRedirect(current_url)
+          
         renter_name = request.POST['renter_name']
         renter_contact = request.POST['renter_contact']
         car_model = request.POST['car_model']
         rentee_email = request.user.email
 
         product = CarDetail.objects.get(car_model=car_model, renter_name=renter_name, renter_contact=renter_contact)
-        
+                
         order = CarOrder.objects.create(product=product, start_date=startdate, end_date=enddate, rentee_email=rentee_email)
 
-        return redirect('orders')
+        messages.success(request, "Your booking has been created successfully")
 
+        return redirect('orders')
+      else:
+        messages.error(request,"You must be logged in to book cars!!")
+        return redirect('login')
     else:
         name = request.GET.get('renter_name')
         model = request.GET.get('car_model')
-        print(name)
-        print(model)
 
         details_queryset = CarDetail.objects.filter(renter_name=name, car_model=model)
 
@@ -52,7 +69,6 @@ def orders(request):
                 'availability': detail.availability,
                 'image': detail.image.url
             }
-            print(detail.image.url)
             details_list.append(detail_dict)
 
         context = {
@@ -89,6 +105,76 @@ def about_us(request):
 def userprofile(request):
    return render(request, 'main/user_profile.html')
 
-def staffprofile(request):
-   return render(request, 'main/staff_profile.html')
+def distributorprofile(request):
+  items = CarDetail.objects.all()
+  orders = CarOrder.objects.all()
+
+  context = {
+    'items': items,
+    'orders': orders,
+  }
+
+  return render(request, 'main/distributor.html', context)
+
+def adminprofile(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        if User.objects.filter(username=username).exists():
+            # Username already exists, handle the error gracefully
+            messages.error(request, "Username already exists.")
+        else:
+            # Proceed with creating the user
+            if 'addDistributor' in request.POST:
+              license_number = request.POST.get('license_number')
+            else:
+              license_number = None
+            
+            first_name = request.POST.get('distributorFirstName')
+            last_name = request.POST.get('distributorLastName')
+            email = request.POST.get('email')
+            location = request.POST.get('location')
+            password = request.POST.get('password')
+            contact = request.POST.get('contactNumber')
+
+            myuser = User.objects.create(username=username, email=email, password=password)
+            myuser.first_name = first_name
+            myuser.last_name = last_name
+            if 'addDistributor' in request.POST:
+              myuser.is_staff = True
+              
+              # Get permissions for CarDetail model
+              car_detail_content_type = ContentType.objects.get_for_model(CarDetail)
+              car_detail_permissions = Permission.objects.filter(content_type=car_detail_content_type)
+
+              # Get permissions for CarOrder model
+              car_order_content_type = ContentType.objects.get_for_model(CarOrder)
+              car_order_permissions = Permission.objects.filter(content_type=car_order_content_type)
+
+              # Combine permissions from all models
+              all_permissions = car_detail_permissions | car_order_permissions
+
+              # Assign permissions to the user
+              myuser.user_permissions.add(*all_permissions)
+            else:
+              myuser.is_staff = False
+            myuser.save()
+            
+            try:
+                # Assuming Profile is your Profile model
+                profile, created = Profile.objects.get_or_create(user=myuser)
+                profile.address = location
+                profile.contact = contact
+                profile.license_number = license_number
+                profile.save()
+                messages.success(request, "Your account has been successfully created. Welcome!")
+            except IntegrityError:
+                # Handle the case where the username was created by another request between the exists() check and this block
+                messages.error(request, "An error occurred while creating the user.")
+
+    user_details = Profile.objects.all()
+    context = {
+        'user_details': user_details,
+    }
+    return render(request, 'main/admin.html', context)
+
 

@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.contrib import messages
@@ -17,8 +17,11 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
 from .forms import UserProfileForm 
 from django.contrib.auth import update_session_auth_hash
+from carlisting.models import CarDetail, CarOrder
+
 
 # Create your views here.
+# View for handling signup functionality
 def signup(request):
     if request.method == "POST":
         email = request.POST['email']
@@ -60,6 +63,7 @@ def signup(request):
             return redirect('signup')
 
         myuser = User.objects.create_user(username=username, email=email, password=pass1)
+
         myuser.first_name = firstname
         myuser.last_name = lastname
         myuser.save()
@@ -85,6 +89,7 @@ VROOM-Car-Rental-Service"""
     
     return render(request, 'main/signup.html')
 
+# View for handling login functionality
 def login(request):
     if request.method == 'POST':
         username_or_email = request.POST.get('username_or_email')
@@ -103,7 +108,12 @@ def login(request):
             auth_login(request, user)
             fname = user.first_name
             # messages.success(request, "Logged In Successfully!!")
-            return render(request, "main/index.html")
+            if user.is_staff and user.is_superuser:
+                return redirect('admin_profile')
+            elif user.is_staff:
+                return redirect('distributor_profile')
+            else:
+                return redirect('index')
         else:
             messages.error(request, "Invalid username/email or password!")
             return redirect('login')
@@ -131,9 +141,13 @@ def activate(request, uidb64, token):
     else:
         return render(request, 'main/activation_failed.html')
 
+# View for handling user profile
 @login_required
 def user_profile_view(request):
     user = request.user
+
+    # Retrieve logged-in user's email
+    user_email = request.user.email
     
     if request.method == 'POST':
         form = PasswordChangeForm(user, request.POST)
@@ -162,43 +176,88 @@ def user_profile_view(request):
                 for field, errors in form.errors.items():
                     for error in errors:
                         messages.error(request, f"{field}: {error}")
-
-    return render(request, 'main/user_profile.html', {'user': user})
-
-@login_required
-def staff_profile_view(request):
-    user = request.user
     
-    if request.method == 'POST':
-        form = PasswordChangeForm(user, request.POST)
+    # Filter CarDetail objects based on renter_name matching the logged-in user's username
+    cars = CarDetail.objects.filter(renter_name=user.username)
 
-        if 'update_profile' in request.POST:  # Check if the profile update form is submitted
-            profile_form = UserProfileForm(request.POST, instance=user)
-            if profile_form.is_valid():
-                profile_form.save()
-                messages.success(request, "Profile information updated successfully.")
-            else:
-                messages.error(request, "Failed to update profile information. Please check the provided data.")
-            
-            # Update username if it's changed 
-            new_username = request.POST.get('username')
-            if new_username != user.username:
-                user.username = new_username
-                user.save()
+    # Filter bookings based on user's email and status ("Pending")
+    pending_bookings = CarOrder.objects.filter(rentee_email=user_email, status='Pending')
 
-        elif 'change_password' in request.POST:  # Check if the change password form is submitted
-            form = PasswordChangeForm(user, request.POST)
-            if form.is_valid():
-                form.save()
-                update_session_auth_hash(request, form.user)
-                messages.success(request, "Password updated successfully.")
-            else:
-                for field, errors in form.errors.items():
-                    for error in errors:
-                        messages.error(request, f"{field}: {error}")
+    # Filter bookings based on user's email and status ("Approved")
+    approved_bookings = CarOrder.objects.filter(rentee_email=user_email, status='Approved')
 
-    return render(request, 'main/staff_profile.html', {'user': user})
+    # Filter bookings based on user's email and status ("Paid")
+    paid_bookings = CarOrder.objects.filter(rentee_email=user_email, status='Paid')
 
+    # Filter bookings based on user's email and status ("Completed")
+    completed_bookings = CarOrder.objects.filter(rentee_email=user_email, status='Completed')
+
+    if not cars:  # If no cars found for the user
+        message = "You haven't added any cars yet."
+        return render(request, 'main/user_profile.html', {'user': user, 'message': message})
+    else:
+        return render(request, 'main/user_profile.html', {'user': user, 'cars': cars, 
+        'pending_bookings': pending_bookings,
+        'approved_bookings': approved_bookings,
+        'paid_bookings': paid_bookings,
+        'completed_bookings': completed_bookings})
+
+# View for logging out
+@login_required
 def logout_view(request):
     logout(request)
     return redirect('index')
+
+# View for add cars
+@login_required
+def add_car(request):
+    if request.method == 'POST':
+        contact_number = request.POST.get('contactNumber')
+        car_type = request.POST.get('car_type')
+        model = request.POST.get('model')
+        price = request.POST.get('price')
+        car_image = request.FILES.get('carImage')
+
+        # Assuming the user is authenticated
+        user = request.user
+
+        # Create and save the CarDetail object
+        try:
+            car = CarDetail.objects.create(
+                renter_name=user.username,  # Set the renter_name field to the username of the logged-in user
+                renter_contact=contact_number,
+                car_type=car_type,
+                car_model=model,
+                price=price,
+                image=car_image,
+            )
+            # Adding a success message
+            messages.success(request, 'Car added successfully.')
+        except Exception as e:
+            # Adding an error message
+            messages.error(request, f'Error adding car: {e}')
+        
+        return redirect('user_profile')  # Redirecting to user profile page
+    
+    return render(request, 'user_profile.html')
+
+# View for removing cars
+@login_required
+def remove_car(request):
+    if request.method == 'POST':
+        car_id = request.POST.get('car_id')
+        if car_id:
+            try:
+                car = get_object_or_404(CarDetail, id=car_id)
+                car.delete()
+                # Adding a success message
+                messages.success(request, 'Car successfully removed.')
+            except:
+                # Adding an error message
+                messages.error(request, 'Failed to remove car.')
+    return redirect('user_profile')  # Redirecting to user profile page
+
+# View for payment
+def payment_view(request):
+    return render(request, 'main/payment.html')
+
