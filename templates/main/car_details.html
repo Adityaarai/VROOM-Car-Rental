@@ -4,9 +4,10 @@
 {% block content %}
 <div class="main-container">
   <div id="main">
-    <div id="heading">Car Details</div>
+    
     {% if details %} {% for detail in details %}
     <!--  Car Image -->
+    <div id="heading">Car Details</div>
     <div id="image">
       <img src="{{ detail.image }}" alt="Car Image" />
     </div>
@@ -68,9 +69,10 @@
           >
           {% endfor %} {% else %} {% if messages %} {% for message in messages %}
           <h1 class="error">{{ message }}</h1>
+          <a id="thank">Thank you for choosing us for your travels.</a>
           {% endfor %} {% endif %}
           <a href="{% url 'carlisting' %}?value=All"
-            ><button class="button">Return to Carlisting</button></a
+            ><button class="button" id="return">Return to Carlisting</button></a
           >{% endif %}
         </div>
     </div>
@@ -205,8 +207,20 @@
   }
 
   .error {
-    color: var(--red);
+    /* color: var(--red); */
     margin-top: 10px;
+    margin-bottom: 20px;
+    font-size: 50px;
+  }
+
+  #thank{
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+
+  #return{
+    margin-top: 10vh;
+    font-size: 17px;
   }
 
   .popup {
