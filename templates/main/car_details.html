@@ -1,9 +1,13 @@
-{% extends 'partials/base.html' %} {% load static %} {% block title %} VROOM -
-Car Details{% endblock %} {% block content %}
+{% extends 'partials/base.html' %}
+{% load static %}
+{% block title %} VROOM - Car Details{% endblock %}
+{% block content %}
 <div class="main-container">
   <div id="main">
+    
     {% if details %} {% for detail in details %}
     <!--  Car Image -->
+    <div id="heading">Car Details</div>
     <div id="image">
       <img src="{{ detail.image }}" alt="Car Image" />
     </div>
@@ -16,13 +20,13 @@ Car Details{% endblock %} {% block content %}
         <p>{{ detail.renter_name }}</p>
       </div>
       <div id="price">
-        <p>{{ detail.price }}</p>
+        <p>Rs. {{ detail.price }}</p>
       </div>
 
       <form id="booking-form" method="post">
         {% csrf_token %}
 
-        <!-- hidden fields for identififying product -->
+        <!-- hidden fields for identifying product -->
         <input
           type="hidden"
           id="renter_contact"
@@ -55,33 +59,36 @@ Car Details{% endblock %} {% block content %}
           id="bookingEndDate"
           name="bookingEndDate"
         /><br /><br />
-
-        <button id="book" class="button" type="submit">Book</button>
-        {% if messages %} {% for message in messages %}
-        <p class="error">{{ message }}</p>
-        {% endfor %} {% endif %}
-      </form>
-      <a href="{% url 'carlisting' %}?value=All"
-        ><button class="button">Back</button></a
-      >
-      {% endfor %} {% else %} {% if messages %} {% for message in messages %}
-      <h1 class="error">{{ message }}</h1>
-      {% endfor %} {% endif %}
-      <a href="{% url 'carlisting' %}?value=All"
-        ><button class="button">Return to Carlisting</button></a
-      >{% endif %}
-
-      <!-- popup -->
-      <div class="popup" id="popup">
-        <div class="popup-content">
-          <span class="close" onclick="closePopup()">&times;</span>
-          <h2>Booking Requested</h2>
-          <p>Your booking request has been submitted.</p>
+        <div id="buttons">
+          <button id="book" class="button" type="submit">Book</button>
+          {% if messages %} {% for message in messages %}
+          <p class="error">{{ message }}</p>
+          {% endfor %} {% endif %}
+          </form>
+          <a href="{% url 'carlisting' %}?value=All"
+            ><button class="button">Back</button></a
+          >
+          {% endfor %} {% else %} {% if messages %} {% for message in messages %}
+          <h1 class="error">{{ message }}</h1>
+          <a id="thank">Thank you for choosing us for your travels.</a>
+          {% endfor %} {% endif %}
+          <a href="{% url 'carlisting' %}?value=All"
+            ><button class="button" id="return">Return to Carlisting</button></a
+          >{% endif %}
         </div>
-      </div>
     </div>
   </div>
 </div>
+<!-- popup -->
+<div class="popup" id="popup">
+  <div class="popup-content">
+    <span class="close" onclick="closePopup()">&times;</span>
+    <h2>Booking Requested</h2>
+    <p>Your booking request has been submitted.</p>
+  </div>
+</div>
+</div>
+
 <script>
   // Function to display the popup
   function showPopup() {
@@ -102,54 +109,121 @@ Car Details{% endblock %} {% block content %}
     --skyblue: #81c3d7;
     --platinum: #d9dcd6;
     --darkgray: #b4b4b3;
+    --red: #f44336;
+    --green: #4caf50;
+    --darkgreen: darkgreen;
+    --crimson: crimson;
+    --white: #ffffff;
   }
 
   .main-container {
-    width: 90vw;
-    margin: 0 5%;
-    margin-top: 10vh;
+    width: 70vw;
+    margin-top: 12vh;
+    margin-left: 15vw;
+    margin-bottom: 5vh;
     min-height: 65.4vh;
     padding-top: 5vh;
-  }
-
-  .button {
-    padding: 8px 16px;
-    border: none;
-    background-color: var(--lapis);
-    color: var(--platinum);
-    cursor: pointer;
-    border-radius: 5px;
-    margin-right: 10px;
-    font-size: medium;
-    margin-top: 20px;
-  }
-
-  .button:hover {
+    padding-bottom: 5vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid var(--indigo);
+    border-radius: 30px;
     background-color: var(--indigo);
+    color: var(--white);
   }
 
   #main {
-    width: 80vw;
-    height: 50vh;
+    width: 70%;
     display: flex;
-    justify-content: space-between;
-    padding: 20px;
-    border: 1px solid black;
-    border-radius: 20px;
+    flex-direction: column;
+    align-items: center;
   }
-  #image {
-    width: 50%;
+
+  #heading{
+    font-size: 50px;
+    font-weight: 600;
+    /* color: var(--indigo); */
+    margin-bottom: 20px;
   }
+
   #image img {
-    padding: 5%;
-    width: 90%;
-    height: 90%;
+    margin-left: 15%;
+    width: 70%;
+    border-radius: 10px;
+    margin-bottom: 20px;
   }
+
   #details {
-    width: 40%;
-    font-size: 3vh;
+    width: 100%;
+    text-align: center;
+    font-size: 30px;
+    font-weight: 400;
+  }
+
+  #details #model{
     font-weight: 800;
   }
+
+  #details p {
+    margin: 5px 0;
+  }
+
+  #booking-form {
+    margin-top: 20px;
+  }
+
+  label {
+    font-weight: bold;
+  }
+
+  input[type="date"] {
+    width: 40%;
+    padding: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border: 1px solid var(--indigo);
+    border-radius: 5px;
+    font-size: 17px;
+  }
+
+  #buttons button{
+    margin-right: 20px;
+    font-size: 17px;
+  }
+
+  .button {
+    background-color: var(--white);
+    color: var(--platinum);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    color: var(--indigo);
+  }
+
+  .button:hover {
+    background-color: var(--skyblue);
+  }
+
+  .error {
+    /* color: var(--red); */
+    margin-top: 10px;
+    margin-bottom: 20px;
+    font-size: 50px;
+  }
+
+  #thank{
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+
+  #return{
+    margin-top: 10vh;
+    font-size: 17px;
+  }
+
   .popup {
     display: none;
     position: fixed;
