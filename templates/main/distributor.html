@@ -20,6 +20,19 @@
         </a>
       </div>
 
+      <!-- initializing count value to 0 for all required details -->
+      <script>
+        let totalCarCount = 0;
+        let totalBookingCount = 0;
+        let totalAvailableCarCount = 0;
+        let totalBookedCarCount = 0;
+        let totalUnlistedCarCount = 0;
+        let totalPendingOrderCount = 0;
+        let totalApprovedOrderCount = 0;
+        let totalPaidOrderCount = 0;
+        let totalCompletedOrderCount = 0;
+      </script>
+
       <div class="content">
         <div id="default-content">
           <h1>Welcome Distributor!!</h1>
@@ -27,17 +40,18 @@
           <div id="card">
             <div class="card" id="car_card">
               <h3>Car Information</h3>
-              <label id="TotalCars">Total Cars:</label>
-              <label id="Available">Available:</label><br />
-              <label id="carModels">Models:</label>
-              <label id="carTypes">Types:</label>
+              <label id="TotalCars"></label>
+              <label id="Available"></label><br />
+              <label id="Booked"></label>
+              <label id="Unlisted"></label>
             </div>
             <div class="card" id="book_card">
               <h3>Booking Information</h3>
-              <label id="bookings">Bookings:</label>
-              <label id="approved">Approved:</label><br />
-              <label id="pending">pending:</label>
-              <label id="paid">Paid:</label><br />
+              <label id="bookings"></label>
+              <label id="approved"></label><br />
+              <label id="pending"></label>
+              <label id="paid"></label><br />
+              <label id="completed"></label><br />
             </div>
           </div>
         </div>
@@ -54,7 +68,26 @@
 
             <div class="cards-container">
               <!-- Cards will be dynamically added here -->
-              {% for item in items %} {% if item.availability %}
+              {% for item in items %} 
+
+              <!-- checking car details and updating count -->
+              {% if item.availability == "Unlisted" %}
+                <script>
+                  totalUnlistedCarCount++;
+                </script>
+              {% elif item.availability == "Available" %}
+                <script>
+                  totalAvailableCarCount++;
+                </script>
+              {% elif item.availability == "Booked" %}
+                <script>
+                  totalBookedCarCount++;
+                </script>
+              {% endif %}
+              <script>
+                totalCarCount++;
+              </script>
+
               <div class="card">
                 <img src="{{ item.image.url }}" alt="Car Image" />
                 <div class="card-text">
@@ -73,8 +106,16 @@
                   </div>
                 </div>
               </div>
-              {% endif %} {% endfor %}
+              {% endfor %}
             </div>
+
+            <!-- displaying the total car count in distributor dashboard -->
+            <script>
+              document.getElementById('TotalCars').innerHTML = 'Total Cars : ' + totalCarCount;
+              document.getElementById('Available').innerHTML = 'Available Cars : ' + totalAvailableCarCount;
+              document.getElementById('Booked').innerHTML = 'Booked Cars : ' + totalBookedCarCount;
+              document.getElementById('Unlisted').innerHTML = 'Unlisted Cars : ' + totalUnlistedCarCount;
+             </script>
 
             <!-- button to navigate different pages of cars -->
             <div class="page-btn">
@@ -133,6 +174,25 @@
             </thead>
             <tbody>
               {% for order in orders%}
+
+               <!-- checking order details and updating count -->
+               {% if order.status == "Pending" %}
+               <script>
+                 totalPendingOrderCount++;
+               </script>
+             {% elif order.status == "Approved" %}
+               <script>
+                 totalApprovedOrderCount++;
+               </script>
+             {% elif order.status == "Paid" %}
+               <script>
+                 totalPaidOrderCount++;
+               </script>
+             {% endif %}
+             <script>
+               totalBookingCount++;
+             </script>
+
               <tr>
                 <td>{{ order.product }}</td>
                 <td>{{ order.rentee_email }}</td>
@@ -143,6 +203,16 @@
               {% endfor %}
             </tbody>
           </table>
+
+          <!-- displaying the total order count in distributor dashboard -->
+          <script>
+            document.getElementById('bookings').innerHTML = 'Total Bookings : ' + totalBookingCount;
+            document.getElementById('approved').innerHTML = 'Approved Bookings : ' + totalApprovedOrderCount;
+            document.getElementById('paid').innerHTML = 'Paid Bookings : ' + totalPaidOrderCount;
+            document.getElementById('pending').innerHTML = 'Pending Bookings : ' + totalPendingOrderCount;
+            document.getElementById('completed').innerHTML = 'Completed Bookings : ' + totalCompletedOrderCount;
+            
+           </script>
 
           <!-- popup to add booking -->
           <div class="popup" id="addBookingPopup">
