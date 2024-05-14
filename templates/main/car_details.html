@@ -4,7 +4,7 @@
 {% block content %}
 <div class="main-container">
   <div id="main">
-    
+
     {% if details %} {% for detail in details %}
     <!--  Car Image -->
     <div id="heading">Car Details</div>
@@ -27,57 +27,31 @@
         {% csrf_token %}
 
         <!-- hidden fields for identifying product -->
-        <input
-          type="hidden"
-          id="renter_contact"
-          name="renter_contact"
-          value="{{ detail.renter_contact }}"
-        />
-        <input
-          type="hidden"
-          id="car_model"
-          name="car_model"
-          value="{{ detail.car_model }}"
-        />
-        <input
-          type="hidden"
-          id="renter_name"
-          name="renter_name"
-          value="{{ detail.renter_name }}"
-        />
+        <input type="hidden" id="renter_contact" name="renter_contact" value="{{ detail.renter_contact }}" />
+        <input type="hidden" id="car_model" name="car_model" value="{{ detail.car_model }}" />
+        <input type="hidden" id="renter_name" name="renter_name" value="{{ detail.renter_name }}" />
 
         <!--  Date and Time Picker -->
         <label for="bookingStartDate">Booking Start Date:</label><br />
-        <input
-          type="date"
-          id="bookingStartDate"
-          name="bookingStartDate"
-        /><br />
+        <input type="date" id="bookingStartDate" name="bookingStartDate" /><br />
         <label for="bookingEndDate">Booking End Date:</label><br />
-        <input
-          type="date"
-          id="bookingEndDate"
-          name="bookingEndDate"
-        /><br /><br />
+        <input type="date" id="bookingEndDate" name="bookingEndDate" /><br /><br />
         <div id="buttons">
           <button id="book" class="button" type="submit">Book</button>
           {% if messages %} {% for message in messages %}
           <p class="error">{{ message }}</p>
           {% endfor %} {% endif %}
-          </form>
-          <a href="{% url 'carlisting' %}?value=All"
-            ><button class="button">Back</button></a
-          >
-          {% endfor %} {% else %} {% if messages %} {% for message in messages %}
-          <h1 class="error">{{ message }}</h1>
-          <a id="thank">Thank you for choosing us for your travels.</a>
-          {% endfor %} {% endif %}
-          <a href="{% url 'carlisting' %}?value=All"
-            ><button class="button" id="return">Return to Carlisting</button></a
-          >{% endif %}
-        </div>
+      </form>
+      <a href="{% url 'carlisting' %}?value=All"><button class="button">Back</button></a>
+      {% endfor %} {% else %} {% if messages %} {% for message in messages %}
+      <h1 class="error">{{ message }}</h1>
+      <a id="thank">Thank you for choosing us for your travels.</a>
+      {% endfor %} {% endif %}
+      <a href="{% url 'carlisting' %}?value=All"><button class="button" id="return">Return to Carlisting</button></a>{%
+      endif %}
     </div>
   </div>
+</div>
 </div>
 <!-- popup -->
 <div class="popup" id="popup">
@@ -140,10 +114,9 @@
     align-items: center;
   }
 
-  #heading{
-    font-size: 50px;
+  #heading {
+    font-size: 30px;
     font-weight: 600;
-    /* color: var(--indigo); */
     margin-bottom: 20px;
   }
 
@@ -157,11 +130,11 @@
   #details {
     width: 100%;
     text-align: center;
-    font-size: 30px;
+    font-size: 20px;
     font-weight: 400;
   }
 
-  #details #model{
+  #details #model {
     font-weight: 800;
   }
 
@@ -187,7 +160,7 @@
     font-size: 17px;
   }
 
-  #buttons button{
+  #buttons button {
     margin-right: 20px;
     font-size: 17px;
   }
@@ -208,18 +181,17 @@
   }
 
   .error {
-    /* color: var(--red); */
     margin-top: 10px;
     margin-bottom: 20px;
     font-size: 50px;
   }
 
-  #thank{
+  #thank {
     font-size: 20px;
     margin-bottom: 20px;
   }
 
-  #return{
+  #return {
     margin-top: 10vh;
     font-size: 17px;
   }
