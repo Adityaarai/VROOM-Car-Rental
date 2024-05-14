@@ -6,7 +6,8 @@ from userauthentication.models import Profile
 from django.contrib import messages
 from django.contrib.auth import authenticate, login as auth_login, logout
 from django.db import IntegrityError
-
+from django.contrib.auth.models import Permission
+from django.contrib.contenttypes.models import ContentType
      
 def carlisting(request):
     items = CarDetail.objects.all()
@@ -140,6 +141,20 @@ def adminprofile(request):
             myuser.last_name = last_name
             if 'addDistributor' in request.POST:
               myuser.is_staff = True
+              
+              # Get permissions for CarDetail model
+              car_detail_content_type = ContentType.objects.get_for_model(CarDetail)
+              car_detail_permissions = Permission.objects.filter(content_type=car_detail_content_type)
+
+              # Get permissions for CarOrder model
+              car_order_content_type = ContentType.objects.get_for_model(CarOrder)
+              car_order_permissions = Permission.objects.filter(content_type=car_order_content_type)
+
+              # Combine permissions from all models
+              all_permissions = car_detail_permissions | car_order_permissions
+
+              # Assign permissions to the user
+              myuser.user_permissions.add(*all_permissions)
             else:
               myuser.is_staff = False
             myuser.save()
