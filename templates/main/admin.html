@@ -67,18 +67,44 @@
           <div class="card" id="distributor_card">
             <h3>Distributor Information</h3>
             <label id="TotalDistributors"></label>
-            <label id="Available">Available:</label><br />
+            <label id="Available">Available:</label><br><br>
             <label id="carModels">Models:</label>
             <label id="carTypes">Types:</label>
           </div>
           <div class="card" id="user_card">
             <h3>User Information</h3>
             <label id="TotalUsers">Total Users:</label>
-            <label id="approved">Approved:</label><br />
+            <label id="approved">Approved:</label><br><br>
             <label id="pending">pending:</label>
             <label id="paid">Paid:</label><br />
           </div>
         </div>
+
+        <h1>Recent Distributors</h1>
+         <!-- table to show distributor information -->
+         <table>
+          <tr>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Name</th>
+            <th>Contact Number</th>
+            <th>Location Incharge</th>
+          </tr>
+          {% for user_detail in user_details %}
+          {% if '.vroom@gmail.com' in user_detail.user.email and user_detail.user.is_staff %}
+          <script>
+            totalDistributorCount++;
+          </script>
+          <tr>
+            <td>{{ user_detail.user.username }}</td>
+            <td>{{ user_detail.user.email }}</td>
+            <td>{{ user_detail.user.get_full_name }}</td>
+            <td>{{ user_detail.contact }}</td>
+            <td>{{ user_detail.address }}</td>
+          </tr>
+          {% endif %}
+          {% endfor %}
+        </table>
       </div>
 
       <div id="distributor-content">
@@ -448,7 +474,7 @@
     --darkgreen: darkgreen;
     --crimson: crimson;
     --white:#fff;
-    --yellow: #yellow;
+    --yellow: #f4a62a;
   }
 
   /* Reset default margin, padding, and overflow */
@@ -457,6 +483,14 @@
     padding-top: 0;
     overflow-x: hidden;
     font-family: "Montserrat", sans-serif;
+  }
+
+  table{
+    font-size: 18px;
+  }
+
+  table td{
+    font-size: 20px;
   }
 
   /* Logo styles */
@@ -477,14 +511,14 @@
 
   .sidebar i{
     color: var(--white);
-    margin-left: 70px;
+    margin-left: 80px;
     margin-right: 10px;
   }
 
   .sidebar ul {
     list-style-type: none;
     padding: 0;
-    margin-top: 10vh;
+    margin-top: 8vh;
   }
 
   .sidebar li {
@@ -495,9 +529,9 @@
       font-size: 30px;
       width: 20vw;;
       text-decoration: none;
-      color: #fff;
+      color: var(--white);
       display: block;
-      margin-top: 40px;
+      margin-top: 50px;
   }
 
   .sidebar a:hover {
@@ -515,7 +549,7 @@
   .content {
     float: left;
     width: 80%;
-    padding: 20px;
+    padding: 20px 0 0 20px;
     box-sizing: border-box;
   }
 
@@ -523,14 +557,18 @@
   .card {
     height: 35vh;
     width: 18vw;
+    font-size: 18px;
     margin: 10px;
-    background-color: var(--platinum);
-    border: 1px solid var(--platinum);
     padding: 20px;
-    margin-bottom: 20px;
+    padding-left: 60px;
+    margin-bottom: 5vh;
     border-radius: 5px;
     box-sizing: border-box;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .card h3{
+    font-size: 30px;
   }
 
 
@@ -607,7 +645,7 @@
   #distributor-add-btn,
   #user-add-btn {
     background-color: var(--green);
-    margin-right: 40px;
+    /* margin-right: 40px; */
   }
 
   #distributor-add-btn:hover,
@@ -625,9 +663,9 @@
     background-color: var(--crimson);
   }
 
-  #distributor-edit-btn
+  #distributor-edit-btn,
   #user-edit-btn{
-    background-color: yellow;
+    background-color: var(--yellow);
   }
 
   /* For User Information Edit */
