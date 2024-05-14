@@ -23,19 +23,17 @@
           <form id="login-form" method="post" action="{% url 'login' %}">
             {% csrf_token %}
             <div class="form-group">
-              <label for="username_or_email">Username or Email</label><br>
+              <label for="username_or_email">Username or Email</label>  
               <input type="text" name="username_or_email" id="username_or_email"
                 placeholder="Enter your username or email" required />
-            </div>
-            <div class="form-group">
               <label for="password">Password</label>
               <input type="password" name="password" id="password" placeholder="Enter your password" required />
+              <div class="links">
+                <a href="{% url 'reset_password' %}">Forgot your password?</a><a class="title"href="{% url 'signup' %}">Sign Up</a>
+              </div>
             </div>
-            <div class="form-group">
-              <a href="{% url 'reset_password' %}">Forgot your password?</a><a class="title"
-                href="{% url 'signup' %}">Sign Up</a>
 
-            </div>
+           
 
 
             <button type="submit">Sign In</button>
@@ -283,7 +281,7 @@
 
   .login-form {
     padding: 20px;
-    width: 40%;
+    width: 43%;
     font-size: 40px;
     font-weight: 400;
   }
@@ -293,12 +291,17 @@
     margin-bottom: 40px;
   }
 
-  .login-form input[type="email"],
+  .login-form input[type="text"],
   .login-form input[type="password"] {
-    height: 30px;
-    width: 340px;
+    height: 40px;
+    width: 80%;
     font-size: 20px;
     margin-bottom: 10px;
+  }
+
+  #login-form label{
+    margin-bottom: 15px;
+    font-size: 30px;
   }
 
   .login-form button {
@@ -309,10 +312,13 @@
     color: var(--platinum);
     border-radius: 10px;
   }
+  .links{
+    margin-bottom: 20px;
+  }
 
   .login-form a {
     font-size: 20px;
-    padding-right: 20px;
+    padding-right: 40px;
   }
 
   .close {
@@ -460,7 +466,7 @@
   #pre-booking button {
     align-self: flex-end;
     padding: 10px 20px;
-    background-color: #28a745;
+    background-color: var(--lapis);
     border: none;
     border-radius: 4px;
     color: var(--white);
@@ -468,9 +474,6 @@
     cursor: pointer;
   }
 
-  #pre-booking button:hover {
-    background-color: #218838;
-  }
 
   #vroom {
     color: var(--white);
