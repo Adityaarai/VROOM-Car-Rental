@@ -21,7 +21,8 @@ Payment! VROOM
       </div>
       <div class="payment-form">
         <h2>Payment Information</h2>
-        <form id="payment-form">
+        <form id="payment-form" method="post">
+          {% csrf_token %}
           <label for="Esewa-number">eSewa ID:</label>
           <input type="text" id="Esewa-number" placeholder="Enter esewa number" required>
           <label for="Passowrd">MPIN/Password:</label>
@@ -58,7 +59,6 @@ Payment! VROOM
 
     // If all validations pass, submit the form
     alert('Payment successful! Thank you for renting with us.');
-    document.getElementById('payment-form').submit();
     // Redirect user after they click "OK"
     window.location.href = '/user/profile';
   });
