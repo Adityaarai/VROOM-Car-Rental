@@ -5,6 +5,8 @@ from .models import CarDetail, CarOrder, User
 from userauthentication.models import Profile
 from django.contrib import messages
 from django.contrib.auth import authenticate, login as auth_login, logout
+from django.db import IntegrityError
+
      
 def carlisting(request):
     items = CarDetail.objects.all()
@@ -114,11 +116,50 @@ def distributorprofile(request):
   return render(request, 'main/distributor.html', context)
 
 def adminprofile(request):
-  user_details = Profile.objects.all()
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        if User.objects.filter(username=username).exists():
+            # Username already exists, handle the error gracefully
+            messages.error(request, "Username already exists.")
+        else:
+            # Proceed with creating the user
+            if 'addDistributor' in request.POST:
+              license_number = request.POST.get('license_number')
+            else:
+              license_number = None
+            
+            first_name = request.POST.get('distributorFirstName')
+            last_name = request.POST.get('distributorLastName')
+            email = request.POST.get('email')
+            location = request.POST.get('location')
+            password = request.POST.get('password')
+            contact = request.POST.get('contactNumber')
 
-  context = {
-    'user_details': user_details,
-  }
+            myuser = User.objects.create(username=username, email=email, password=password)
+            myuser.first_name = first_name
+            myuser.last_name = last_name
+            if 'addDistributor' in request.POST:
+              myuser.is_staff = True
+            else:
+              myuser.is_staff = False
+            myuser.save()
+            
+            try:
+                # Assuming Profile is your Profile model
+                profile, created = Profile.objects.get_or_create(user=myuser)
+                profile.address = location
+                profile.contact = contact
+                profile.license_number = license_number
+                profile.save()
+                messages.success(request, "Your account has been successfully created. Welcome!")
+            except IntegrityError:
+                # Handle the case where the username was created by another request between the exists() check and this block
+                messages.error(request, "An error occurred while creating the user.")
 
-  return render(request, 'main/admin.html', context)
+    user_details = Profile.objects.all()
+    context = {
+        'user_details': user_details,
+    }
+    return render(request, 'main/admin.html', context)
+
 

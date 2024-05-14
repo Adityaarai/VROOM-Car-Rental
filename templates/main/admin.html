@@ -30,6 +30,17 @@
         <div id="default-content">
           <h1>Welcome Admin!!</h1>
           <!-- Default dashboard content goes here -->
+          {% if messages %} 
+            {% for message in messages %} 
+              {% if message.tags == 'error' %}
+                <p class="error">{{ message }}</p>
+              {% endif %} 
+              {% if message.tags == 'success' %}
+                <p class="success">{{ message }}</p>
+              {% endif %}
+            {% endfor %} 
+          {% endif %}
+
           <div id="card">
             <div class="card" id="distributor_card">
               <h3>Distributor Information</h3>
@@ -48,7 +59,6 @@
           </div>
         </div>
 
-
         <div id="distributor-content">
           <h2>Distributor Information</h2>
           <!-- buttons to add and delete distributor -->
@@ -63,22 +73,21 @@
               <th>Contact Number</th>
               <th>Location Incharge</th>
             </tr>
-              {% for user_detail in user_details %}
-                {% if '.vroom@gmail.com' in user_detail.user.email %}
-                  <script>
-                    totalDistributorCount++;
-                  </script>
-                    <tr>
-                      <td>{{ user_detail.user.username }}</td>
-                      <td>{{ user_detail.user.email }}</td>
-                      <td>{{ user_detail.user.get_full_name }}</td>
-                      <td>{{ user_detail.contact }}</td>
-                      <td>{{ user_detail.address }}</td>
-                  </tr>
-                {% endif %}
-              {% endfor %}
+            {% for user_detail in user_details %} 
+            {% if '.vroom@gmail.com' in user_detail.user.email and user_detail.user.is_staff %}
+            <script>
+              totalDistributorCount++;
+            </script>
+            <tr>
+              <td>{{ user_detail.user.username }}</td>
+              <td>{{ user_detail.user.email }}</td>
+              <td>{{ user_detail.user.get_full_name }}</td>
+              <td>{{ user_detail.contact }}</td>
+              <td>{{ user_detail.address }}</td>
+            </tr>
+            {% endif %} 
+            {% endfor %}
           </table>
-
 
           <!-- popup to add distributor -->
           <div class="popup" id="addDistributorPopup">
@@ -87,31 +96,67 @@
                 >&times;</span
               >
               <h2>Add Distributor</h2>
-              <form id="addDistributorForm">
-                <label for="distributorName">Distributor Name:</label><br />
+
+              <form id="addDistributorForm" method="post">
+                {% csrf_token %}
+                <label for="distributorFirstName">First Name:</label><br />
                 <input
                   type="text"
-                  id="distributorName"
-                  name="distributorName"
+                  id="distributorFirstName"
+                  name="distributorFirstName"
+                  required
                 /><br />
-                <label for="location">Location:</label><br />
-                <input type="text" id="location" name="location" /><br />
+
+                <label for="distributorLastName">Last Name:</label><br />
+                <input
+                  type="text"
+                  id="distributorLastName"
+                  name="distributorLastName"
+                  required
+                /><br />
+
+                <label for="username">Username:</label><br />
+                <input
+                  type="text"
+                  id="username"
+                  name="username"
+                  required
+                /><br />
+
+                <label for="email">Email:</label><br />
+                <input type="email" id="email" name="email" required /><br />
+
+                <label for="location">Location Incharge:</label><br />
+                <input
+                  type="text"
+                  id="location"
+                  name="location"
+                  required
+                /><br />
+
                 <label for="password">Password:</label><br />
                 <input
                   type="password"
                   id="password"
                   name="password"
-                /><br /><br />
+                  required
+                /><br />
+
                 <label for="contactNumber">Contact Number:</label><br />
                 <input
                   type="text"
                   id="contactNumber"
                   name="contactNumber"
-                /><br /><br />
-                <button type="submit">Add Distributor</button>
+                  required
+                /><br />
+
+                <button type="submit" name="addDistributor">
+                  Add Distributor
+                </button>
               </form>
             </div>
           </div>
+
           <!-- popup to delete distributor -->
           <div class="popup" id="deleteDistributorPopup">
             <div class="popup-content">
@@ -119,9 +164,12 @@
                 >&times;</span
               >
               <h2>Delete Distributor</h2>
-              <label for="distributorID">Distributor ID:</label><br />
-              <input type="text" id="distributorID" name="distributorID" />
-              <button onclick="deleteDistributor()">Delete</button>
+              <form method="POST" id="deleteDistributor">
+                {% csrf_token %}
+                <label for="distributorID">Distributor ID:</label><br />
+                <input type="text" id="distributorID" name="distributorID" />
+                <button type="submit" name="deleteDistributor">Delete</button>
+              </form>
             </div>
           </div>
         </div>
@@ -154,9 +202,10 @@
               <td>{{ user_detail.contact }}</td>
               <td>{{ user_detail.address }}</td>
             </tr>
-            {% endif %}
+            {% endif %} 
             {% endfor %}
           </table>
+          
           <!-- popup to add user -->
           <div class="popup" id="addUserPopup">
             <div class="popup-content">
@@ -164,18 +213,70 @@
                 >&times;</span
               >
               <h2>Add User</h2>
-              <form id="addUserForm">
+              <form id="addUserForm" method="post">
+                {% csrf_token %}
+                <label for="FirstName">First Name:</label><br />
+                <input
+                  type="text"
+                  id="distributorFirstName"
+                  name="distributorFirstName"
+                  required
+                /><br />
+
+                <label for="LastName">Last Name:</label><br />
+                <input
+                  type="text"
+                  id="distributorLastName"
+                  name="distributorLastName"
+                  required
+                /><br />
+
                 <label for="username">Username:</label><br />
-                <input type="text" id="username" name="username" /><br />
+                <input
+                  type="text"
+                  id="username"
+                  name="username"
+                  required
+                /><br />
+
                 <label for="email">Email:</label><br />
-                <input type="email" id="email" name="email" /><br />
+                <input type="email" id="email" name="email" required /><br />
+
+                <label for="location">Address:</label><br />
+                <input
+                  type="text"
+                  id="location"
+                  name="location"
+                  required
+                /><br />
+
                 <label for="password">Password:</label><br />
                 <input
                   type="password"
                   id="password"
                   name="password"
-                /><br /><br />
-                <button type="submit">Add User</button>
+                  required
+                /><br />
+
+                <label for="contactNumber">Contact Number:</label><br />
+                <input
+                  type="text"
+                  id="contactNumber"
+                  name="contactNumber"
+                  required
+                /><br />
+
+                <label for="license_number">License Number:</label><br />
+                <input
+                  type="text"
+                  id="license_number"
+                  name="license_number"
+                  required
+                /><br />
+
+                <button type="submit" name="addUser">
+                  Add User
+                </button>
               </form>
             </div>
           </div>
@@ -198,13 +299,13 @@
 </html>
 
 <script>
-  
   // displaying the total count of distributors and user
-  document.getElementById("TotalDistributors").innerHTML = "Total Distributors : " + totalDistributorCount;
-  document.getElementById("TotalUsers").innerHTML = "Total Users : " + totalUserCount;
+  document.getElementById("TotalDistributors").innerHTML =
+    "Total Distributors : " + totalDistributorCount;
+  document.getElementById("TotalUsers").innerHTML =
+    "Total Users : " + totalUserCount;
 
   // JavaScript to toggle content based on button clicks
-
   document.getElementById("default-btn").addEventListener("click", function () {
     document.getElementById("default-content").style.display = "block";
     document.getElementById("distributor-content").style.display = "none";
@@ -238,14 +339,11 @@
       addDistributorPopup.style.display = "block";
     });
   }
+  s;
 
   // Distributor delete button and popup
-  const distributorDeleteBtn = document.getElementById(
-    "distributor-delete-btn"
-  );
-  const deleteDistributorPopup = document.getElementById(
-    "deleteDistributorPopup"
-  );
+  const distributorDeleteBtn = document.getElementById("distributor-delete-btn");
+  const deleteDistributorPopup = document.getElementById("deleteDistributorPopup");
   if (distributorDeleteBtn && deleteDistributorPopup) {
     distributorDeleteBtn.addEventListener("click", () => {
       deleteDistributorPopup.style.display = "block";

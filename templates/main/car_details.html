@@ -8,6 +8,7 @@ Car Details{% endblock %} {% block content %}
       <img src="{{ detail.image }}" alt="Car Image" />
     </div>
     <div id="details">
+      <div id="availability">{{ detail.availability }}</div>
       <div id="model">
         <p>{{ detail.car_model }}</p>
       </div>
