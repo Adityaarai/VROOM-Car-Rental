@@ -106,4 +106,205 @@ Us{% endblock %} {% block content %}
     </div>
   </div>
 </section>
+
+*{
+  margin: 2px;
+  padding: 2px;
+  box-sizing: border-box;
+  font-family: "Arial", sans-serif;
+}
+.hero{
+  background-color: #f8f8f8;
+  overflow: hidden;
+}
+.heading h1{
+  color: #000000;
+  font-size: 55px;
+  text-align: center;
+  margin-top: 35px;
+}
+.container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 90%;
+  margin: 65px auto;
+}
+.hero-content{
+  flex: 1;
+  width: 600px;
+  margin:0px 25px;
+  animation: fadeInUp 2s ease;
+}
+.hero-content h2{
+  font-size: 38px;
+  margin-bottom: 20px;
+  color: #653939;
+
+}
+.hero-content p{
+  font-size: 24px;
+  line-height: 1.5;
+  margin-bottom: 40px;
+  color: #1a1717;
+}
+.hero-content button{
+  display: inline-block;
+  background-color: #300973;
+  color: #e1cccc;
+  padding: 12px 24px;
+  border-radius: 5px;
+  font-size: 20px;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
+}
+.hero-content button:hover{
+  background: color #0f1b79;
+  transform: scale(1.1);
+}
+.hero-image{
+  flex: 1;
+  width: 600px;
+  margin: auto;
+  animation: fadeInRight 2s ease;
+}
+img{
+  width: 100%;
+  height: auto;
+  border-radius: 20px;
+}
+@media screen and (max-width:768px){
+    .heading h1{
+      font-size: 45px;
+      margin-top: 30px;
+    }  
+    .hero{
+      margin: 0px;
+    }
+    .container{
+      width: 100%;
+      flex-direction: column;
+      margin: 0px;
+      padding: 0px 40px;
+    }
+    .hero-content{
+      width: 100%;
+      margin: 35px 0px;
+    }
+    .hero-content h2{
+      font-size: 30px;
+    }
+    .hero-content p{
+      font-size: 18px;
+      margin-bottom: 20px;
+    }
+    .hero-content button{
+      font-size: 16px;
+      padding: 8px 16px;
+    }
+    .hero-image{
+      width: 100%;
+    }
+}
+@keyframes fadeInUp {
+    0%{
+      opacity: 0;
+      transform: translate(50px);
+    }
+    100%{
+      opacity: 1;
+      transform: translate(0px);
+    }
+}
+@keyframes fadeInRight {
+  0%{
+    opacity: 0;
+    transform: translate(-50px);
+  }
+  100%{
+    opacity: 1;
+    transform: translate(0px);
+  }
+}
+.title-box {
+  text-align: center;
+}
+
+.center {
+  margin: 0 auto;
+  max-width: 600px;
+}
+.title-box h2{
+  color: #000000;
+  font-size: 55px;
+  text-align: center;
+  margin-top: 35px;
+}  
+.title-box p{
+  font-size: 24px;
+  line-height: 24px;
+  margin-top: 20px;
+  color: #1a1717;
+}
+.profile-box{
+  width: 360px;
+  height: 330px;
+  background: #fff;
+  border-radius: 4px;
+  margin-bottom: 30px;
+  box-shadow: 0 10px 10px 10px rgba(115,193,255,0.1);
+  padding: 20px;
+  position: relative;
+  transition: background 0.5s;
+}
+.profile-box img{
+  width: 110px;
+  position: absolute;
+  top: 10px;
+  right: 30px;
+  border-radius: 4px;
+  transition: 0.5s;
+}
+.profile-box h4{
+  margin-top: 25px;
+  margin-bottom: 5px;
+  color: #0f1b79;
+}
+small{
+  color: #555;
+}
+.social-box{
+  background: #0f1b79;
+  margin: 60px auto 20px;
+  text-align: center;
+  border-radius: 3px;
+}
+.social-box .fa{
+  margin: 5px;
+  color: #fff;
+  cursor: pointer;
+}
+.profile-box p{
+  text-align:center;
+  font-size: 12px;
+  line-height: 1.4;
+  margin: 10px 5px;
+  color: #555;
+}
+.Member-row{
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  justify-content: space-between;
+  flex-wrap:wrap-reverse;
+  width: 110%;
+  margin: 100px auto;
+}
+.profile-box img:hover{
+  width: 250px;
+}
+.profile-box:hover{
+  background:#9c73e4;
+}
+
 {% endblock %}
