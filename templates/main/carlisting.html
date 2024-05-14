@@ -17,7 +17,7 @@ Carlisting! VROOM {% endblock %} {% block content%}
     {% for item in items %}
     <div class="card">
       <div class="availability-container">
-        <h2 class="availability">{{ item.availability }}</h2>
+        <a class="availability">{{ item.availability }}</a>
       </div>
       <img src="{{ item.image.url }}" alt="Car Image" />
       <div class="card-text">
