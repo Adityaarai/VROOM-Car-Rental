@@ -11,7 +11,7 @@ class CardetailsAdmin(admin.ModelAdmin):
     list_filter = ['car_type', 'car_model', 'availability']
 
 class CarordersAdmin(admin.ModelAdmin):
-    list_display = ('product', 'distributor', 'start_date', 'end_date', 'status')
+    list_display = ('product', 'rentee_email', 'start_date', 'end_date', 'status')
     list_filter = ['distributor', 'status']
 
 
