@@ -305,4 +305,11 @@ def payment_view(request):
         'dropoff_date': dropoff_date
     }
 
+    if request.method == 'POST':
+        # Update the status of the CarOrder to 'Paid'
+        order.status = 'Paid'
+        order.save()
+        # Redirect the user to their profile page
+        return render(request, 'main/user_profile.html')
+
     return render(request, 'main/payment.html', context)
