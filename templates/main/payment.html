@@ -44,6 +44,18 @@ Payment! VROOM
       return;
     }
 
+    // Validate Esewa ID
+      if (esewaNumber.length !== 10 || isNaN(esewaNumber)) {
+      alert('eSewa ID must be 10 digits.');
+      return;
+    }
+
+    // Validate MPIN/Password
+    if (password.length !== 4 || isNaN(password)) {
+      alert('MPIN/Password must be 4 digits.');
+      return;
+    }
+
     // If all validations pass, submit the form
     alert('Payment successful! Thank you for renting with us.');
     document.getElementById('payment-form').submit();
