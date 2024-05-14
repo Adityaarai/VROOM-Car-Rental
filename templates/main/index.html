@@ -98,7 +98,7 @@
     </div>
   </div>
 <!-- different brands -->
-  <div id="brand">Top Brands</div>
+  <div id="brand">Brands Offered</div>
   <div id="brand-upper">
     <div class="Suzuki">
       <a href="{% url 'carlisting' %}">
@@ -176,6 +176,40 @@
     </div>
   </div>
 </div>
+
+<!-- pre-booking section -->
+<div id="pre_booking">
+  <form action="/search" method="get">
+    <label for="car-type">Type of Car:</label>
+    <select id="car-type" name="car-type">
+        <option value="sedan">Sedan</option>
+        <option value="suv">SUV</option>
+        <option value="hatchback">Hatchback</option>
+        <option value="convertible">Convertible</option>
+    </select>
+    <br>
+
+    <label for="car-model">Model of Car:</label>
+    <select id="car-model" name="car-model">
+        <option value="model-a">Model A</option>
+        <option value="model-b">Model B</option>
+        <option value="model-c">Model C</option>
+        <option value="model-d">Model D</option>
+    </select>
+    <br>
+
+    <label for="start-date">Start Date:</label>
+    <input type="date" id="start-date" name="start-date">
+    <br>
+
+    <label for="end-date">End Date:</label>
+    <input type="date" id="end-date" name="end-date">
+    <br>
+
+    <button type="submit">Search</button>
+</form>
+</div>
+
 <!-- why choose vroom page -->
 <div id="vroom">
   <h2 id="vroom-title">Why Choose Us?</h2>
