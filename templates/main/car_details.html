@@ -47,7 +47,7 @@
     {% else %}
       {% if messages %}
         {% for message in messages %}
-          <h1 class="error">{{ message }}</h1>
+          <h1 class="error_after">{{ message }}</h1>
           <a id="thank">Thank you for choosing us for your travels.</a>
         {% endfor %}
       {% endif %}
@@ -215,6 +215,12 @@
     margin-bottom: 20px;
     font-size: 20px;
     color: var(--red);
+  }
+
+  .error_after{
+    margin-top: 10px;
+    margin-bottom: 20px;
+    font-size: 40px;
   }
 
   #thank {
