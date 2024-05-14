@@ -8,6 +8,8 @@ from django.contrib.auth import authenticate, login as auth_login, logout
 from django.db import IntegrityError
 from django.contrib.auth.models import Permission
 from django.contrib.contenttypes.models import ContentType
+from django.utils import timezone
+from datetime import datetime
      
 def carlisting(request):
     items = CarDetail.objects.all()
@@ -34,6 +36,14 @@ def orders(request):
         if not startdate or not enddate:
           messages.error(request, "Please provide both start date and end date.")
           return HttpResponseRedirect(current_url)
+
+        if datetime.strptime(startdate, '%Y-%m-%d').date() < timezone.now().date():
+          messages.error(request, "Cannot book cars in the past.")
+          return HttpResponseRedirect(current_url)
+
+        if startdate > enddate:
+          messages.error(request, "Start date must be before end date.")
+          return HttpResponseRedirect(current_url)
           
         renter_name = request.POST['renter_name']
         renter_contact = request.POST['renter_contact']
@@ -43,9 +53,7 @@ def orders(request):
         product = CarDetail.objects.get(car_model=car_model, renter_name=renter_name, renter_contact=renter_contact)
                 
         order = CarOrder.objects.create(product=product, start_date=startdate, end_date=enddate, rentee_email=rentee_email)
-
         messages.success(request, "Your booking has been created successfully")
-
         return redirect('orders')
       else:
         messages.error(request,"You must be logged in to book cars!!")
@@ -53,7 +61,6 @@ def orders(request):
     else:
         name = request.GET.get('renter_name')
         model = request.GET.get('car_model')
-
         details_queryset = CarDetail.objects.filter(renter_name=name, car_model=model)
 
         # Convert queryset to list of dictionaries with image URLs
@@ -79,24 +86,35 @@ def orders(request):
 
 # Create your views here.
 def index(request):
+    current_url = request.get_full_path()
     if request.method == 'POST':
-        email = request.POST.get('email')
-        password = request.POST['password']
+      username_or_email = request.POST.get('username_or_email')
+      password = request.POST['password']
 
-        user = authenticate(request, username=email, password=password)
+      # Try to authenticate user by username
+      user = authenticate(request, username=username_or_email, password=password)
         
-        if user is not None:
-            auth_login(request, user)
-            fname = user.first_name
-            # messages.success(request, "Logged In Sucessfully!!")
-            return render(request, "main/index.html")
-            
-        # If no user was authenticated, show error message
+      # If username authentication fails, try email authentication
+      if user is None:
+        user = User.objects.filter(email=username_or_email).first()
+        if user:
+          user = authenticate(request, username=user.username, password=password)
+        
+      if user is not None:
+        auth_login(request, user)
+        fname = user.first_name
+        # messages.success(request, "Logged In Successfully!!")
+        if user.is_staff and user.is_superuser:
+          return redirect('admin_profile')
+        elif user.is_staff:
+          return redirect('distributor_profile')
         else:
-            messages.error(request, "Invalid email or password!")
-            return redirect('index')
+          return redirect('index')
+      else:
+        messages.error(request, "Invalid username/email or password!")
+        return HttpResponseRedirect(current_url)
     else:
-        return render(request, "main/index.html")
+      return render(request,'main/index.html')
             
 
 def about_us(request):
