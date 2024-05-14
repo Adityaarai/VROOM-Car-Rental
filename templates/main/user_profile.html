@@ -305,11 +305,11 @@ User profile{% endblock %} {% block content %}
         {% endfor %}
       </tbody>
     </table>
+    <!-- Payment button to show only if there are approved bookings-->
+    <button class="paymentButton" id="paymentButton">Payment</button>
     {% else %}
     <p>You don't have any approved bookings.</p>
     {% endif %}
-    <!-- Payment button -->
-    <button class="paymentButton" id="paymentButton">Payment</button>
   </div>
 
   <!-- Paid Bookings Section -->
@@ -396,9 +396,9 @@ User profile{% endblock %} {% block content %}
     var myBookingsDropdown = document.getElementById("myBookingsDropdown");
     var pendingBtn = document.getElementById("pendingBtn");
     var approvedBtn = document.getElementById("approvedBtn");
-    var paymentBtn = document.getElementById("paymentButton");
     var paidBtn = document.getElementById("paidBtn");
     var completedBtn = document.getElementById("completedBtn");
+    var paymentBtn = document.getElementById("paymentButton");
     var removeCarBtn = document.getElementById('removeCarBtn');
 
     profileBtn.addEventListener("click", function () {
@@ -562,12 +562,6 @@ User profile{% endblock %} {% block content %}
       });
     });
 
-    // Event listener for Payment button
-    paymentBtn.addEventListener("click", function () {
-      // Redirect to the payment page
-      window.location.href = "payment.html";
-    });
-
     // Event listener for the Paid Bookings section
     paidBtn.addEventListener("click", function () {
       // Show paid section, hide others
@@ -584,6 +578,12 @@ User profile{% endblock %} {% block content %}
       document.getElementById("paidSection").style.display = "none";
       document.getElementById("pendingSection").style.display = "none";
       document.getElementById("approvedSection").style.display = "none";
+    });
+
+    // Event listener for Payment button
+    paymentBtn.addEventListener("click", function () {
+      // Redirect to the payment page
+      window.location.href = "payment.html";
     });
   });
 
