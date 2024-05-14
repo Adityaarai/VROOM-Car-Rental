@@ -98,7 +98,7 @@
     </div>
   </div>
 <!-- different brands -->
-  <div id="brand">Top Brands</div>
+  <div id="brand">Brands Offered</div>
   <div id="brand-upper">
     <div class="Suzuki">
       <a href="{% url 'carlisting' %}">
@@ -176,6 +176,45 @@
     </div>
   </div>
 </div>
+
+<!-- pre-booking section -->
+<div id="pre-book-container">
+  <form action="/search" method="get" id="pre-booking">
+    <div id="car_type">
+        <label for="car-type">Type of Car:</label>
+        <select id="car-type" name="car-type">
+            <option value="SUV">SUV</option>
+            <option value="EV">EV</option>
+            <option value="Truck">Truck</option>
+            <option value="Sedan">Sedan</option>
+        </select>
+    </div>
+      
+    <div id="car_model">
+        <label for="car-model">Model of Car:</label>
+        <select id="car-model" name="car-model">
+            <option value="model-a">Model A</option>
+            <option value="model-b">Model B</option>
+            <option value="model-c">Model C</option>
+            <option value="model-d">Model D</option>
+        </select>
+      </div>
+      
+      <div id="start_date">
+        <label for="start-date">Start Date:</label>
+        <input type="date" id="start-date" name="start-date">
+      </div>
+
+
+      <div id="end_date">
+        <label for="end-date">End Date:</label>
+        <input type="date" id="end-date" name="end-date">
+      </div>
+
+      <button type="submit">Search</button>
+  </form>
+</div>
+
 <!-- why choose vroom page -->
 <div id="vroom">
   <h2 id="vroom-title">Why Choose Us?</h2>
@@ -213,6 +252,11 @@
     --skyblue: #81c3d7;
     --platinum: #d9dcd6;
     --darkgray: #b4b4b3;
+    --red: #f44336;
+    --green: #4caf50;
+    --darkgreen: darkgreen;
+    --crimson: crimson;
+    --white: #ffffff;
   }
 
   body {
@@ -329,7 +373,6 @@
   }
 
   #types {
-    height: 83vh;
     width: 100vw;
   }
 
@@ -375,8 +418,61 @@
     width: 100%;
   }
 
+  #pre-book-container{
+    background: var(--indigo);
+    width: 80%;
+    height: 10vh;
+    padding: 20px;
+    border-radius: 8px;
+    color: var(--white);
+    margin-left: 10%;
+    margin-bottom: 10vh;
+    margin-top: 10vh;
+  }
+
+  #pre-booking {
+      padding-left: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      display: grid;
+      grid-template-columns: repeat(5,14.5vw) ;
+      gap: 20px;
+      
+  }
+  #pre-booking label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+  }
+  .form-group {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      min-width: 150px;
+  }
+  #pre-booking select, #pre-booking input[type="date"] {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+      font-size: 16px;
+  }
+  #pre-booking button {
+      align-self: flex-end;
+      padding: 10px 20px;
+      background-color: #28a745;
+      border: none;
+      border-radius: 4px;
+      color: var(--white);
+      font-size: 16px;
+      cursor: pointer;
+  }
+  #pre-booking button:hover {
+      background-color: #218838;
+  }
+
   #vroom {
-    color: white;
+    color:var(--white);
     padding-top: 20vh;
     height: 91vh;
     background-image: url("{% static 'img/why-vroom.jpg'%}");
