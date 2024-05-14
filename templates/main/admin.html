@@ -148,12 +148,48 @@
           </div>
         </div>
 
+        <!-- Popup to edit distributor -->
+        <div class="popup" id="editDistributorPopup">
+          <div class="popup-content">
+            <span class="close" onclick="closePopup('editDistributorPopup')">&times;</span>
+            <h2>Edit Distributor</h2>
+            <form id="editDistributorForm" method="post">
+              {% csrf_token %}
+              <!-- Input fields for editing distributor details -->
+              <label for="editDistributorFirstName">First Name:</label><br />
+              <input type="text" id="editDistributorFirstName" name="editDistributorFirstName" required /><br />
+
+              <label for="editDistributorLastName">Last Name:</label><br />
+              <input type="text" id="editDistributorLastName" name="editDistributorLastName" required /><br />
+
+              <label for="editUsername">Username:</label><br />
+              <input type="text" id="editUsername" name="editUsername" required /><br />
+
+              <label for="editEmail">Email:</label><br />
+              <input type="email" id="editEmail" name="editEmail" required /><br />
+
+              <label for="editLocation">Location Incharge:</label><br />
+              <input type="text" id="editLocation" name="editLocation" required /><br />
+
+              <label for="editPassword">Password:</label><br />
+              <input type="password" id="editPassword" name="editPassword" required /><br />
+
+              <label for="editContactNumber">Contact Number:</label><br />
+              <input type="text" id="editContactNumber" name="editContactNumber" required /><br />
+
+              <button type="submit" name="editDistributor">
+                Update Distributor
+              </button>
+            </form>
+          </div>
+        </div>
+
         <!-- popup to delete distributor -->
         <div class="popup" id="deleteDistributorPopup">
           <div class="popup-content">
             <span class="close" onclick="closePopup('deleteDistributorPopup')">&times;</span>
             <h2>Delete Distributor</h2>
-            <form method="POST" id="deleteDistributor">
+            <form method="post" id="deleteDistributor">
               {% csrf_token %}
               <label for="distributorID">Distributor ID:</label><br />
               <input type="text" id="distributorID" name="distributorID" />
@@ -233,6 +269,47 @@
             </form>
           </div>
         </div>
+
+
+        <!-- Popup to edit user -->
+        <div class="popup" id="editUserPopup">
+          <div class="popup-content">
+            <span class="close" onclick="closePopup('editUserPopup')">&times;</span>
+            <h2>Edit User</h2>
+            <form id="editUserForm" method="post">
+              {% csrf_token %}
+              <!-- Input fields for editing user details -->
+              <label for="editUserFirstName">First Name:</label><br />
+              <input type="text" id="editUserFirstName" name="editUserFirstName" required /><br />
+
+              <label for="editUserLastName">Last Name:</label><br />
+              <input type="text" id="editUserLastName" name="editUserLastName" required /><br />
+
+              <label for="editUsername">Username:</label><br />
+              <input type="text" id="editUsername" name="editUsername" required /><br />
+
+              <label for="editEmail">Email:</label><br />
+              <input type="email" id="editEmail" name="editEmail" required /><br />
+
+              <label for="editAddress">Address:</label><br />
+              <input type="text" id="editAddress" name="editAddress" required /><br />
+
+              <label for="editPassword">Password:</label><br />
+              <input type="password" id="editPassword" name="editPassword" required /><br />
+
+              <label for="editContactNumber">Contact Number:</label><br />
+              <input type="text" id="editContactNumber" name="editContactNumber" required /><br />
+
+              <label for="editLicenseNumber">License Number:</label><br />
+              <input type="text" id="editLicenseNumber" name="editLicenseNumber" required /><br />
+
+              <button type="submit" name="editUser">
+                Update User
+              </button>
+            </form>
+          </div>
+        </div>
+
         <!-- popup to delete user -->
         <div class="popup" id="deleteUserPopup">
           <div class="popup-content">
@@ -290,8 +367,17 @@
     distributorAddBtn.addEventListener("click", () => {
       addDistributorPopup.style.display = "block";
     });
+  };
+
+  // Distributor edit button and popup
+  const distributorEditBtn = document.getElementById("distributor-edit-btn");
+  const editDistributorPopup = document.getElementById("editDistributorPopup");
+  if (distributorEditBtn && editDistributorPopup) {
+    distributorEditBtn.addEventListener("click", () => {
+      editDistributorPopup.style.display = "block";
+      // Here you can populate the form fields with existing distributor data if needed
+    });
   }
-  s;
 
   // Distributor delete button and popup
   const distributorDeleteBtn = document.getElementById("distributor-delete-btn");
@@ -300,7 +386,8 @@
     distributorDeleteBtn.addEventListener("click", () => {
       deleteDistributorPopup.style.display = "block";
     });
-  }
+  };
+
 
   // User add button and popup
   const userAddBtn = document.getElementById("user-add-btn");
@@ -308,6 +395,16 @@
   if (userAddBtn && addUserPopup) {
     userAddBtn.addEventListener("click", () => {
       addUserPopup.style.display = "block";
+    });
+  }
+
+  // User edit button and popup
+  const userEditBtn = document.getElementById("user-edit-btn");
+  const editUserPopup = document.getElementById("editUserPopup");
+  if (userEditBtn && editUserPopup) {
+    userEditBtn.addEventListener("click", () => {
+      editUserPopup.style.display = "block";
+      // Here you can populate the form fields with existing user data if needed
     });
   }
 
