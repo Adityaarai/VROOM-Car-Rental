@@ -263,7 +263,7 @@ def payment_view(request):
     user_email = request.user.email
 
     # Retrieve CarOrder data for the user's email
-    user_orders = CarOrder.objects.filter(rentee_email=user_email)
+    user_orders = CarOrder.objects.filter(rentee_email=user_email, status='Approved')  # Filter only approved orders
 
     # Assuming only one order is retrieved
     if user_orders.exists():
@@ -302,7 +302,16 @@ def payment_view(request):
         'price': price,
         'image': image,
         'pickup_date': pickup_date,
-        'dropoff_date': dropoff_date
+        'dropoff_date': dropoff_date,
     }
+
+    if request.method == 'POST':
+        # Update the status of the CarOrder to 'Paid'
+        if user_orders.exists():  # Check if the order exists
+            order = user_orders.first()  # Retrieve the order
+            order.status = 'Paid'  # Update the status
+            order.save()  # Save the changes
+            # Redirect the user to their profile page
+            return redirect('/user/profile')
 
     return render(request, 'main/payment.html', context)
