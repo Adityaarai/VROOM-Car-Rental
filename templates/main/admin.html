@@ -1,23 +1,44 @@
-{% extends 'partials/base.html' %}
-{% load static %}
-{% block title %} About Us {% endblock %}
-{% block content %}
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-vWtPOzvV2LtoJMdIo6HfT94oZD8/eeFh0I+1wT6h7ggzmg+7Z0WgVpY+P6r+Qv26" crossorigin="anonymous">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-vWtPOzvV2LtoJMdIo6HfT94oZD8/eeFh0I+1wT6h7ggzmg+7Z0WgVpY+P6r+Qv26" crossorigin="anonymous">
 
-<section class="hero">
-  <div class="heading">
-    <h1>About Us</h1>
-  </div>
+  <title>VROOM - Admin</title>
+</head>
+<body>
   <div class="container">
-    <div class="hero-content">
-      <h2>Welcome to Vroom Car Rental</h2>
-      <p>"Welcome to Vroom Vehicle Rental, where each trip is a mix of luxury and simplicity. Begin your adventure today
-        and immerse yourself in the continual excellence of motion. Our carefully selected fleet, tailored to match all
-        of your requirements, ensures that every journey with Vroom is an unforgettable experience. Discover the joy of
-        discovery with us, where each drive tells a story of comfort and style."</p>
-      <button class="cta-button">Learn More</button>
+    <!-- main button to navigate between car and booking -->
+    <div class="sidebar">
+      <h1 id="logo">VROOM</h1>
+        <ul>
+            <li>
+                <a id="default-btn" onclick="toggleContent('default')"> <!-- Added onclick function -->
+                    <i class="fas fa-house"></i>
+                    <span id="default-topic">Dashboard</span> <!-- Unique ID -->
+                </a>
+            </li>
+            <li>
+                <a id="distributor-btn" onclick="toggleContent('distributor')"> <!-- Added onclick function -->
+                    <i class="fas fa-users"></i>
+                    <span id="distributor-topic">Distributor</span> <!-- Unique ID -->
+                </a>
+            </li>
+            <li>
+                <a id="user-btn" onclick="toggleContent('user')"> <!-- Added onclick function -->
+                    <i class="fas fa-user"></i>
+                    <span id="user-topic">User</span> <!-- Unique ID -->
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'logout' %}" id="logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span id="topic">Log Out</span>
+                </a>
+            </li>
+        </ul>
     </div>
-  
   
 
     <!-- setting count variables -->
@@ -59,10 +80,6 @@
               <i class="fas fa-user-check"></i>
               <span id="verified-count">5</span>
             </label>
-            <label id="unverified">
-              <i class="fas fa-user-times"></i>
-              <span id="unverified-count">3</span>
-            </label>
           </div>
         </div>
 
@@ -91,9 +108,9 @@
       <div id="distributor-content">
         <h2>Distributor Information</h2>
         <!-- buttons to add and delete distributor -->
-        <button id="distributor-add-btn">Add</button>
-        <button id="distributor-edit-btn">Edit</button>
-        <button id="distributor-delete-btn">Delete</button>
+        <button id="distributor-add-btn" onclick="openAddDistributorPopup()">Add</button>
+        <button id="distributor-edit-btn" onclick="openEditDistributorPopup()">Edit</button>
+        <button id="distributor-delete-btn" onclick="openDeleteDistributorPopup()">Delete</button>
         <!-- table to show distributor information -->
         <table>
           <tr>
@@ -205,7 +222,7 @@
             <form method="post" id="deleteDistributor">
               {% csrf_token %}
               <label for="distributorID">Distributor ID:</label><br />
-              <input type="text" id="distributorID" name="distributorID" />
+              <input type="text" id="distributorID" name="distributorID" /><br>
               <button type="submit" name="deleteDistributor">Delete</button>
             </form>
           </div>
@@ -215,9 +232,9 @@
       <div id="user-content">
         <h2>User Information</h2>
         <!-- buttons to add ,edit and delete user -->
-        <button id="user-add-btn">Add</button>
-        <button id="user-edit-btn">Edit</button>
-        <button id="user-delete-btn">Delete</button>
+        <button id="user-add-btn" onclick="openAddUserPopup()">Add</button>
+        <button id="user-edit-btn" onclick="openEditUserPopup()">Edit</button>
+        <button id="user-delete-btn" onclick="openDeleteUserPopup()">Delete</button>
         <!-- table to show user information -->
         <table>
           <tr>
@@ -329,107 +346,143 @@
             <span class="close" onclick="closePopup('deleteUserPopup')">&times;</span>
             <h2>Delete User</h2>
             <label for="userID">User ID:</label><br />
-            <input type="text" id="userID" name="userID" />
+            <input type="text" id="userID" name="userID" /><br>
             <button onclick="deleteUser()">Delete</button>
           </div>
         </div>
       </div>
-      <p>The creative mind behind our 'About Us' page, blending design flair with frontend expertise to craft an
-        immersive and visually captivating narrative of our brand story.</p>
     </div>
   </div>
-</section>
+</body>
+
+</html>
+
+<script>
+  // displaying the total count of distributors and user
+  document.getElementById("TotalDistributors").innerHTML =
+    "Total Distributors : " + totalDistributorCount;
+  document.getElementById("TotalUsers").innerHTML =
+    "Total Users : " + totalUserCount;
+
+    document.addEventListener("DOMContentLoaded", function () {
+  var defaultButton = document.getElementById("default-btn");
+  defaultButton.click();
+});
+
+function toggleContent(topic) {
+  document.getElementById("default-content").style.display = topic === 'default' ? "block" : "none";
+  document.getElementById("distributor-content").style.display = topic === 'distributor' ? "block" : "none";
+  document.getElementById("user-content").style.display = topic === 'user' ? "block" : "none";
+}
+
+// Function to open the add distributor popup
+function openAddDistributorPopup() {
+  const addDistributorPopup = document.getElementById("addDistributorPopup");
+  if (addDistributorPopup) {
+    addDistributorPopup.style.display = "block";
+  }
+}
+
+// Function to open the edit distributor popup
+function openEditDistributorPopup() {
+  const editDistributorPopup = document.getElementById("editDistributorPopup");
+  if (editDistributorPopup) {
+    editDistributorPopup.style.display = "block";
+    // Here you can populate the form fields with existing distributor data if needed
+  }
+}
+
+// Function to open the delete distributor popup
+function openDeleteDistributorPopup() {
+  const deleteDistributorPopup = document.getElementById("deleteDistributorPopup");
+  if (deleteDistributorPopup) {
+    deleteDistributorPopup.style.display = "block";
+  }
+}
+
+// Function to open the add user popup
+function openAddUserPopup() {
+  const addUserPopup = document.getElementById("addUserPopup");
+  if (addUserPopup) {
+    addUserPopup.style.display = "block";
+  }
+}
+
+// Function to open the edit user popup
+function openEditUserPopup() {
+  const editUserPopup = document.getElementById("editUserPopup");
+  if (editUserPopup) {
+    editUserPopup.style.display = "block";
+    // Here you can populate the form fields with existing user data if needed
+  }
+}
+
+// Function to open the delete user popup
+function openDeleteUserPopup() {
+  const deleteUserPopup = document.getElementById("deleteUserPopup");
+  if (deleteUserPopup) {
+    deleteUserPopup.style.display = "block";
+  }
+}
+
+// Close popup function
+function closePopup(id) {
+  const popup = document.getElementById(id);
+  if (popup) {
+    popup.style.display = "none";
+  }
+}
+
+</script>
 
 <style>
-* {
-  margin: 2px;
-  padding: 2px;
-  box-sizing: border-box;
-  font-family: "Arial", sans-serif;
-}
+    /* Font Awesome styles */
+  @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css');
 
-.hero {
-  width: 100%;
-  background-color: #ffffff;
-  overflow: hidden;
-}
-
-.heading h1 {
-  color: #000000;
-  font-size: 55px;
-  text-align: center;
-  margin-top: 90px;
-  margin-bottom: 0;
-}
-
-.container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 90%;
-  margin: 65px auto;
-}
-
-.hero-content {
-  flex: 1;
-  width: 600px;
-  margin: 0px 25px;
-  animation: fadeInUp 2s ease;
-}
-
-.hero-content h2 {
-  margin-top: 10px;
-  font-size: 38px;
-  margin-bottom: 20px;
-  color: #653939;
-}
-
-.hero-content p {
-  text-align: justify;
-  font-size: 24px;
-  line-height: 1.5;
-  margin-bottom: 40px;
-  color: #1a1717;
-}
-
-.hero-content button {
-  display: inline-block;
-  background-color: #300973;
-  color: #e1cccc;
-  padding: 12px 24px;
-  border-radius: 5px;
-  font-size: 20px;
-  border: none;
-  cursor: pointer;
-  transition: 0.3s ease-in-out;
-}
-
-.hero-content button:hover {
-  background: color #0f1b79;
-  transform: scale(1.1);
-}
-
-.hero-image {
-  flex: 1;
-  width: 600px;
-  margin: auto;
-  animation: fadeInRight 2s ease;
-}
-
-img {
-  width: 100%;
-  height: auto;
-  border-radius: 20px;
-}
-
-@media screen and (max-width: 768px) {
-  .heading h1 {
-    font-size: 45px;
-    margin-top: 30px;
+  /* Set Font Awesome solid icons font family and font weight */
+  .fa-solid {
+      font-family: 'Font Awesome 6 Solid';
+      font-weight: 900;
   }
 
-  .hero {
-    margin: 0px;
+  :root {
+    --indigo: #16425b;
+    --lapis: #2f6690;
+    --cerulean: #3a7ca5;
+    --skyblue: #81c3d7;
+    --platinum: #d9dcd6;
+    --darkgray: #b4b4b3;
+    --red: #f44336;
+    --green: #4caf50;
+    --darkgreen: darkgreen;
+    --crimson: crimson;
+    --white:#fff;
+    --yellow: #f4a62a;
+    --darkyellow:#df9319;
+  }
+
+  /* Reset default margin, padding, and overflow */
+  body {
+    margin: 0;
+    padding-top: 0;
+    overflow-x: hidden;
+    font-family: "Montserrat", sans-serif;
+  }
+
+  table{
+    font-size: 18px;
+  }
+
+  table td{
+    font-size: 20px;
+  }
+
+  /* Logo styles */
+  #logo {
+    color: var(--platinum);
+    margin-top: 30px;
+    text-align: center;
+    font-size: 3rem;
   }
 
   /* Sidebar styles */
@@ -473,7 +526,7 @@ img {
   #logout {
       position: absolute;
       bottom: 30px;
-      left: 0;
+      left: 20px;
     }
 
   /* Content styles */
@@ -489,12 +542,13 @@ img {
     height: 35vh;
     width: 18vw;
     font-size: 18px;
-    margin-bottom: 20px;
-  }
-
-  .hero-content button {
-    font-size: 16px;
-    padding: 8px 16px;
+    margin: 10px;
+    padding: 20px;
+    padding-left: 60px;
+    margin-bottom: 5vh;
+    border-radius: 5px;
+    box-sizing: border-box;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
 
 
@@ -506,9 +560,7 @@ img {
   #Location i{
     color: var(--indigo);
   }
-  #unverified i{
-    color: var(--red);
-  }
+
   #verified i{
     color: var(--green);
   }
@@ -536,113 +588,184 @@ img {
   #user_card {
     background-color: var(--platinum);
   }
-  100% {
-    opacity: 1;
-    transform: translate(0px);
+
+  #TotalDistributors,
+  #TotalUsers {
+    padding-right: 10vw;
+    /* padding-bottom: 5vh; */
   }
-}
 
-@keyframes fadeInRight {
-  0% {
-    opacity: 0;
-    transform: translate(-50px);
+  #default-content,
+  #distributor-content,
+  #user-content {
+    right: 0;
+    display: none;
+    margin-top: 20px;
   }
-  100% {
-    opacity: 1;
-    transform: translate(0px);
+
+  .page-btn {
+    margin-top: 20px;
+    text-align: center;
   }
+
+  .page-btn button {
+    padding: 10px 20px;
+    background-color: var(--lapis);
+    color: var(--platinum);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 10px;
+    margin-bottom: 10px;
+  }
+
+  .page-btn button:hover {
+    background-color: var(--indigo);
+  }
+
+  #distributor-add-btn,
+  #distributor-edit-btn,
+  #distributor-delete-btn,
+  #user-add-btn,
+  #user-edit-btn,
+  #user-delete-btn {
+    /* background-color: var(--green); */
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px 10px;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+
+  #distributor-add-btn,
+  #user-add-btn {
+    background-color: var(--green);
+    /* margin-right: 40px; */
+  }
+
+  #distributor-add-btn:hover,
+  #user-add-btn:hover {
+    background-color: var(--darkgreen);
+  }
+
+  #distributor-delete-btn,
+  #user-delete-btn {
+    background-color: var(--red);
+  }
+
+  #distributor-delete-btn:hover,
+  #user-delete-btn:hover {
+    background-color: var(--crimson);
+  }
+
+  #distributor-edit-btn,
+  #user-edit-btn{
+    background-color: var(--yellow);
+  }
+
+
+  #distributor-edit-btn:hover,
+  #user-edit-btn:hover{
+    background-color: var(--darkyellow);
+  }
+
+  /* For User Information Edit */
+  table {
+    margin-top: 15px;
+    border-collapse: collapse;
+    width: 78vw;
+  }
+
+  th,
+  td {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+  }
+
+  th {
+    background-color: #f2f2f2;
+  }
+
+  tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+
+  .popup {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
-.title-box {
-  text-align: center;
-}
-
-.center {
-  margin: 0 auto;
-  max-width: 600px;
-}
-
-.title-box h2 {
-  color: #000000;
-  font-size: 55px;
-  text-align: center;
-  margin-top: 220px;
-}
-
-.title-box p {
-  font-size: 24px;
-  line-height: 24px;
-  margin-top: 20px;
-  color: #1a1717;
-}
-
-.profile-box {
-  width: 360px;
-  height: 330px;
-  background: #fff;
-  border-radius: 4px;
-  margin-bottom: 30px;
-  box-shadow: 8px 8px 8px 8px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  position: relative;
-  transition: background 0.5s;
-}
-
-.profile-box img {
-  width: 110px;
+.popup-content {
+  background-color: var(--indigo);
+  color: var(--white);
+  border-radius: 20px;
+  width: 60%;
   position: absolute;
-  top: 10px;
-  right: 30px;
-  border-radius: 4px;
-  transition: 0.5s;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding-left: 50px;
 }
 
-.profile-box h4 {
-  margin-top: 25px;
-  margin-bottom: 5px;
-  color: #0f1b79;
-}
-
-small {
-  color: #555;
-}
-
-.social-box {
-  background: #0f1b79;
-  margin: 60px auto 20px;
-  text-align: center;
-  border-radius: 3px;
-}
-
-.social-box .fa {
-  margin: 5px;
-  color: #fff;
+.close {
+  color: #aaa;
+  float: right;
+  margin-right: 20px;
+  margin-top: 20px;
+  font-size: 28px;
+  font-weight: bold;
   cursor: pointer;
 }
 
-.profile-box p {
-  padding-top: 20px;
-  text-align: justify;
-  font-size: 16px;
-  line-height: 1.4;
-  color: #555;
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
 }
 
-.Member-row {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  justify-content: space-between;
-  flex-wrap: wrap-reverse;
-  width: 110%;
-  margin: 100px auto;
+.popup-content form {
+  margin: 70px;
+  text-align: center;
 }
 
-.profile-box img:hover {
-  width: 250px;
+.popup-content form input{
+  margin-bottom: 20px;
+  width: 200px;
+  font-size: 15px;
+  border-radius:5px;
 }
 
-.profile-box:hover {
-  background-color: #266c94;
+.popup-content label{
+  font-weight: 600;
+}
+
+
+.popup-content h2{
+  margin-top: 50px;
+}
+
+.popup-content button{
+  width: 150px;
+  height: 30px;
+  border: 0;
+  border-radius: 5px;
+  background-color: var(--platinum);
+}
+
+.popup-content button:hover{
+  background-color: var(--lapis);
+  color: var(--white);
 }
 </style>
-{% endblock %}
