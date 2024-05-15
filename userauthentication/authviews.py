@@ -18,7 +18,7 @@ from django.contrib.auth.forms import PasswordChangeForm
 from .forms import UserProfileForm 
 from django.contrib.auth import update_session_auth_hash
 from carlisting.models import CarDetail, CarOrder
-
+from .models import Profile 
 
 # Create your views here.
 # View for handling signup functionality
@@ -147,16 +147,28 @@ def user_profile_view(request):
     user = request.user
 
     # Retrieve logged-in user's email
-    user_email = request.user.email
-    
+    user_email = user.email
+
+    try:
+        profile = Profile.objects.get(user=user)
+    except Profile.DoesNotExist:
+        profile = None
+
     if request.method == 'POST':
         form = PasswordChangeForm(user, request.POST)
 
-        if 'update_profile' in request.POST:  # Check if the profile update form is submitted
-            profile_form = UserProfileForm(request.POST, instance=user)
+        if 'update_profile' in request.POST:
+            profile_form = UserProfileForm(request.POST, instance=profile)
             if profile_form.is_valid():
-                profile_form.save()
-                messages.success(request, "Profile information updated successfully.")
+                if profile:
+                    profile_form.save()
+                    messages.success(request, "Profile information updated successfully.")
+                else:
+                    # If profile does not exist, create a new one
+                    profile = profile_form.save(commit=False)
+                    profile.user = user
+                    profile.save()
+                    messages.success(request, "Profile created successfully.")
             else:
                 messages.error(request, "Failed to update profile information. Please check the provided data.")
 
@@ -196,11 +208,15 @@ def user_profile_view(request):
         message = "You haven't added any cars yet."
         return render(request, 'main/user_profile.html', {'user': user, 'message': message})
     else:
-        return render(request, 'main/user_profile.html', {'user': user, 'cars': cars, 
-        'pending_bookings': pending_bookings,
-        'approved_bookings': approved_bookings,
-        'paid_bookings': paid_bookings,
-        'completed_bookings': completed_bookings})
+        return render(request, 'main/user_profile.html', {
+          'user': user,
+          'profile': profile,
+          'cars': cars,
+          'pending_bookings': pending_bookings,
+          'approved_bookings': approved_bookings,
+          'paid_bookings': paid_bookings,
+          'completed_bookings': completed_bookings
+        })
 
 # View for logging out
 @login_required
