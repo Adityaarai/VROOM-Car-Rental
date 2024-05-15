@@ -22,7 +22,6 @@ def carlisting(request):
 
 def orders(request):
     current_url = request.get_full_path()
-    
     if request.method == 'POST':
       if request.user.is_authenticated:
         existing_order = CarOrder.objects.filter(rentee_email=request.user.email).first()
