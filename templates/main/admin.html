@@ -17,86 +17,322 @@
         discovery with us, where each drive tells a story of comfort and style."</p>
       <button class="cta-button">Learn More</button>
     </div>
-    <div class="hero-image">
-      <img src="{% static 'img/abtUs.jpg' %}">
-    </div>
-  </div>
-  <div class="title-box center">
-    <h2>Meet Our Team</h2>
-    <p>"The faces behind the creation of this Website.<br>Lets us present you our Power Ranger Mystic Force." </p>
-  </div>
-  <div class="Member-row">
-    <div class="profile-box">
-      <h4>Prajwol Rai</h4>
-      <small>Project Manager</small>
-      <img src="{% static 'img/Baje.jpg' %}">
-      <div class="social-box">
-        <i class="fa-brands fa-linkedin"></i>
+  
+  
+
+    <!-- setting count variables -->
+    <script>
+      let totalDistributorCount = 0;
+      let totalUserCount = 0;
+    </script>
+
+    <div class="content">
+      <div id="default-content">
+        <h1>Welcome Admin!!</h1>
+        <!-- Default dashboard content goes here -->
+        {% if messages %}
+        {% for message in messages %}
+        {% if message.tags == 'error' %}
+        <p class="error">{{ message }}</p>
+        {% endif %}
+        {% if message.tags == 'success' %}
+        <p class="success">{{ message }}</p>
+        {% endif %}
+        {% endfor %}
+        {% endif %}
+
+        <div id="card">
+          <div class="card" id="distributor_card">
+            <h3>Distributor Information</h3>
+            <label id="TotalDistributors">
+              <i class="fas fa-users"></i>
+              <span id="distributor-count">5</span>
+            </label>
+            <label id="Location">
+              <i class="fas fa-map-marker-alt"></i>
+              <span id="location-count">5</span>
+            </label>
+          </div>
+          <div class="card" id="user_card">
+            <h3>User Information</h3>
+            <label id="verified">
+              <i class="fas fa-user-check"></i>
+              <span id="verified-count">5</span>
+            </label>
+            <label id="unverified">
+              <i class="fas fa-user-times"></i>
+              <span id="unverified-count">3</span>
+            </label>
+          </div>
+        </div>
+
+        <h1>Recent User</h1>
+         <!-- table to show distributor information -->
+         <table>
+          <tr>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Name</th>
+            <th>Contact Number</th>
+            <th>Location Incharge</th>
+          </tr>
+          {% for user in recent_users %}
+          <tr>
+            <td>{{ user.user.username }}</td>
+            <td>{{ user.user.email }}</td>
+            <td>{{ user.user.get_full_name }}</td>
+            <td>{{ user.contact }}</td>
+            <td>{{ user.address }}</td>
+          </tr>
+          {% endfor %}
+        </table>
       </div>
-      <p>Our project manager, orchestrating success with precision and vision. Leading the team with expertise, he
-        ensures every project exceeds expectations.</p>
-    </div>
-    <div class="profile-box">
-      <h4>Tsokney Lama</h4>
-      <small>Business Analysis</small>
-      <img src="{% static 'img/tsokney.jpg' %}">
-      <div class="social-box">
-        <i class="fa-brands fa-facebook"></i>
-        <i class="fa-brands fa-twitter"></i>
-        <i class="fa-brands fa-linkedin"></i>
-        <i class="fa-brands fa-instagram"></i>
+
+      <div id="distributor-content">
+        <h2>Distributor Information</h2>
+        <!-- buttons to add and delete distributor -->
+        <button id="distributor-add-btn">Add</button>
+        <button id="distributor-edit-btn">Edit</button>
+        <button id="distributor-delete-btn">Delete</button>
+        <!-- table to show distributor information -->
+        <table>
+          <tr>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Name</th>
+            <th>Contact Number</th>
+            <th>Location Incharge</th>
+          </tr>
+          {% for user_detail in user_details %}
+          {% if '.vroom@gmail.com' in user_detail.user.email and user_detail.user.is_staff %}
+          <script>
+            totalDistributorCount++;
+          </script>
+          <tr>
+            <td>{{ user_detail.user.username }}</td>
+            <td>{{ user_detail.user.email }}</td>
+            <td>{{ user_detail.user.get_full_name }}</td>
+            <td>{{ user_detail.contact }}</td>
+            <td>{{ user_detail.address }}</td>
+          </tr>
+          {% endif %}
+          {% endfor %}
+        </table>
+
+        <!-- popup to add distributor -->
+        <div class="popup" id="addDistributorPopup">
+          <div class="popup-content">
+            <span class="close" onclick="closePopup('addDistributorPopup')">&times;</span>
+            <h2>Add Distributor</h2>
+
+            <form id="addDistributorForm" method="post">
+              {% csrf_token %}
+              <label for="distributorFirstName">First Name:</label><br />
+              <input type="text" id="FirstName" name="FirstName" required /><br />
+
+              <label for="distributorLastName">Last Name:</label><br />
+              <input type="text" id="LastName" name="LastName" required /><br />
+
+              <label for="username">Username:</label><br />
+              <input type="text" id="username" name="username" required /><br />
+
+              <label for="email">Email:</label><br />
+              <input type="email" id="email" name="email" required /><br />
+
+              <label for="location">Location Incharge:</label><br />
+              <input type="text" id="location" name="location" required /><br />
+
+              <label for="password">Password:</label><br />
+              <input type="password" id="password" name="password" required /><br />
+
+              <label for="contactNumber">Contact Number:</label><br />
+              <input type="text" id="contactNumber" name="contactNumber" required /><br />
+
+              <button type="submit" name="addDistributor">
+                Add Distributor
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Popup to edit distributor -->
+        <div class="popup" id="editDistributorPopup">
+          <div class="popup-content">
+            <span class="close" onclick="closePopup('editDistributorPopup')">&times;</span>
+            <h2>Edit Distributor</h2>
+            <form id="editDistributorForm" method="post">
+              {% csrf_token %}
+
+              <!-- email for identifying distributors to edit -->
+              <p>Enter email of the distributor to edit</p>
+              <label for="editEmail">Email:</label><br />
+              <input type="email" id="editEmail" name="editEmail" required /><br />
+
+              <!-- Input fields for editing distributor details -->
+              <p>Enter new distributor details</p>
+              <label for="editDistributorFirstName">First Name:</label><br />
+              <input type="text" id="FirstName" name="FirstName" required /><br />
+
+              <label for="editDistributorLastName">Last Name:</label><br />
+              <input type="text" id="LastName" name="LastName" required /><br />
+
+              <label for="editUsername">Username:</label><br />
+              <input type="text" id="editUsername" name="editUsername" required /><br />
+
+              
+
+              <label for="editLocation">Location Incharge:</label><br />
+              <input type="text" id="editLocation" name="editLocation" required /><br />
+
+              <label for="editPassword">Password:</label><br />
+              <input type="password" id="editPassword" name="editPassword" required /><br />
+
+              <label for="editContactNumber">Contact Number:</label><br />
+              <input type="text" id="editContactNumber" name="editContactNumber" required /><br />
+
+              <button type="submit" name="editDistributor">
+                Update Distributor
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <!-- popup to delete distributor -->
+        <div class="popup" id="deleteDistributorPopup">
+          <div class="popup-content">
+            <span class="close" onclick="closePopup('deleteDistributorPopup')">&times;</span>
+            <h2>Delete Distributor</h2>
+            <form method="post" id="deleteDistributor">
+              {% csrf_token %}
+              <label for="distributorID">Distributor ID:</label><br />
+              <input type="text" id="distributorID" name="distributorID" />
+              <button type="submit" name="deleteDistributor">Delete</button>
+            </form>
+          </div>
+        </div>
       </div>
-      <p>Our intelligent business analyst deciphers information and develops plans to move our activities ahead with
-        clarity and foresight.</p>
-    </div>
-    <div class="profile-box">
-      <h4>Krishan Tamang</h4>
-      <small>Developer</small>
-      <img src="{% static 'img/kisne.jpg' %}">
-      <div class="social-box">
-        <i class="fa-brands fa-facebook"></i>
-        <i class="fa-brands fa-twitter"></i>
-        <i class="fa-brands fa-linkedin"></i>
-        <i class="fa-brands fa-instagram"></i>
-      </div>
-      <p>Our digital infrastructure runs smoothly and securely thanks to the skillful design of our coding maestro, who
-        creates solid frontend systems with great attention to detail.</p>
-    </div>
-    <div class="profile-box">
-      <h4>Aditya Rai</h4>
-      <small>Developer</small>
-      <img src="{% static 'img/Chimrey.jpg' %}">
-      <div class="social-box">
-        <i class="fa-brands fa-facebook"></i>
-        <i class="fa-brands fa-twitter"></i>
-        <i class="fa-brands fa-linkedin"></i>
-        <i class="fa-brands fa-instagram"></i>
-      </div>
-      <p>A valuable component of our team, contributing technical skills and creative solutions to each project,
-        guaranteeing that our digital undertakings are executed with originality and precision.</p>
-    </div>
-    <div class="profile-box">
-      <h4>Nileena Rai</h4>
-      <small>Developer</small>
-      <img src="{% static 'img/nileena.jpg' %}">
-      <div class="social-box">
-        <i class="fa-brands fa-facebook"></i>
-        <i class="fa-brands fa-twitter"></i>
-        <i class="fa-brands fa-linkedin"></i>
-        <i class="fa-brands fa-instagram"></i>
-      </div>
-      <p>Our digital infrastructure runs smoothly and securely thanks to the skillful design of our coding maestro, who
-        creates solid backend systems with great attention to detail.</p>
-    </div>
-    <div class="profile-box">
-      <h4>Abraham Hyolmo</h4>
-      <small>Developer</small>
-      <img src="{% static 'img/abraham.jpg' %}">
-      <div class="social-box">
-        <i class="fa-brands fa-facebook"></i>
-        <i class="fa-brands fa-twitter"></i>
-        <i class="fa-brands fa-linkedin"></i>
-        <i class="fa-brands fa-instagram"></i>
+
+      <div id="user-content">
+        <h2>User Information</h2>
+        <!-- buttons to add ,edit and delete user -->
+        <button id="user-add-btn">Add</button>
+        <button id="user-edit-btn">Edit</button>
+        <button id="user-delete-btn">Delete</button>
+        <!-- table to show user information -->
+        <table>
+          <tr>
+            <th>Name</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>License Number</th>
+            <th>Contact Number</th>
+            <th>Address</th>
+          </tr>
+          {% for user_detail in user_details %}
+          {% if not user_detail.user.is_staff %}
+          <script>
+            totalUserCount++;
+          </script>
+          <tr>
+            <td>{{ user_detail.user.get_full_name }}</td>
+            <td>{{ user_detail.user.username }}</td>
+            <td>{{ user_detail.user.email }}</td>
+            <td>{{ user_detail.license_number }}</td>
+            <td>{{ user_detail.contact }}</td>
+            <td>{{ user_detail.address }}</td>
+          </tr>
+          {% endif %}
+          {% endfor %}
+        </table>
+
+        <!-- popup to add user -->
+        <div class="popup" id="addUserPopup">
+          <div class="popup-content">
+            <span class="close" onclick="closePopup('addUserPopup')">&times;</span>
+            <h2>Add User</h2>
+            <form id="addUserForm" method="post">
+              {% csrf_token %}
+              <label for="FirstName">First Name:</label><br />
+              <input type="text" id="FirstName" name="FirstName" required /><br />
+
+              <label for="LastName">Last Name:</label><br />
+              <input type="text" id="LastName" name="LastName" required /><br />
+
+              <label for="username">Username:</label><br />
+              <input type="text" id="username" name="username" required /><br />
+
+              <label for="email">Email:</label><br />
+              <input type="email" id="email" name="email" required /><br />
+
+              <label for="location">Address:</label><br />
+              <input type="text" id="location" name="location" required /><br />
+
+              <label for="password">Password:</label><br />
+              <input type="password" id="password" name="password" required /><br />
+
+              <label for="contactNumber">Contact Number:</label><br />
+              <input type="text" id="contactNumber" name="contactNumber" required /><br />
+
+              <label for="license_number">License Number:</label><br />
+              <input type="text" id="license_number" name="license_number" required /><br />
+
+              <button type="submit" name="addUser">
+                Add User
+              </button>
+            </form>
+          </div>
+        </div>
+
+
+        <!-- Popup to edit user -->
+        <div class="popup" id="editUserPopup">
+          <div class="popup-content">
+            <span class="close" onclick="closePopup('editUserPopup')">&times;</span>
+            <h2>Edit User</h2>
+            <form id="editUserForm" method="post">
+              {% csrf_token %}
+              <!-- Input fields for editing user details -->
+              <label for="editUserFirstName">First Name:</label><br />
+              <input type="text" id="FirstName" name="FirstName" required /><br />
+
+              <label for="editUserLastName">Last Name:</label><br />
+              <input type="text" id="LastName" name="LastName" required /><br />
+
+              <label for="editUsername">Username:</label><br />
+              <input type="text" id="username" name="username" required /><br />
+
+              <label for="editEmail">Email:</label><br />
+              <input type="email" id="email" name="email" required /><br />
+
+              <label for="editAddress">Address:</label><br />
+              <input type="text" id="address" name="address" required /><br />
+
+              <label for="editPassword">Password:</label><br />
+              <input type="password" id="password" name="password" required /><br />
+
+              <label for="editContactNumber">Contact Number:</label><br />
+              <input type="text" id="contactNumber" name="contactNumber" required /><br />
+
+              <label for="editLicenseNumber">License Number:</label><br />
+              <input type="text" id="license_number" name="license_number" required /><br />
+
+              <button type="submit" name="editUser">
+                Update User
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <!-- popup to delete user -->
+        <div class="popup" id="deleteUserPopup">
+          <div class="popup-content">
+            <span class="close" onclick="closePopup('deleteUserPopup')">&times;</span>
+            <h2>Delete User</h2>
+            <label for="userID">User ID:</label><br />
+            <input type="text" id="userID" name="userID" />
+            <button onclick="deleteUser()">Delete</button>
+          </div>
+        </div>
       </div>
       <p>The creative mind behind our 'About Us' page, blending design flair with frontend expertise to craft an
         immersive and visually captivating narrative of our brand story.</p>
@@ -196,21 +432,62 @@ img {
     margin: 0px;
   }
 
-  .container {
-    width: 100%;
-    flex-direction: column;
+  /* Sidebar styles */
+  .sidebar {
+    float: left;
+    width: 15vw;
+    background-color: var(--indigo);
+    height: 100vh;
   }
 
-  .hero-content {
-    width: 100%;
-    margin: 35px 0px;
+  .sidebar i{
+    color: var(--white);
+    margin-left: 50px;
+    margin-right: 10px;
   }
 
-  .hero-content h2 {
-    font-size: 30px;
+  .sidebar ul {
+    list-style-type: none;
+    padding: 0;
+    margin-top: 8vh;
   }
 
-  .hero-content p {
+  .sidebar li {
+      margin-bottom: 10px;
+  }
+
+  .sidebar a {
+      font-size: 25px;
+      width: 15vw;;
+      text-decoration: none;
+      color: var(--white);
+      display: block;
+      margin-top: 50px;
+  }
+
+  .sidebar a:hover {
+      cursor: pointer;
+  }
+
+  /* Log Out button styles */
+  #logout {
+      position: absolute;
+      bottom: 30px;
+      left: 0;
+    }
+
+  /* Content styles */
+  .content {
+    float: left;
+    width: 80%;
+    padding: 20px 0 0 20px;
+    box-sizing: border-box;
+  }
+
+  /* Card styles */
+  .card {
+    height: 35vh;
+    width: 18vw;
     font-size: 18px;
     margin-bottom: 20px;
   }
@@ -220,15 +497,44 @@ img {
     padding: 8px 16px;
   }
 
-  .hero-image {
-    width: 100%;
-  }
-}
 
-@keyframes fadeInUp {
-  0% {
-    opacity: 0;
-    transform: translate(50px);
+  .card label {
+   font-size: 40px;
+   margin-right: 80px;
+  }
+
+  #Location i{
+    color: var(--indigo);
+  }
+  #unverified i{
+    color: var(--red);
+  }
+  #verified i{
+    color: var(--green);
+  }
+
+  .card h3{
+    font-size: 30px;
+  }
+
+
+  #default-content #card {
+    display: flex;
+  }
+
+  #distributor_card,
+  #user_card {
+    width: 40vw;
+    height: 25vh;
+  }
+
+  #distributor_card {
+    background-color: var(--cerulean);
+    color: var(--white);
+  }
+
+  #user_card {
+    background-color: var(--platinum);
   }
   100% {
     opacity: 1;
