@@ -66,17 +66,25 @@
         <div id="card">
           <div class="card" id="distributor_card">
             <h3>Distributor Information</h3>
-            <label id="TotalDistributors"></label>
-            <label id="Available">Available:</label><br><br>
-            <label id="carModels">Models:</label>
-            <label id="carTypes">Types:</label>
+            <label id="TotalDistributors">
+              <i class="fas fa-users"></i>
+              <span id="distributor-count">5</span>
+            </label>
+            <label id="Location">
+              <i class="fas fa-map-marker-alt"></i>
+              <span id="location-count">5</span>
+            </label>
           </div>
           <div class="card" id="user_card">
             <h3>User Information</h3>
-            <label id="TotalUsers">Total Users:</label>
-            <label id="approved">Approved:</label><br><br>
-            <label id="pending">pending:</label>
-            <label id="paid">Paid:</label><br />
+            <label id="verified">
+              <i class="fas fa-user-check"></i>
+              <span id="verified-count">5</span>
+            </label>
+            <label id="unverified">
+              <i class="fas fa-user-times"></i>
+              <span id="unverified-count">3</span>
+            </label>
           </div>
         </div>
 
@@ -505,14 +513,14 @@
   /* Sidebar styles */
   .sidebar {
     float: left;
-    width: 20vw;
+    width: 15vw;
     background-color: var(--indigo);
     height: 100vh;
   }
 
   .sidebar i{
     color: var(--white);
-    margin-left: 80px;
+    margin-left: 50px;
     margin-right: 10px;
   }
 
@@ -527,8 +535,8 @@
   }
 
   .sidebar a {
-      font-size: 30px;
-      width: 20vw;;
+      font-size: 25px;
+      width: 15vw;;
       text-decoration: none;
       color: var(--white);
       display: block;
@@ -568,6 +576,22 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
 
+
+  .card label {
+   font-size: 40px;
+   margin-right: 80px;
+  }
+
+  #Location i{
+    color: var(--indigo);
+  }
+  #unverified i{
+    color: var(--red);
+  }
+  #verified i{
+    color: var(--green);
+  }
+
   .card h3{
     font-size: 30px;
   }
@@ -580,7 +604,7 @@
   #distributor_card,
   #user_card {
     width: 40vw;
-    height: 20vh;
+    height: 25vh;
   }
 
   #distributor_card {
