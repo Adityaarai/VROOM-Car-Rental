@@ -25,8 +25,8 @@ Payment! VROOM
           {% csrf_token %}
           <label for="Esewa-number">eSewa ID:</label>
           <input type="text" id="Esewa-number" placeholder="Enter esewa number" required>
-          <label for="Passowrd">MPIN/Password:</label>
-          <input type="text" id="Passowrd" placeholder="Enter password" required>
+          <label for="Password">MPIN/Password:</label>
+          <input type="text" id="Password" placeholder="Enter password" required>
           <button type="submit">Pay Now</button>
         </form>
       </div>
@@ -37,7 +37,7 @@ Payment! VROOM
   document.getElementById('payment-form').addEventListener('submit', function(event) {
     event.preventDefault();
     const esewaNumber = document.getElementById('Esewa-number').value;
-    const password = document.getElementById('Passowrd').value;
+    const password = document.getElementById('Password').value;
 
     // Check if fields are empty
     if (!esewaNumber.trim() || !password.trim()) {
