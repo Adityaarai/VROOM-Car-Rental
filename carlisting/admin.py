@@ -11,9 +11,8 @@ class CardetailsAdmin(admin.ModelAdmin):
     list_filter = ['car_type', 'car_model', 'availability']
 
 class CarordersAdmin(admin.ModelAdmin):
-    list_display = ('product', 'rentee_email', 'start_date', 'end_date', 'status')
-    list_filter = ['distributor', 'status']
-
+    list_display = ('order_id','product', 'rentee', 'start_date', 'end_date', 'status')
+    list_filter = ['product','rentee', 'status']
 
 # Register your models here.
 admin.site.register(CarDetail, CardetailsAdmin)
