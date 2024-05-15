@@ -40,6 +40,15 @@ User profile{% endblock %} {% block content %}
       <p style="margin-bottom: 10px">
         Email: <span id="email">{{ user.email }}</span>
       </p>
+      <p style="margin-bottom: 10px">
+        Address: <span id="address">{{ profile.address }}</span>
+      </p>
+      <p style="margin-bottom: 10px">
+        License Number: <span id="licenseNumber">{{ profile.license_number }}</span>
+      </p>
+      <p style="margin-bottom: 10px">
+        Contact Number: <span id="contactNumber">{{ profile.contact }}</span>
+      </p>
       <button class="button" id="editProfileBtn">Edit Profile</button>
       <button id="car-add-btn">Add Car</button>
       <button id="removeCarBtn">Remove Car</button>
@@ -85,6 +94,31 @@ User profile{% endblock %} {% block content %}
             value="{{ user.email }}"
           /><br />
 
+          <label for="editAddress">Address:</label>
+          <input 
+            type="text" 
+            id="editAddress" 
+            name="address" 
+            value="{{ profile.address }}" 
+            /><br />
+      
+          <label for="editLicenseNumber">License Number:</label>
+          <input 
+            type="text" 
+            id="editLicenseNumber" 
+            name="license_number" 
+            value="{{ profile.license_number }}" 
+            /><br />
+      
+          <label for="editContact">Contact Number:</label>
+          <input 
+            type="text" 
+            id="editContact" 
+            name="contact" 
+            value="{{ profile.contact }}" 
+            /><br /> 
+
+            <span id="contactError" style="color: red; display: none;">Contact number must be a 10-digit number.</span><br /> <!-- Error message -->
           <button class="button" type="submit">Update Profile</button>
         </form>
       </div>
@@ -256,7 +290,6 @@ User profile{% endblock %} {% block content %}
       <thead>
         <tr>
           <th>Car</th>
-          <th>Distributor Name</th>
           <th>Start Date</th>
           <th>End Date</th>
           <th>Status</th>
@@ -266,7 +299,6 @@ User profile{% endblock %} {% block content %}
         {% for booking in pending_bookings %}
         <tr>
           <td>{{ booking.product }}</td>
-          <td>{{ booking.distributor }}</td>
           <td>{{ booking.start_date }}</td>
           <td>{{ booking.end_date }}</td>
           <td>{{ booking.status }}</td>
@@ -287,7 +319,6 @@ User profile{% endblock %} {% block content %}
       <thead>
         <tr>
           <th>Car</th>
-          <th>Distributor Name</th>
           <th>Start Date</th>
           <th>End Date</th>
           <th>Status</th>
@@ -297,7 +328,6 @@ User profile{% endblock %} {% block content %}
         {% for booking in approved_bookings %}
         <tr>
           <td>{{ booking.product }}</td>
-          <td>{{ booking.distributor }}</td>
           <td>{{ booking.start_date }}</td>
           <td>{{ booking.end_date }}</td>
           <td>{{ booking.status }}</td>
@@ -320,7 +350,6 @@ User profile{% endblock %} {% block content %}
       <thead>
         <tr>
           <th>Car</th>
-          <th>Distributor Name</th>
           <th>Start Date</th>
           <th>End Date</th>
           <th>Status</th>
@@ -330,7 +359,6 @@ User profile{% endblock %} {% block content %}
         {% for booking in paid_bookings %}
         <tr>
           <td>{{ booking.product }}</td>
-          <td>{{ booking.distributor }}</td>
           <td>{{ booking.start_date }}</td>
           <td>{{ booking.end_date }}</td>
           <td>{{ booking.status }}</td>
@@ -351,7 +379,6 @@ User profile{% endblock %} {% block content %}
       <thead>
         <tr>
           <th>Car</th>
-          <th>Distributor Name</th>
           <th>Start Date</th>
           <th>End Date</th>
           <th>Status</th>
@@ -361,7 +388,6 @@ User profile{% endblock %} {% block content %}
         {% for booking in completed_bookings %}
         <tr>
           <td>{{ booking.product }}</td>
-          <td>{{ booking.distributor }}</td>
           <td>{{ booking.start_date }}</td>
           <td>{{ booking.end_date }}</td>
           <td>{{ booking.status }}</td>
@@ -427,6 +453,28 @@ User profile{% endblock %} {% block content %}
       approvedSection.style.display = "none";
       paidSection.style.display = "none";
       completedSection.style.display = "none";
+    });
+    
+    // Adding validation for contact number to be 10 digits
+    function validateProfileForm() {
+      var contactNumber = document.getElementById("editContact").value;
+      var contactError = document.getElementById("contactError");
+
+      if (!/^\d{10}$/.test(contactNumber)) {
+        contactError.style.display = "block"; // Show error message
+        return false; // Prevent form submission
+      } else {
+        contactError.style.display = "none"; // Hide error message if validation passes
+        return true; // Allow form submission
+      }
+    }
+
+    var profileForm = document.getElementById("editProfileForm");
+
+    profileForm.addEventListener("submit", function (event) {
+      if (!validateProfileForm()) {
+        event.preventDefault(); // Prevent form submission if validation fails
+      }
     });
 
     changePasswordBtn.addEventListener("click", function () {
