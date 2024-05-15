@@ -4,15 +4,18 @@
 {% block content %}
 <div class="main-container">
   <div id="main">
-    {% if details %}
+
+    {% if details %} 
       {% for detail in details %}
+        <!--  Car Image -->
         <div id="heading">Car Details</div>
-        <div id="content">
           <div id="image">
             <img src="{{ detail.image }}" alt="Car Image" />
           </div>
           <div id="details">
-            <div id="availability">{{ detail.availability }}</div>
+            <div id="availability">
+              <p>{{ detail.availability }}</p>
+            </div>
             <div id="model">
               <p>{{ detail.car_model }}</p>
             </div>
@@ -22,57 +25,58 @@
             <div id="price">
               <p>Rs. {{ detail.price }}</p>
             </div>
+
+            <!-- car details booking form -->
             <form id="booking-form" method="post">
               {% csrf_token %}
+
+              <!-- hidden fields for identifying product -->
               <input type="hidden" id="renter_contact" name="renter_contact" value="{{ detail.renter_contact }}" />
               <input type="hidden" id="car_model" name="car_model" value="{{ detail.car_model }}" />
               <input type="hidden" id="renter_name" name="renter_name" value="{{ detail.renter_name }}" />
-              <label for="bookingStartDate">Booking Start Date:</label>
-              <input type="date" id="bookingStartDate" name="bookingStartDate" />
-              <label for="bookingEndDate">Booking End Date:</label>
-              <input type="date" id="bookingEndDate" name="bookingEndDate" />
-              {% if messages %}
-                {% for message in messages %}
-                  <p class="error">{{ message }}</p>
-                {% endfor %}
-              {% endif %}
-              <div id="buttons">
-                <button id="book" class="button" type="submit">Book</button>
-                <a href="{% url 'carlisting' %}?value=All" class="button">Back</a>
-              </div>
+
+              <!--  Date and Time Picker -->
+              <label for="bookingStartDate">Booking Start Date:</label><br />
+              <input type="date" id="bookingStartDate" name="bookingStartDate" /><br />
+              <label for="bookingEndDate">Booking End Date:</label><br />
+              <input type="date" id="bookingEndDate" name="bookingEndDate" /><br /><br />
+              
+              <!-- book button -->
+              <button id="book" class="button" type="submit">Book</button>
+
             </form>
+
+            <!-- back button -->
+            <a href="{% url 'carlisting' %}?value=All">
+              <button class="button">Back</button>
+            </a>
+              
           </div>
-        </div>
-      {% endfor %}
-    {% else %}
-      {% if messages %}
-        {% for message in messages %}
-          <h1 class="error_after">{{ message }}</h1>
-          <a id="thank">Thank you for choosing us for your travels.</a>
-        {% endfor %}
-      {% endif %}
-      <a href="{% url 'carlisting' %}?value=All"><button class="button" id="return">Return to Carlisting</button></a>
+            <!-- section to display success or error messages --> 
+            {% for message in messages %} 
+              {% if message.tags == 'error' %}
+                <div class="alert alert-danger" role="alert">{{ message }}</div>
+              {% elif message.tags == 'success' %}
+                <div class="alert alert-success" role="alert">{{ message }}</div>
+              {% endif %} 
+            {% endfor %}           
+
+      {% endfor %} 
+    {% else %} 
+        {% if messages %} 
+          {% for message in messages %}
+            <h1 class="alert alert-success">{{ message }}</h1>
+            <p id="thank">Thank you for choosing us for your travels.</p>
+          {% endfor %} 
+        {% endif %}
+          
+        <!-- return to carlisting -->
+        <a href="{% url 'carlisting' %}?value=All">
+          <button class="button" id="return">Return to Carlisting</button>
+        </a>
     {% endif %}
   </div>
 </div>
-
-<div class="popup" id="popup">
-  <div class="popup-content">
-    <span class="close" onclick="closePopup()">&times;</span>
-    <h2>Booking Requested</h2>
-    <p>Your booking request has been submitted.</p>
-  </div>
-</div>
-
-<script>
-  function showPopup() {
-    document.getElementById("popup").style.display = "flex";
-  }
-
-  function closePopup() {
-    document.getElementById("popup").style.display = "none";
-  }
-</script>
 
 <style>
   :root {
@@ -181,20 +185,10 @@
     font-size: 17px;
   }
 
-  #buttons {
-    display: flex;
-    flex-direction: row;
-    /* justify-content: space-between; */
-    margin-top: 20px;
-    font-size: 20px;
-  }
-
-  #book{
-    margin-right: 30px;
-    font-size: 20px;
-  }
 
   .button {
+    margin-right: 20px;
+    font-size: 17px;
     background-color: var(--white);
     color: var(--indigo);
     border: none;
@@ -262,5 +256,17 @@
     right: 10px;
     cursor: pointer;
   }
+
+  /* Customizing alert colors */
+  .alert-danger {
+    color: var(--red);
+    font-weight: bold;
+  }
+
+  .alert-success {
+    color: var(--green);
+    font-weight: bold;
+  }
+
 </style>
 {% endblock %}
