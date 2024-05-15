@@ -1,725 +1,342 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-vWtPOzvV2LtoJMdIo6HfT94oZD8/eeFh0I+1wT6h7ggzmg+7Z0WgVpY+P6r+Qv26" crossorigin="anonymous">
+{% extends 'partials/base.html' %}
+{% load static %}
+{% block title %} About Us {% endblock %}
+{% block content %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-vWtPOzvV2LtoJMdIo6HfT94oZD8/eeFh0I+1wT6h7ggzmg+7Z0WgVpY+P6r+Qv26" crossorigin="anonymous">
 
-  <title>VROOM - Admin</title>
-</head>
-<body>
+<section class="hero">
+  <div class="heading">
+    <h1>About Us</h1>
+  </div>
   <div class="container">
-    <!-- main button to navigate between car and booking -->
-    <div class="sidebar">
-      <h1 id="logo">VROOM</h1>
-        <ul>
-            <li>
-                <a id="default-btn">
-                    <i class="fas fa-house"></i>
-                    <span id="topic">Dashboard</span>
-                </a>
-            </li>
-            <li>
-                <a id="distributor-btn">
-                    <i class="fas fa-users"></i>
-                    <span id="topic">Distributor</span>
-                </a>
-            </li>
-            <li>
-                <a id="user-btn">
-                    <i class="fas fa-user"></i>
-                    <span id="topic">User</span>
-                </a>
-            </li>
-            <li>
-                <a href="{% url 'logout' %}" id="logout">
-                    <i class="fas fa-sign-out-alt"></i>
-                    <span id="topic">Log Out</span>
-                </a>
-            </li>
-        </ul>
+    <div class="hero-content">
+      <h2>Welcome to Vroom Car Rental</h2>
+      <p>"Welcome to Vroom Vehicle Rental, where each trip is a mix of luxury and simplicity. Begin your adventure today
+        and immerse yourself in the continual excellence of motion. Our carefully selected fleet, tailored to match all
+        of your requirements, ensures that every journey with Vroom is an unforgettable experience. Discover the joy of
+        discovery with us, where each drive tells a story of comfort and style."</p>
+      <button class="cta-button">Learn More</button>
     </div>
-  
-  
-
-    <!-- setting count variables -->
-    <script>
-      let totalDistributorCount = 0;
-      let totalUserCount = 0;
-    </script>
-
-    <div class="content">
-      <div id="default-content">
-        <h1>Welcome Admin!!</h1>
-        <!-- Default dashboard content goes here -->
-        {% if messages %}
-        {% for message in messages %}
-        {% if message.tags == 'error' %}
-        <p class="error">{{ message }}</p>
-        {% endif %}
-        {% if message.tags == 'success' %}
-        <p class="success">{{ message }}</p>
-        {% endif %}
-        {% endfor %}
-        {% endif %}
-
-        <div id="card">
-          <div class="card" id="distributor_card">
-            <h3>Distributor Information</h3>
-            <label id="TotalDistributors"></label>
-            <label id="Available">Available:</label><br><br>
-            <label id="carModels">Models:</label>
-            <label id="carTypes">Types:</label>
-          </div>
-          <div class="card" id="user_card">
-            <h3>User Information</h3>
-            <label id="TotalUsers">Total Users:</label>
-            <label id="approved">Approved:</label><br><br>
-            <label id="pending">pending:</label>
-            <label id="paid">Paid:</label><br />
-          </div>
-        </div>
-
-        <h1>Recent Distributors</h1>
-         <!-- table to show distributor information -->
-         <table>
-          <tr>
-            <th>Username</th>
-            <th>Email</th>
-            <th>Name</th>
-            <th>Contact Number</th>
-            <th>Location Incharge</th>
-          </tr>
-          {% for user_detail in user_details %}
-          {% if '.vroom@gmail.com' in user_detail.user.email and user_detail.user.is_staff %}
-          <script>
-            totalDistributorCount++;
-          </script>
-          <tr>
-            <td>{{ user_detail.user.username }}</td>
-            <td>{{ user_detail.user.email }}</td>
-            <td>{{ user_detail.user.get_full_name }}</td>
-            <td>{{ user_detail.contact }}</td>
-            <td>{{ user_detail.address }}</td>
-          </tr>
-          {% endif %}
-          {% endfor %}
-        </table>
-      </div>
-
-      <div id="distributor-content">
-        <h2>Distributor Information</h2>
-        <!-- buttons to add and delete distributor -->
-        <button id="distributor-add-btn">Add</button>
-        <button id="distributor-edit-btn">Edit</button>
-        <button id="distributor-delete-btn">Delete</button>
-        <!-- table to show distributor information -->
-        <table>
-          <tr>
-            <th>Username</th>
-            <th>Email</th>
-            <th>Name</th>
-            <th>Contact Number</th>
-            <th>Location Incharge</th>
-          </tr>
-          {% for user_detail in user_details %}
-          {% if '.vroom@gmail.com' in user_detail.user.email and user_detail.user.is_staff %}
-          <script>
-            totalDistributorCount++;
-          </script>
-          <tr>
-            <td>{{ user_detail.user.username }}</td>
-            <td>{{ user_detail.user.email }}</td>
-            <td>{{ user_detail.user.get_full_name }}</td>
-            <td>{{ user_detail.contact }}</td>
-            <td>{{ user_detail.address }}</td>
-          </tr>
-          {% endif %}
-          {% endfor %}
-        </table>
-
-        <!-- popup to add distributor -->
-        <div class="popup" id="addDistributorPopup">
-          <div class="popup-content">
-            <span class="close" onclick="closePopup('addDistributorPopup')">&times;</span>
-            <h2>Add Distributor</h2>
-
-            <form id="addDistributorForm" method="post">
-              {% csrf_token %}
-              <label for="distributorFirstName">First Name:</label><br />
-              <input type="text" id="distributorFirstName" name="distributorFirstName" required /><br />
-
-              <label for="distributorLastName">Last Name:</label><br />
-              <input type="text" id="distributorLastName" name="distributorLastName" required /><br />
-
-              <label for="username">Username:</label><br />
-              <input type="text" id="username" name="username" required /><br />
-
-              <label for="email">Email:</label><br />
-              <input type="email" id="email" name="email" required /><br />
-
-              <label for="location">Location Incharge:</label><br />
-              <input type="text" id="location" name="location" required /><br />
-
-              <label for="password">Password:</label><br />
-              <input type="password" id="password" name="password" required /><br />
-
-              <label for="contactNumber">Contact Number:</label><br />
-              <input type="text" id="contactNumber" name="contactNumber" required /><br />
-
-              <button type="submit" name="addDistributor">
-                Add Distributor
-              </button>
-            </form>
-          </div>
-        </div>
-
-        <!-- Popup to edit distributor -->
-        <div class="popup" id="editDistributorPopup">
-          <div class="popup-content">
-            <span class="close" onclick="closePopup('editDistributorPopup')">&times;</span>
-            <h2>Edit Distributor</h2>
-            <form id="editDistributorForm" method="post">
-              {% csrf_token %}
-              <!-- Input fields for editing distributor details -->
-              <label for="editDistributorFirstName">First Name:</label><br />
-              <input type="text" id="editDistributorFirstName" name="editDistributorFirstName" required /><br />
-
-              <label for="editDistributorLastName">Last Name:</label><br />
-              <input type="text" id="editDistributorLastName" name="editDistributorLastName" required /><br />
-
-              <label for="editUsername">Username:</label><br />
-              <input type="text" id="editUsername" name="editUsername" required /><br />
-
-              <label for="editEmail">Email:</label><br />
-              <input type="email" id="editEmail" name="editEmail" required /><br />
-
-              <label for="editLocation">Location Incharge:</label><br />
-              <input type="text" id="editLocation" name="editLocation" required /><br />
-
-              <label for="editPassword">Password:</label><br />
-              <input type="password" id="editPassword" name="editPassword" required /><br />
-
-              <label for="editContactNumber">Contact Number:</label><br />
-              <input type="text" id="editContactNumber" name="editContactNumber" required /><br />
-
-              <button type="submit" name="editDistributor">
-                Update Distributor
-              </button>
-            </form>
-          </div>
-        </div>
-
-        <!-- popup to delete distributor -->
-        <div class="popup" id="deleteDistributorPopup">
-          <div class="popup-content">
-            <span class="close" onclick="closePopup('deleteDistributorPopup')">&times;</span>
-            <h2>Delete Distributor</h2>
-            <form method="post" id="deleteDistributor">
-              {% csrf_token %}
-              <label for="distributorID">Distributor ID:</label><br />
-              <input type="text" id="distributorID" name="distributorID" />
-              <button type="submit" name="deleteDistributor">Delete</button>
-            </form>
-          </div>
-        </div>
-      </div>
-
-      <div id="user-content">
-        <h2>User Information</h2>
-        <!-- buttons to add ,edit and delete user -->
-        <button id="user-add-btn">Add</button>
-        <button id="user-edit-btn">Edit</button>
-        <button id="user-delete-btn">Delete</button>
-        <!-- table to show user information -->
-        <table>
-          <tr>
-            <th>Name</th>
-            <th>Username</th>
-            <th>Email</th>
-            <th>License Number</th>
-            <th>Contact Number</th>
-            <th>Address</th>
-          </tr>
-          {% for user_detail in user_details %}
-          {% if not user_detail.user.is_staff %}
-          <script>
-            totalUserCount++;
-          </script>
-          <tr>
-            <td>{{ user_detail.user.get_full_name }}</td>
-            <td>{{ user_detail.user.username }}</td>
-            <td>{{ user_detail.user.email }}</td>
-            <td>{{ user_detail.license_number }}</td>
-            <td>{{ user_detail.contact }}</td>
-            <td>{{ user_detail.address }}</td>
-          </tr>
-          {% endif %}
-          {% endfor %}
-        </table>
-
-        <!-- popup to add user -->
-        <div class="popup" id="addUserPopup">
-          <div class="popup-content">
-            <span class="close" onclick="closePopup('addUserPopup')">&times;</span>
-            <h2>Add User</h2>
-            <form id="addUserForm" method="post">
-              {% csrf_token %}
-              <label for="FirstName">First Name:</label><br />
-              <input type="text" id="distributorFirstName" name="distributorFirstName" required /><br />
-
-              <label for="LastName">Last Name:</label><br />
-              <input type="text" id="distributorLastName" name="distributorLastName" required /><br />
-
-              <label for="username">Username:</label><br />
-              <input type="text" id="username" name="username" required /><br />
-
-              <label for="email">Email:</label><br />
-              <input type="email" id="email" name="email" required /><br />
-
-              <label for="location">Address:</label><br />
-              <input type="text" id="location" name="location" required /><br />
-
-              <label for="password">Password:</label><br />
-              <input type="password" id="password" name="password" required /><br />
-
-              <label for="contactNumber">Contact Number:</label><br />
-              <input type="text" id="contactNumber" name="contactNumber" required /><br />
-
-              <label for="license_number">License Number:</label><br />
-              <input type="text" id="license_number" name="license_number" required /><br />
-
-              <button type="submit" name="addUser">
-                Add User
-              </button>
-            </form>
-          </div>
-        </div>
-
-
-        <!-- Popup to edit user -->
-        <div class="popup" id="editUserPopup">
-          <div class="popup-content">
-            <span class="close" onclick="closePopup('editUserPopup')">&times;</span>
-            <h2>Edit User</h2>
-            <form id="editUserForm" method="post">
-              {% csrf_token %}
-              <!-- Input fields for editing user details -->
-              <label for="editUserFirstName">First Name:</label><br />
-              <input type="text" id="editUserFirstName" name="editUserFirstName" required /><br />
-
-              <label for="editUserLastName">Last Name:</label><br />
-              <input type="text" id="editUserLastName" name="editUserLastName" required /><br />
-
-              <label for="editUsername">Username:</label><br />
-              <input type="text" id="editUsername" name="editUsername" required /><br />
-
-              <label for="editEmail">Email:</label><br />
-              <input type="email" id="editEmail" name="editEmail" required /><br />
-
-              <label for="editAddress">Address:</label><br />
-              <input type="text" id="editAddress" name="editAddress" required /><br />
-
-              <label for="editPassword">Password:</label><br />
-              <input type="password" id="editPassword" name="editPassword" required /><br />
-
-              <label for="editContactNumber">Contact Number:</label><br />
-              <input type="text" id="editContactNumber" name="editContactNumber" required /><br />
-
-              <label for="editLicenseNumber">License Number:</label><br />
-              <input type="text" id="editLicenseNumber" name="editLicenseNumber" required /><br />
-
-              <button type="submit" name="editUser">
-                Update User
-              </button>
-            </form>
-          </div>
-        </div>
-
-        <!-- popup to delete user -->
-        <div class="popup" id="deleteUserPopup">
-          <div class="popup-content">
-            <span class="close" onclick="closePopup('deleteUserPopup')">&times;</span>
-            <h2>Delete User</h2>
-            <label for="userID">User ID:</label><br />
-            <input type="text" id="userID" name="userID" />
-            <button onclick="deleteUser()">Delete</button>
-          </div>
-        </div>
-      </div>
+    <div class="hero-image">
+      <img src="{% static 'img/abtUs.jpg' %}">
     </div>
   </div>
-</body>
-
-</html>
-
-<script>
-  // displaying the total count of distributors and user
-  document.getElementById("TotalDistributors").innerHTML =
-    "Total Distributors : " + totalDistributorCount;
-  document.getElementById("TotalUsers").innerHTML =
-    "Total Users : " + totalUserCount;
-
-  // JavaScript to toggle content based on button clicks
-  document.getElementById("default-btn").addEventListener("click", function () {
-    document.getElementById("default-content").style.display = "block";
-    document.getElementById("distributor-content").style.display = "none";
-    document.getElementById("user-content").style.display = "none";
-  });
-
-  document
-    .getElementById("distributor-btn")
-    .addEventListener("click", function () {
-      document.getElementById("default-content").style.display = "none";
-      document.getElementById("distributor-content").style.display = "block";
-      document.getElementById("user-content").style.display = "none";
-    });
-
-  document.getElementById("user-btn").addEventListener("click", function () {
-    document.getElementById("default-content").style.display = "none";
-    document.getElementById("distributor-content").style.display = "none";
-    document.getElementById("user-content").style.display = "block";
-  });
-
-  document.addEventListener("DOMContentLoaded", function () {
-    var disButton = document.getElementById("default-btn");
-    disButton.click();
-  });
-
-  // Distributor add button and popup
-  const distributorAddBtn = document.getElementById("distributor-add-btn");
-  const addDistributorPopup = document.getElementById("addDistributorPopup");
-  if (distributorAddBtn && addDistributorPopup) {
-    distributorAddBtn.addEventListener("click", () => {
-      addDistributorPopup.style.display = "block";
-    });
-  };
-
-  // Distributor edit button and popup
-  const distributorEditBtn = document.getElementById("distributor-edit-btn");
-  const editDistributorPopup = document.getElementById("editDistributorPopup");
-  if (distributorEditBtn && editDistributorPopup) {
-    distributorEditBtn.addEventListener("click", () => {
-      editDistributorPopup.style.display = "block";
-      // Here you can populate the form fields with existing distributor data if needed
-    });
-  }
-
-  // Distributor delete button and popup
-  const distributorDeleteBtn = document.getElementById("distributor-delete-btn");
-  const deleteDistributorPopup = document.getElementById("deleteDistributorPopup");
-  if (distributorDeleteBtn && deleteDistributorPopup) {
-    distributorDeleteBtn.addEventListener("click", () => {
-      deleteDistributorPopup.style.display = "block";
-    });
-  };
-
-
-  // User add button and popup
-  const userAddBtn = document.getElementById("user-add-btn");
-  const addUserPopup = document.getElementById("addUserPopup");
-  if (userAddBtn && addUserPopup) {
-    userAddBtn.addEventListener("click", () => {
-      addUserPopup.style.display = "block";
-    });
-  }
-
-  // User edit button and popup
-  const userEditBtn = document.getElementById("user-edit-btn");
-  const editUserPopup = document.getElementById("editUserPopup");
-  if (userEditBtn && editUserPopup) {
-    userEditBtn.addEventListener("click", () => {
-      editUserPopup.style.display = "block";
-      // Here you can populate the form fields with existing user data if needed
-    });
-  }
-
-  // User delete button and popup
-  const userDeleteBtn = document.getElementById("user-delete-btn");
-  const deleteUserPopup = document.getElementById("deleteUserPopup");
-  if (userDeleteBtn && deleteUserPopup) {
-    userDeleteBtn.addEventListener("click", () => {
-      deleteUserPopup.style.display = "block";
-    });
-  }
-
-  // Close popup function
-  function closePopup(id) {
-    const popup = document.getElementById(id);
-    if (popup) {
-      popup.style.display = "none";
-    }
-  }
-</script>
+  <div class="title-box center">
+    <h2>Meet Our Team</h2>
+    <p>"The faces behind the creation of this Website.<br>Lets us present you our Power Ranger Mystic Force." </p>
+  </div>
+  <div class="Member-row">
+    <div class="profile-box">
+      <h4>Prajwol Rai</h4>
+      <small>Project Manager</small>
+      <img src="{% static 'img/Baje.jpg' %}">
+      <div class="social-box">
+        <i class="fa-brands fa-linkedin"></i>
+      </div>
+      <p>Our project manager, orchestrating success with precision and vision. Leading the team with expertise, he
+        ensures every project exceeds expectations.</p>
+    </div>
+    <div class="profile-box">
+      <h4>Tsokney Lama</h4>
+      <small>Business Analysis</small>
+      <img src="{% static 'img/tsokney.jpg' %}">
+      <div class="social-box">
+        <i class="fa-brands fa-facebook"></i>
+        <i class="fa-brands fa-twitter"></i>
+        <i class="fa-brands fa-linkedin"></i>
+        <i class="fa-brands fa-instagram"></i>
+      </div>
+      <p>Our intelligent business analyst deciphers information and develops plans to move our activities ahead with
+        clarity and foresight.</p>
+    </div>
+    <div class="profile-box">
+      <h4>Krishan Tamang</h4>
+      <small>Developer</small>
+      <img src="{% static 'img/kisne.jpg' %}">
+      <div class="social-box">
+        <i class="fa-brands fa-facebook"></i>
+        <i class="fa-brands fa-twitter"></i>
+        <i class="fa-brands fa-linkedin"></i>
+        <i class="fa-brands fa-instagram"></i>
+      </div>
+      <p>Our digital infrastructure runs smoothly and securely thanks to the skillful design of our coding maestro, who
+        creates solid frontend systems with great attention to detail.</p>
+    </div>
+    <div class="profile-box">
+      <h4>Aditya Rai</h4>
+      <small>Developer</small>
+      <img src="{% static 'img/Chimrey.jpg' %}">
+      <div class="social-box">
+        <i class="fa-brands fa-facebook"></i>
+        <i class="fa-brands fa-twitter"></i>
+        <i class="fa-brands fa-linkedin"></i>
+        <i class="fa-brands fa-instagram"></i>
+      </div>
+      <p>A valuable component of our team, contributing technical skills and creative solutions to each project,
+        guaranteeing that our digital undertakings are executed with originality and precision.</p>
+    </div>
+    <div class="profile-box">
+      <h4>Nileena Rai</h4>
+      <small>Developer</small>
+      <img src="{% static 'img/nileena.jpg' %}">
+      <div class="social-box">
+        <i class="fa-brands fa-facebook"></i>
+        <i class="fa-brands fa-twitter"></i>
+        <i class="fa-brands fa-linkedin"></i>
+        <i class="fa-brands fa-instagram"></i>
+      </div>
+      <p>Our digital infrastructure runs smoothly and securely thanks to the skillful design of our coding maestro, who
+        creates solid backend systems with great attention to detail.</p>
+    </div>
+    <div class="profile-box">
+      <h4>Abraham Hyolmo</h4>
+      <small>Developer</small>
+      <img src="{% static 'img/abraham.jpg' %}">
+      <div class="social-box">
+        <i class="fa-brands fa-facebook"></i>
+        <i class="fa-brands fa-twitter"></i>
+        <i class="fa-brands fa-linkedin"></i>
+        <i class="fa-brands fa-instagram"></i>
+      </div>
+      <p>The creative mind behind our 'About Us' page, blending design flair with frontend expertise to craft an
+        immersive and visually captivating narrative of our brand story.</p>
+    </div>
+  </div>
+</section>
 
 <style>
-    /* Font Awesome styles */
-  @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css');
+* {
+  margin: 2px;
+  padding: 2px;
+  box-sizing: border-box;
+  font-family: "Arial", sans-serif;
+}
 
-  /* Set Font Awesome solid icons font family and font weight */
-  .fa-solid {
-      font-family: 'Font Awesome 6 Solid';
-      font-weight: 900;
-  }
+.hero {
+  width: 100%;
+  background-color: #ffffff;
+  overflow: hidden;
+}
 
-  :root {
-    --indigo: #16425b;
-    --lapis: #2f6690;
-    --cerulean: #3a7ca5;
-    --skyblue: #81c3d7;
-    --platinum: #d9dcd6;
-    --darkgray: #b4b4b3;
-    --red: #f44336;
-    --green: #4caf50;
-    --darkgreen: darkgreen;
-    --crimson: crimson;
-    --white:#fff;
-    --yellow: #f4a62a;
-  }
+.heading h1 {
+  color: #000000;
+  font-size: 55px;
+  text-align: center;
+  margin-top: 90px;
+  margin-bottom: 0;
+}
 
-  /* Reset default margin, padding, and overflow */
-  body {
-    margin: 0;
-    padding-top: 0;
-    overflow-x: hidden;
-    font-family: "Montserrat", sans-serif;
-  }
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 90%;
+  margin: 65px auto;
+}
 
-  table{
-    font-size: 18px;
-  }
+.hero-content {
+  flex: 1;
+  width: 600px;
+  margin: 0px 25px;
+  animation: fadeInUp 2s ease;
+}
 
-  table td{
-    font-size: 20px;
-  }
+.hero-content h2 {
+  margin-top: 10px;
+  font-size: 38px;
+  margin-bottom: 20px;
+  color: #653939;
+}
 
-  /* Logo styles */
-  #logo {
-    color: var(--platinum);
+.hero-content p {
+  text-align: justify;
+  font-size: 24px;
+  line-height: 1.5;
+  margin-bottom: 40px;
+  color: #1a1717;
+}
+
+.hero-content button {
+  display: inline-block;
+  background-color: #300973;
+  color: #e1cccc;
+  padding: 12px 24px;
+  border-radius: 5px;
+  font-size: 20px;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
+}
+
+.hero-content button:hover {
+  background: color #0f1b79;
+  transform: scale(1.1);
+}
+
+.hero-image {
+  flex: 1;
+  width: 600px;
+  margin: auto;
+  animation: fadeInRight 2s ease;
+}
+
+img {
+  width: 100%;
+  height: auto;
+  border-radius: 20px;
+}
+
+@media screen and (max-width: 768px) {
+  .heading h1 {
+    font-size: 45px;
     margin-top: 30px;
-    text-align: center;
-    font-size: 3rem;
   }
 
-  /* Sidebar styles */
-  .sidebar {
-    float: left;
-    width: 20vw;
-    background-color: var(--indigo);
-    height: 100vh;
+  .hero {
+    margin: 0px;
   }
 
-  .sidebar i{
-    color: var(--white);
-    margin-left: 80px;
-    margin-right: 10px;
+  .container {
+    width: 100%;
+    flex-direction: column;
   }
 
-  .sidebar ul {
-    list-style-type: none;
-    padding: 0;
-    margin-top: 8vh;
+  .hero-content {
+    width: 100%;
+    margin: 35px 0px;
   }
 
-  .sidebar li {
-      margin-bottom: 10px;
-  }
-
-  .sidebar a {
-      font-size: 30px;
-      width: 20vw;;
-      text-decoration: none;
-      color: var(--white);
-      display: block;
-      margin-top: 50px;
-  }
-
-  .sidebar a:hover {
-      cursor: pointer;
-  }
-
-  /* Log Out button styles */
-  #logout {
-      position: absolute;
-      bottom: 30px;
-      left: 0;
-    }
-
-  /* Content styles */
-  .content {
-    float: left;
-    width: 80%;
-    padding: 20px 0 0 20px;
-    box-sizing: border-box;
-  }
-
-  /* Card styles */
-  .card {
-    height: 35vh;
-    width: 18vw;
-    font-size: 18px;
-    margin: 10px;
-    padding: 20px;
-    padding-left: 60px;
-    margin-bottom: 5vh;
-    border-radius: 5px;
-    box-sizing: border-box;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-
-  .card h3{
+  .hero-content h2 {
     font-size: 30px;
   }
 
-
-  #default-content #card {
-    display: flex;
+  .hero-content p {
+    font-size: 18px;
+    margin-bottom: 20px;
   }
 
-  #distributor_card,
-  #user_card {
-    width: 40vw;
-    height: 20vh;
-  }
-
-  #distributor_card {
-    background-color: var(--cerulean);
-    color: var(--white);
-  }
-
-  #user_card {
-    background-color: var(--platinum);
-  }
-
-  #TotalDistributors,
-  #TotalUsers {
-    padding-right: 10vw;
-    /* padding-bottom: 5vh; */
-  }
-
-  #distributor-content,
-  #user-content {
-    display: none;
-    margin-top: 20px;
-  }
-
-  .page-btn {
-    margin-top: 20px;
-    text-align: center;
-  }
-
-  .page-btn button {
-    padding: 10px 20px;
-    background-color: var(--lapis);
-    color: var(--platinum);
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-right: 10px;
-    margin-bottom: 10px;
-  }
-
-  .page-btn button:hover {
-    background-color: var(--indigo);
-  }
-
-  #distributor-add-btn,
-  #distributor-edit-btn,
-  #distributor-delete-btn,
-  #user-add-btn,
-  #user-edit-btn,
-  #user-delete-btn {
-    /* background-color: var(--green); */
-    border: none;
-    color: white;
-    padding: 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
+  .hero-content button {
     font-size: 16px;
-    margin: 4px 2px 10px;
-    cursor: pointer;
-    border-radius: 4px;
+    padding: 8px 16px;
   }
 
-  #distributor-add-btn,
-  #user-add-btn {
-    background-color: var(--green);
-    /* margin-right: 40px; */
-  }
-
-  #distributor-add-btn:hover,
-  #user-add-btn:hover {
-    background-color: var(--darkgreen);
-  }
-
-  #distributor-delete-btn,
-  #user-delete-btn {
-    background-color: var(--red);
-  }
-
-  #distributor-delete-btn:hover,
-  #user-delete-btn:hover {
-    background-color: var(--crimson);
-  }
-
-  #distributor-edit-btn,
-  #user-edit-btn{
-    background-color: var(--yellow);
-  }
-
-  /* For User Information Edit */
-  table {
-    margin-top: 15px;
-    border-collapse: collapse;
-    width: 78vw;
-  }
-
-  th,
-  td {
-    border: 1px solid #dddddd;
-    text-align: left;
-    padding: 8px;
-  }
-
-  th {
-    background-color: #f2f2f2;
-  }
-
-  tr:nth-child(even) {
-    background-color: #f2f2f2;
-  }
-
-  .popup {
-    display: none;
-    position: fixed;
-    z-index: 9999;
-    left: 0;
-    top: 0;
+  .hero-image {
     width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
   }
+}
 
-  .popup-content {
-    background-color: var(--platinum);
-    margin: 20% auto;
-    padding: 20px;
-    border-radius: 5px;
-    width: 60%;
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translate(50px);
   }
+  100% {
+    opacity: 1;
+    transform: translate(0px);
+  }
+}
 
-  .close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
+@keyframes fadeInRight {
+  0% {
+    opacity: 0;
+    transform: translate(-50px);
   }
+  100% {
+    opacity: 1;
+    transform: translate(0px);
+  }
+}
 
-  .close:hover,
-  .close:focus {
-    color: black;
-    text-decoration: none;
-  }
+.title-box {
+  text-align: center;
+}
+
+.center {
+  margin: 0 auto;
+  max-width: 600px;
+}
+
+.title-box h2 {
+  color: #000000;
+  font-size: 55px;
+  text-align: center;
+  margin-top: 220px;
+}
+
+.title-box p {
+  font-size: 24px;
+  line-height: 24px;
+  margin-top: 20px;
+  color: #1a1717;
+}
+
+.profile-box {
+  width: 360px;
+  height: 330px;
+  background: #fff;
+  border-radius: 4px;
+  margin-bottom: 30px;
+  box-shadow: 8px 8px 8px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  position: relative;
+  transition: background 0.5s;
+}
+
+.profile-box img {
+  width: 110px;
+  position: absolute;
+  top: 10px;
+  right: 30px;
+  border-radius: 4px;
+  transition: 0.5s;
+}
+
+.profile-box h4 {
+  margin-top: 25px;
+  margin-bottom: 5px;
+  color: #0f1b79;
+}
+
+small {
+  color: #555;
+}
+
+.social-box {
+  background: #0f1b79;
+  margin: 60px auto 20px;
+  text-align: center;
+  border-radius: 3px;
+}
+
+.social-box .fa {
+  margin: 5px;
+  color: #fff;
+  cursor: pointer;
+}
+
+.profile-box p {
+  padding-top: 20px;
+  text-align: justify;
+  font-size: 16px;
+  line-height: 1.4;
+  color: #555;
+}
+
+.Member-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  justify-content: space-between;
+  flex-wrap: wrap-reverse;
+  width: 110%;
+  margin: 100px auto;
+}
+
+.profile-box img:hover {
+  width: 250px;
+}
+
+.profile-box:hover {
+  background-color: #266c94;
+}
 </style>
+{% endblock %}
