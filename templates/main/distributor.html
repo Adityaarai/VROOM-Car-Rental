@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-vWtPOzvV2LtoJMdIo6HfT94oZD8/eeFh0I+1wT6h7ggzmg+7Z0WgVpY+P6r+Qv26" crossorigin="anonymous">
     <title>VROOM - Distributor Profile</title>
   </head>
   <body>
@@ -10,15 +11,34 @@
       <!-- main button to navigate between car and booking -->
       <div class="sidebar">
         <h1 id="logo">VROOM</h1>
-        <ul>
-          <li><button id="default-btn">Dashboard</button></li>
-          <li><button id="car-btn">Car</button></li>
-          <li><button id="booking-btn">Booking</button></li>
+         <ul>
+            <li>
+                <a id="default-btn" onclick="toggleContent('default')"> 
+                    <i class="fas fa-house"></i>
+                    <span id="default-topic">Dashboard</span> 
+                </a>
+            </li>
+            <li>
+                <a id="car-btn" onclick="toggleContent('car')"> 
+                    <i class="fas fa-car"></i>
+                    <span id="distributor-topic">Car</span> 
+                </a>
+            </li>
+            <li>
+                <a id="booking-btn" onclick="toggleContent('booking')"> 
+                    <i class="fas fa-bookmark"></i>
+                    <span id="user-topic">Booking</span>
+                </a>
+            </li>
+            
+            <li>
+                <a href="{% url 'logout' %}" id="logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span id="topic">Log Out</span>
+                </a>
+            </li>
         </ul>
-        <a href="{% url 'logout' %}">
-          <button id="logout">Log Out</button>
-        </a>
-      </div>
+    </div>
 
       <!-- initializing count value to 0 for all required details -->
       <script>
@@ -40,17 +60,33 @@
           <div id="card">
             <div class="card" id="car_card">
               <h3>Car Information</h3>
-              <label id="TotalCars"></label>
-              <label id="Available"></label><br />
-              <label id="Booked"></label>
-              <label id="Unlisted"></label>
+              <label id="Cars">
+                <i class="fas fa-users"></i>
+                <span id="TotalCars"></span>
+              </label>
+              <label id="Types">
+                <i class="fas fa-users"></i>
+                <span id="car_types"></span>
+              </label>
             </div>
             <div class="card" id="book_card">
               <h3>Booking Information</h3>
-              <label id="bookings"></label>
-              <label id="approved"></label><br />
-              <label id="pending"></label>
-              <label id="paid"></label><br />
+              <label id="TotalBooking">
+                <i class="fa-solid fa-bookmark"></i>
+                <span id="booking"></span>
+              </label>
+              <label id="TotalApproved">
+                <i class="fa-solid fa-check"></i>
+                <span id="approved"></span>
+              </label><br />
+              <label id="TotalPending">
+                <i class="fa-solid fa-hourglass-half"></i>
+                <span id="pending"></span>
+              </label>
+              <label id="TotalPaid">
+                <i class="fa-solid fa-money-check-dollar"></i>
+                <span id="paid"></span>
+              </label><br />
               <label id="completed"></label><br />
             </div>
           </div>
@@ -266,23 +302,11 @@
 <script>
   // JavaScript to toggle content based on button clicks
 
-  document.getElementById("default-btn").addEventListener("click", function () {
-    document.getElementById("default-content").style.display = "block";
-    document.getElementById("car-content").style.display = "none";
-    document.getElementById("booking-content").style.display = "none";
-  });
-
-  document.getElementById("car-btn").addEventListener("click", function () {
-    document.getElementById("default-content").style.display = "none";
-    document.getElementById("car-content").style.display = "block";
-    document.getElementById("booking-content").style.display = "none";
-  });
-
-  document.getElementById("booking-btn").addEventListener("click", function () {
-    document.getElementById("default-content").style.display = "none";
-    document.getElementById("car-content").style.display = "none";
-    document.getElementById("booking-content").style.display = "block";
-  });
+  function toggleContent(topic) {
+  document.getElementById("default-content").style.display = topic === 'default' ? "block" : "none";
+  document.getElementById("car-content").style.display = topic === 'car' ? "block" : "none";
+  document.getElementById("booking-content").style.display = topic === 'booking' ? "block" : "none";
+}
 
   document.addEventListener("DOMContentLoaded", function () {
     var filterButtons = document.querySelectorAll(".filter-btn");
@@ -434,6 +458,15 @@
 </script>
 
 <style>
+   /* Font Awesome styles */
+   @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css');
+
+  /* Set Font Awesome solid icons font family and font weight */
+  .fa-solid {
+      font-family: 'Font Awesome 6 Solid';
+      font-weight: 900;
+  }
+
   :root {
     --indigo: #16425b;
     --lapis: #2f6690;
@@ -456,67 +489,66 @@
     font-family: "Montserrat", sans-serif;
   }
 
-  #logo {
+    /* Logo styles */
+    #logo {
     color: var(--platinum);
-    padding-top: 50px;
+    margin-top: 30px;
     text-align: center;
     font-size: 3rem;
   }
 
+  /* Sidebar styles */
   .sidebar {
     float: left;
-    width: 20vw;
-    background-color: var(--lapis);
-    height: 100%;
+    width: 15vw;
+    background-color: var(--indigo);
+    height: 100vh;
+  }
+
+  .sidebar i{
+    color: var(--white);
+    margin-left: 50px;
+    margin-right: 10px;
   }
 
   .sidebar ul {
-    margin-top: 40px;
     list-style-type: none;
     padding: 0;
+    margin-top: 8vh;
   }
 
-  .sidebar ul li {
-    margin-bottom: 10px;
+  .sidebar li {
+      margin-bottom: 10px;
   }
 
+  .sidebar a {
+      font-size: 25px;
+      width: 15vw;;
+      text-decoration: none;
+      color: var(--white);
+      display: block;
+      margin-top: 50px;
+  }
+
+  .sidebar a:hover {
+      cursor: pointer;
+  }
+
+  /* Log Out button styles */
+  #logout {
+      position: absolute;
+      bottom: 30px;
+      left: 20px;
+    }
+
+  /* Content styles */
   .content {
     float: left;
     width: 80%;
-    padding: 20px;
+    padding: 20px 0 0 20px;
     box-sizing: border-box;
   }
 
-  .sidebar button {
-    padding: 10px 20px;
-    margin: 0 10px;
-    font-size: 20px;
-    cursor: pointer;
-    border: none;
-    /* background-color: var(--lapis); */
-    background-color: var(--darkgray);
-    color: white;
-    border-radius: 5px;
-    outline: none;
-    margin-left: 2.5vw;
-    margin-top: 30px;
-    width: 15vw;
-    height: 45px;
-  }
-
-  .sidebar button:hover {
-    background-color: var(--indigo);
-  }
-
-  #logout {
-    bottom: 0;
-    left: 0;
-    background-color: var(--red); /* Example background color */
-  }
-
-  #logout:hover {
-    background-color: var(--crimson); /* Example hover background color */
-  }
 
   #default-content #card {
     display: flex;
