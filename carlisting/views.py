@@ -143,12 +143,12 @@ def adminprofile(request):
         else:
             # Proceed with creating the user
             if 'addDistributor' in request.POST:
-              license_number = request.POST.get('license_number')
-            else:
               license_number = None
+            else:
+              license_number = request.POST.get('license_number')
             
-            first_name = request.POST.get('distributorFirstName')
-            last_name = request.POST.get('distributorLastName')
+            first_name = request.POST.get('FirstName')
+            last_name = request.POST.get('LastName')
             email = request.POST.get('email')
             location = request.POST.get('location')
             password = request.POST.get('password')
@@ -175,6 +175,7 @@ def adminprofile(request):
               myuser.user_permissions.add(*all_permissions)
             else:
               myuser.is_staff = False
+              
             myuser.save()
             
             try:
@@ -190,8 +191,12 @@ def adminprofile(request):
                 messages.error(request, "An error occurred while creating the user.")
 
     user_details = Profile.objects.all()
+
+    recent_users = Profile.objects.select_related('user').order_by('-user__date_joined')[:5]
+
     context = {
         'user_details': user_details,
+        'recent_users': recent_users,
     }
     return render(request, 'main/admin.html', context)
 
