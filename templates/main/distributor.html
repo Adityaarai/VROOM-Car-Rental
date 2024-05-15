@@ -57,7 +57,7 @@
         <div id="default-content">
           <h1>Welcome Distributor!!</h1>
           <!-- Default dashboard content goes here -->
-          <div id="card">
+          <div id="dashboard_card">
             <div class="card" id="car_card">
               <h3>Car Information</h3>
               <label id="Cars">
@@ -90,6 +90,55 @@
               <label id="completed"></label><br />
             </div>
           </div>
+           <!-- table to show booking information -->
+           <h1 id="recent_booking">Recent Booking</h1>
+           <table>
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Rentee Email</th>
+                <th>Booking Start Date</th>
+                <th>Booking End Date</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for order in orders %}
+              <!-- Checking order details and updating count -->
+              {% if order.status == "Pending" %}
+              <script>
+                totalPendingOrderCount++;
+              </script>
+              {% elif order.status == "Approved" %}
+              <script>
+                totalApprovedOrderCount++;
+              </script>
+              {% elif order.status == "Paid" %}
+              <script>
+                totalPaidOrderCount++;
+              </script>
+              {% endif %}
+              <script>
+                totalBookingCount++;
+              </script>
+          
+              <tr>
+                <td>{{ order.product }}</td>
+                <td>{{ order.rentee_email }}</td>
+                <td>{{ order.start_date }}</td>
+                <td>{{ order.end_date }}</td>
+                <td>
+                  <!-- Dropdown menu for status -->
+                  <select onchange="updateStatus('{{ order.id }}', this.value)">
+                    <option value="Pending" {% if order.status == "Pending" %} selected {% endif %}>Pending</option>
+                    <option value="Approved" {% if order.status == "Approved" %} selected {% endif %}>Approved</option>
+                    <option value="Paid" {% if order.status == "Paid" %} selected {% endif %}>Paid</option>
+                  </select>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
         </div>
         <div id="car-content">
           <div class="all">
@@ -169,9 +218,12 @@
               <div class="popup-content">
                 <span class="close" onclick="closePopup('deleteCarPopup')">&times;</span>
                 <h2>Delete Car</h2>
-                <label for="carIdToDelete">Car ID:</label><br />
-                <input type="text" id="carIdToDelete" name="carIdToDelete" /><br />
-                <button onclick="deleteCar()">Delete</button>
+                <form id="deleteCarForm">
+                  <label for="carIdToDelete">Car ID:</label><br />
+                  <input type="text" id="carIdToDelete" name="carIdToDelete" /><br />
+                  <button onclick="deleteCar()">Delete</button>
+                </form>
+                
               </div>
             </div>
 
@@ -467,7 +519,9 @@
     --green: #4caf50;
     --darkgreen: darkgreen;
     --crimson: crimson;
-    --white: #ffffff;
+    --white:#fff;
+    --yellow: #f4a62a;
+    --darkyellow:#df9319;
   }
 
   body {
@@ -546,9 +600,29 @@
     box-sizing: border-box;
   }
 
+  #dashboard_card{
+    height: 35vh;
+    width: 80vw;
+    font-size: 18px;
+    margin: 10px;
+    padding: 20px;
+    /* padding-left: 60px; */
+    margin-bottom: 5vh;
+    border-radius: 5px;
+    box-sizing: border-box;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
 
-  #default-content #card {
+  
+  .dashboard-card label {
+   font-size: 40px;
+   margin-right: 80px;
+  }
+
+
+  #default-content #dashboard_card {
     display: flex;
+    justify-content: space-between;
   }
 
   #car_card,
@@ -558,7 +632,7 @@
   }
 
   #car_card {
-    background-color: var(--skyblue);
+    background-color: var(--cerulean);
   }
 
   #book_card {
@@ -579,13 +653,8 @@
     margin-top: 20px;
   }
 
-  #content {
-    margin-left: 10vw;
-    width: 80vw;
-    padding: 20px;
-    border: 1px solid var(--platinum);
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  #booking-content select{
+    font-size: 18px;
   }
 
   .filter {
@@ -629,6 +698,12 @@
 
   .card:hover {
     background-color: #b4b4b3;
+    scale: 1.1;
+  }
+
+  .card h2 , h3, h4{
+    margin: 0;
+    margin-top: 10px;
   }
 
   .availability-container {
@@ -674,6 +749,52 @@
   .car-model {
     font-size: 1.5rem;
     font-weight: 500;
+  }
+
+  .buttons{
+    display: flex;
+    justify-content: space-between;
+    width: 70%;
+    margin-left: 15%;
+    margin-top: 20px;
+  }
+
+  .buttons button{
+    width: 100px;
+    height: 30px;
+    font-size: 17px;
+    color: var(--white);
+    border-radius: 5px;
+    border: 0;
+    padding: 5px 5px;
+  }
+
+  #car-add-btn{
+    background-color: var(--green);
+    width: 100px;
+    height: 30px;
+    font-size: 17px;
+    color: var(--white);
+    border-radius: 5px;
+    border: 0;
+    padding: 5px 5px;
+
+  }
+
+  #car-edit-btn{
+    background-color: var(--yellow);
+  }
+
+  #car-edit-btn:hover{
+    background-color: var(--darkyellow);
+  }
+
+  #car-delete-btn{
+    background-color: var(--red);
+  }
+
+  #car-delete-btn:hover{
+    background-color: var(--crimson);
   }
 
   .page-btn {
@@ -727,60 +848,35 @@
     background-color: #f2f2f2;
   }
 
-  #booking-add-btn,
-  #booking-delete-btn {
-    background-color: var(--green);
-    border: none;
-    color: white;
-    padding: 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px 10px;
-    cursor: pointer;
-    border-radius: 4px;
-  }
-
-  #booking-add-btn {
-    background-color: var(--green);
-    margin-right: 40px;
-  }
-
-  #booking-add-btn:hover {
-    background-color: var(--darkgreen);
-  }
-
-  #booking-delete-btn {
-    background-color: var(--red);
-  }
-
-  #booking-delete-btn:hover {
-    background-color: var(--crimson);
-  }
-
   .popup {
-    display: none;
-    position: fixed;
-    z-index: 9999;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-  }
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
 
-  .popup-content {
-    background-color: var(--platinum);
-    margin: 20% auto;
-    padding: 20px;
-    border-radius: 5px;
-    width: 60%;
-  }
+.popup-content {
+  background-color: var(--indigo);
+  color: var(--white);
+  border-radius: 20px;
+  width: 60%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding-left: 50px;
+}
+
 
   .close {
     color: #aaa;
     float: right;
+    margin-right: 20px;
+    margin-top: 20px;
     font-size: 28px;
     font-weight: bold;
     cursor: pointer;
@@ -790,5 +886,39 @@
   .close:focus {
     color: black;
     text-decoration: none;
+  }
+
+  .popup-content form {
+  margin: 70px;
+  text-align: center;
+}
+
+.popup-content form input{
+  margin-bottom: 20px;
+  width: 250px;
+  font-size: 17px;
+  border-radius:5px;
+}
+
+.popup-content label{
+  font-weight: 600;
+}
+
+
+.popup-content h2{
+  margin-top: 50px;
+}
+
+.popup-content button{
+    width: 150px;
+    height: 30px;
+    border: 0;
+    border-radius: 5px;
+    background-color: var(--platinum);
+  }
+
+  .popup-content button:hover{
+    background-color: var(--lapis);
+    color: var(--white);
   }
 </style>
