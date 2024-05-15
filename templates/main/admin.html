@@ -66,21 +66,29 @@
         <div id="card">
           <div class="card" id="distributor_card">
             <h3>Distributor Information</h3>
-            <label id="TotalDistributors"></label>
-            <label id="Available">Available:</label><br><br>
-            <label id="carModels">Models:</label>
-            <label id="carTypes">Types:</label>
+            <label id="TotalDistributors">
+              <i class="fas fa-users"></i>
+              <span id="distributor-count">5</span>
+            </label>
+            <label id="Location">
+              <i class="fas fa-map-marker-alt"></i>
+              <span id="location-count">5</span>
+            </label>
           </div>
           <div class="card" id="user_card">
             <h3>User Information</h3>
-            <label id="TotalUsers">Total Users:</label>
-            <label id="approved">Approved:</label><br><br>
-            <label id="pending">pending:</label>
-            <label id="paid">Paid:</label><br />
+            <label id="verified">
+              <i class="fas fa-user-check"></i>
+              <span id="verified-count">5</span>
+            </label>
+            <label id="unverified">
+              <i class="fas fa-user-times"></i>
+              <span id="unverified-count">3</span>
+            </label>
           </div>
         </div>
 
-        <h1>Recent Distributors</h1>
+        <h1>Recent User</h1>
          <!-- table to show distributor information -->
          <table>
           <tr>
@@ -90,19 +98,14 @@
             <th>Contact Number</th>
             <th>Location Incharge</th>
           </tr>
-          {% for user_detail in user_details %}
-          {% if '.vroom@gmail.com' in user_detail.user.email and user_detail.user.is_staff %}
-          <script>
-            totalDistributorCount++;
-          </script>
+          {% for user in recent_users %}
           <tr>
-            <td>{{ user_detail.user.username }}</td>
-            <td>{{ user_detail.user.email }}</td>
-            <td>{{ user_detail.user.get_full_name }}</td>
-            <td>{{ user_detail.contact }}</td>
-            <td>{{ user_detail.address }}</td>
+            <td>{{ user.user.username }}</td>
+            <td>{{ user.user.email }}</td>
+            <td>{{ user.user.get_full_name }}</td>
+            <td>{{ user.contact }}</td>
+            <td>{{ user.address }}</td>
           </tr>
-          {% endif %}
           {% endfor %}
         </table>
       </div>
@@ -147,10 +150,10 @@
             <form id="addDistributorForm" method="post">
               {% csrf_token %}
               <label for="distributorFirstName">First Name:</label><br />
-              <input type="text" id="distributorFirstName" name="distributorFirstName" required /><br />
+              <input type="text" id="FirstName" name="FirstName" required /><br />
 
               <label for="distributorLastName">Last Name:</label><br />
-              <input type="text" id="distributorLastName" name="distributorLastName" required /><br />
+              <input type="text" id="LastName" name="LastName" required /><br />
 
               <label for="username">Username:</label><br />
               <input type="text" id="username" name="username" required /><br />
@@ -181,18 +184,24 @@
             <h2>Edit Distributor</h2>
             <form id="editDistributorForm" method="post">
               {% csrf_token %}
+
+              <!-- email for identifying distributors to edit -->
+              <p>Enter email of the distributor to edit</p>
+              <label for="editEmail">Email:</label><br />
+              <input type="email" id="editEmail" name="editEmail" required /><br />
+
               <!-- Input fields for editing distributor details -->
+              <p>Enter new distributor details</p>
               <label for="editDistributorFirstName">First Name:</label><br />
-              <input type="text" id="editDistributorFirstName" name="editDistributorFirstName" required /><br />
+              <input type="text" id="FirstName" name="FirstName" required /><br />
 
               <label for="editDistributorLastName">Last Name:</label><br />
-              <input type="text" id="editDistributorLastName" name="editDistributorLastName" required /><br />
+              <input type="text" id="LastName" name="LastName" required /><br />
 
               <label for="editUsername">Username:</label><br />
               <input type="text" id="editUsername" name="editUsername" required /><br />
 
-              <label for="editEmail">Email:</label><br />
-              <input type="email" id="editEmail" name="editEmail" required /><br />
+              
 
               <label for="editLocation">Location Incharge:</label><br />
               <input type="text" id="editLocation" name="editLocation" required /><br />
@@ -266,10 +275,10 @@
             <form id="addUserForm" method="post">
               {% csrf_token %}
               <label for="FirstName">First Name:</label><br />
-              <input type="text" id="distributorFirstName" name="distributorFirstName" required /><br />
+              <input type="text" id="FirstName" name="FirstName" required /><br />
 
               <label for="LastName">Last Name:</label><br />
-              <input type="text" id="distributorLastName" name="distributorLastName" required /><br />
+              <input type="text" id="LastName" name="LastName" required /><br />
 
               <label for="username">Username:</label><br />
               <input type="text" id="username" name="username" required /><br />
@@ -306,28 +315,28 @@
               {% csrf_token %}
               <!-- Input fields for editing user details -->
               <label for="editUserFirstName">First Name:</label><br />
-              <input type="text" id="editUserFirstName" name="editUserFirstName" required /><br />
+              <input type="text" id="FirstName" name="FirstName" required /><br />
 
               <label for="editUserLastName">Last Name:</label><br />
-              <input type="text" id="editUserLastName" name="editUserLastName" required /><br />
+              <input type="text" id="LastName" name="LastName" required /><br />
 
               <label for="editUsername">Username:</label><br />
-              <input type="text" id="editUsername" name="editUsername" required /><br />
+              <input type="text" id="username" name="username" required /><br />
 
               <label for="editEmail">Email:</label><br />
-              <input type="email" id="editEmail" name="editEmail" required /><br />
+              <input type="email" id="email" name="email" required /><br />
 
               <label for="editAddress">Address:</label><br />
-              <input type="text" id="editAddress" name="editAddress" required /><br />
+              <input type="text" id="address" name="address" required /><br />
 
               <label for="editPassword">Password:</label><br />
-              <input type="password" id="editPassword" name="editPassword" required /><br />
+              <input type="password" id="password" name="password" required /><br />
 
               <label for="editContactNumber">Contact Number:</label><br />
-              <input type="text" id="editContactNumber" name="editContactNumber" required /><br />
+              <input type="text" id="contactNumber" name="contactNumber" required /><br />
 
               <label for="editLicenseNumber">License Number:</label><br />
-              <input type="text" id="editLicenseNumber" name="editLicenseNumber" required /><br />
+              <input type="text" id="license_number" name="license_number" required /><br />
 
               <button type="submit" name="editUser">
                 Update User
@@ -504,14 +513,14 @@
   /* Sidebar styles */
   .sidebar {
     float: left;
-    width: 20vw;
+    width: 15vw;
     background-color: var(--indigo);
     height: 100vh;
   }
 
   .sidebar i{
     color: var(--white);
-    margin-left: 80px;
+    margin-left: 50px;
     margin-right: 10px;
   }
 
@@ -526,8 +535,8 @@
   }
 
   .sidebar a {
-      font-size: 30px;
-      width: 20vw;;
+      font-size: 25px;
+      width: 15vw;;
       text-decoration: none;
       color: var(--white);
       display: block;
@@ -567,6 +576,22 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
 
+
+  .card label {
+   font-size: 40px;
+   margin-right: 80px;
+  }
+
+  #Location i{
+    color: var(--indigo);
+  }
+  #unverified i{
+    color: var(--red);
+  }
+  #verified i{
+    color: var(--green);
+  }
+
   .card h3{
     font-size: 30px;
   }
@@ -579,7 +604,7 @@
   #distributor_card,
   #user_card {
     width: 40vw;
-    height: 20vh;
+    height: 25vh;
   }
 
   #distributor_card {
