@@ -66,41 +66,36 @@
           <div class="card" id="distributor_card">
             <h3>Distributor Information</h3>
             <label id="TotalDistributors">
-              <i class="fas fa-users"></i>
-              <span id="distributor-count">5</span>
-            </label>
-            <label id="Location">
-              <i class="fas fa-map-marker-alt"></i>
-              <span id="location-count">5</span>
+              <span id="TotalDistributors"></span>
             </label>
           </div>
           <div class="card" id="user_card">
             <h3>User Information</h3>
-            <label id="verified">
-              <i class="fas fa-user-check"></i>
-              <span id="verified-count">5</span>
+            <label id="TotalUsers">
+              <span id="TotalUsers"></span>
             </label>
           </div>
         </div>
 
         <h1>Recent User</h1>
-         <!-- table to show distributor information -->
-         <table>
+
+        <!-- table to show recent user information -->
+        <table>
           <tr>
+            <th>Name</th>
             <th>Username</th>
             <th>Email</th>
-            <th>Name</th>
             <th>Contact Number</th>
-            <th>Location Incharge</th>
+            <th>Address</th>
           </tr>
           {% for user in recent_users %}
           <tr>
+            <td>{{ user.user.get_full_name }}</td>
             <td>{{ user.user.username }}</td>
             <td>{{ user.user.email }}</td>
-            <td>{{ user.user.get_full_name }}</td>
             <td>{{ user.contact }}</td>
             <td>{{ user.address }}</td>
-          </tr>
+          </tr> 
           {% endfor %}
         </table>
       </div>
@@ -183,7 +178,7 @@
               <!-- email for identifying distributors to edit -->
               <p>Enter email of the distributor to edit</p>
               <label for="editEmail">Email:</label><br />
-              <input type="email" id="editEmail" name="editEmail" required /><br />
+              <input type="email" id="email" name="email" required /><br />
 
               <!-- Input fields for editing distributor details -->
               <p>Enter new distributor details</p>
@@ -194,18 +189,13 @@
               <input type="text" id="LastName" name="LastName" required /><br />
 
               <label for="editUsername">Username:</label><br />
-              <input type="text" id="editUsername" name="editUsername" required /><br />
-
-              
+              <input type="text" id="username" name="username" required /><br />
 
               <label for="editLocation">Location Incharge:</label><br />
-              <input type="text" id="editLocation" name="editLocation" required /><br />
-
-              <label for="editPassword">Password:</label><br />
-              <input type="password" id="editPassword" name="editPassword" required /><br />
+              <input type="text" id="location" name="location" required /><br />
 
               <label for="editContactNumber">Contact Number:</label><br />
-              <input type="text" id="editContactNumber" name="editContactNumber" required /><br />
+              <input type="text" id="contactNumber" name="contactNumber" required /><br />
 
               <button type="submit" name="editDistributor">
                 Update Distributor
@@ -221,9 +211,9 @@
             <h2>Delete Distributor</h2>
             <form method="post" id="deleteDistributor">
               {% csrf_token %}
-              <label for="distributorID">Distributor ID:</label><br />
-              <input type="text" id="distributorID" name="distributorID" /><br>
-              <button type="submit" name="deleteDistributor">Delete</button>
+              <label for="distributorID">Enter distributor email to delete distributor:</label><br />
+              <input type="text" id="email" name="email" /><br>
+              <button type="submit" name="deleteUser">Delete Distributor</button>
             </form>
           </div>
         </div>
@@ -235,6 +225,7 @@
         <button id="user-add-btn" onclick="openAddUserPopup()">Add</button>
         <button id="user-edit-btn" onclick="openEditUserPopup()">Edit</button>
         <button id="user-delete-btn" onclick="openDeleteUserPopup()">Delete</button>
+
         <!-- table to show user information -->
         <table>
           <tr>
@@ -308,24 +299,25 @@
             <h2>Edit User</h2>
             <form id="editUserForm" method="post">
               {% csrf_token %}
+
+              <!-- email for identifying users to edit -->
+              <p>Enter email of the user to edit</p>
+              <label for="editEmail">Email:</label><br />
+              <input type="email" id="email" name="email" required /><br />
+
               <!-- Input fields for editing user details -->
-              <label for="editUserFirstName">First Name:</label><br />
+              <p>Enter new distributor details</p>
+              <label for="editDistributorFirstName">First Name:</label><br />
               <input type="text" id="FirstName" name="FirstName" required /><br />
 
-              <label for="editUserLastName">Last Name:</label><br />
+              <label for="editDistributorLastName">Last Name:</label><br />
               <input type="text" id="LastName" name="LastName" required /><br />
 
               <label for="editUsername">Username:</label><br />
               <input type="text" id="username" name="username" required /><br />
 
-              <label for="editEmail">Email:</label><br />
-              <input type="email" id="email" name="email" required /><br />
-
-              <label for="editAddress">Address:</label><br />
-              <input type="text" id="address" name="address" required /><br />
-
-              <label for="editPassword">Password:</label><br />
-              <input type="password" id="password" name="password" required /><br />
+              <label for="editLocation">Address:</label><br />
+              <input type="text" id="location" name="location" required /><br />
 
               <label for="editContactNumber">Contact Number:</label><br />
               <input type="text" id="contactNumber" name="contactNumber" required /><br />
@@ -345,11 +337,15 @@
           <div class="popup-content">
             <span class="close" onclick="closePopup('deleteUserPopup')">&times;</span>
             <h2>Delete User</h2>
-            <label for="userID">User ID:</label><br />
-            <input type="text" id="userID" name="userID" /><br>
-            <button onclick="deleteUser()">Delete</button>
+            <form method="post" id="deleteUser">
+              {% csrf_token %}
+              <label for="email">Enter user email to delete user:</label><br />
+              <input type="text" id="email" name="email" /><br>
+              <button type="submit" name="deleteUser">Delete User</button>
+            </form>
           </div>
         </div>
+
       </div>
     </div>
   </div>
@@ -359,21 +355,19 @@
 
 <script>
   // displaying the total count of distributors and user
-  document.getElementById("TotalDistributors").innerHTML =
-    "Total Distributors : " + totalDistributorCount;
-  document.getElementById("TotalUsers").innerHTML =
-    "Total Users : " + totalUserCount;
-
-    document.addEventListener("DOMContentLoaded", function () {
-  var defaultButton = document.getElementById("default-btn");
-  defaultButton.click();
-});
+  document.getElementById("TotalDistributors").innerHTML = "<i class='fas fa-user-check'></i> " + totalDistributorCount;
+  document.getElementById("TotalUsers").innerHTML = "<i class='fas fa-user-check'></i> " + totalUserCount;
 
 function toggleContent(topic) {
   document.getElementById("default-content").style.display = topic === 'default' ? "block" : "none";
   document.getElementById("distributor-content").style.display = topic === 'distributor' ? "block" : "none";
   document.getElementById("user-content").style.display = topic === 'user' ? "block" : "none";
 }
+
+ document.addEventListener("DOMContentLoaded", function () {
+    console.log("DOMContentLoaded");
+    toggleContent('default');
+});
 
 // Function to open the add distributor popup
 function openAddDistributorPopup() {
@@ -541,7 +535,7 @@ function closePopup(id) {
   .card {
     height: 35vh;
     width: 18vw;
-    font-size: 18px;
+    font-size: 10px;
     margin: 10px;
     padding: 20px;
     padding-left: 60px;
@@ -592,6 +586,8 @@ function closePopup(id) {
   #TotalDistributors,
   #TotalUsers {
     padding-right: 10vw;
+    font-size: 3rem;
+    /* padding-bottom: 5vh; */
   }
 
   #default-content,
