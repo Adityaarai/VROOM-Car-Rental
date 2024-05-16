@@ -706,61 +706,70 @@ function closePopup(id) {
   background-color: var(--indigo);
   color: var(--white);
   border-radius: 20px;
-  width: 60%;
+  width: 35%;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  padding-left: 50px;
 }
 
-.close {
-  color: #aaa;
-  float: right;
-  margin-right: 20px;
+#editCarPopup select{
   margin-top: 20px;
-  font-size: 28px;
-  font-weight: bold;
-  cursor: pointer;
+  margin-bottom: 20px;
+  font-weight: 17px;
+  padding: 5px;
 }
 
-.close:hover,
-.close:focus {
-  color: black;
-  text-decoration: none;
-}
+  .close {
+    color: #aaa;
+    float: right;
+    margin-right: 20px;
+    margin-top: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+  }
 
-.popup-content form {
+  .close:hover,
+  .close:focus {
+    color: black;
+    text-decoration: none;
+  }
+
+  .popup-content form {
   margin: 70px;
   text-align: center;
 }
 
 .popup-content form input{
   margin-bottom: 20px;
-  width: 200px;
-  font-size: 15px;
+  width: 350px;
+  font-size: 25px;
   border-radius:5px;
 }
 
 .popup-content label{
   font-weight: 600;
+  font-size: 25px;
 }
 
 
 .popup-content h2{
   margin-top: 50px;
+  font-size: 30px;
+  text-align: center;
 }
 
 .popup-content button{
-  width: 150px;
-  height: 30px;
-  border: 0;
-  border-radius: 5px;
-  background-color: var(--platinum);
-}
+    width: 150px;
+    height: 30px;
+    border: 0;
+    border-radius: 5px;
+    background-color: var(--platinum);
+  }
 
-.popup-content button:hover{
-  background-color: var(--lapis);
-  color: var(--white);
-}
+  .popup-content button:hover{
+    background-color: var(--lapis);
+    color: var(--white);
+  }
 </style>
