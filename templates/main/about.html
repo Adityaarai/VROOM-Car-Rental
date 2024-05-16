@@ -1,7 +1,8 @@
 {% extends 'partials/base.html' %}
 {% load static %}
-{% block title %} About
-Us{% endblock %} {% block content %}
+{% block title %} About Us {% endblock %}
+{% block content %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-vWtPOzvV2LtoJMdIo6HfT94oZD8/eeFh0I+1wT6h7ggzmg+7Z0WgVpY+P6r+Qv26" crossorigin="anonymous">
 
 <section class="hero">
   <div class="heading">
@@ -27,15 +28,12 @@ Us{% endblock %} {% block content %}
   <div class="Member-row">
     <div class="profile-box">
       <h4>Prajwol Rai</h4>
-      <small>Project Manager </small>
+      <small>Project Manager</small>
       <img src="{% static 'img/Baje.jpg' %}">
       <div class="social-box">
-        <i class="fab fa-facebook"></i>
-        <i class="fab fa-twitter"></i>
-        <i class="fab fa-linkedin"></i>
-        <i class="fab fa-instagram"></i>
+        <i class="fa-brands fa-linkedin"></i>
       </div>
-      <p> Our project manager, orchestrating success with precision and vision. Leading the team with expertise, he
+      <p>Our project manager, orchestrating success with precision and vision. Leading the team with expertise, he
         ensures every project exceeds expectations.</p>
     </div>
     <div class="profile-box">
@@ -43,12 +41,12 @@ Us{% endblock %} {% block content %}
       <small>Business Analysis</small>
       <img src="{% static 'img/tsokney.jpg' %}">
       <div class="social-box">
-        <i class="fab fa-facebook"></i>
-        <i class="fab fa-twitter"></i>
-        <i class="fab fa-linkedin"></i>
-        <i class="fab fa-instagram"></i>
+        <i class="fa-brands fa-facebook"></i>
+        <i class="fa-brands fa-twitter"></i>
+        <i class="fa-brands fa-linkedin"></i>
+        <i class="fa-brands fa-instagram"></i>
       </div>
-      <p> Our intelligent business analyst deciphers information and develops plans to move our activities ahead with
+      <p>Our intelligent business analyst deciphers information and develops plans to move our activities ahead with
         clarity and foresight.</p>
     </div>
     <div class="profile-box">
@@ -56,105 +54,109 @@ Us{% endblock %} {% block content %}
       <small>Developer</small>
       <img src="{% static 'img/kisne.jpg' %}">
       <div class="social-box">
-        <i class="fab fa-facebook"></i>
-        <i class="fab fa-twitter"></i>
-        <i class="fab fa-linkedin"></i>
-        <i class="fab fa-instagram"></i>
+        <i class="fa-brands fa-facebook"></i>
+        <i class="fa-brands fa-twitter"></i>
+        <i class="fa-brands fa-linkedin"></i>
+        <i class="fa-brands fa-instagram"></i>
       </div>
-      <p> Our digital infrastructure runs smoothly and securely thanks to the skillful design of our coding maestro, who
-        creates solid frontend systems with great attention to detail.
-      </p>
+      <p>Our digital infrastructure runs smoothly and securely thanks to the skillful design of our coding maestro, who
+        creates solid frontend systems with great attention to detail.</p>
     </div>
     <div class="profile-box">
       <h4>Aditya Rai</h4>
-      <small>Developer </small>
+      <small>Developer</small>
       <img src="{% static 'img/Chimrey.jpg' %}">
       <div class="social-box">
-        <i class="fab fa-facebook"></i>
-        <i class="fab fa-twitter"></i>
-        <i class="fab fa-linkedin"></i>
-        <i class="fab fa-instagram"></i>
+        <i class="fa-brands fa-facebook"></i>
+        <i class="fa-brands fa-twitter"></i>
+        <i class="fa-brands fa-linkedin"></i>
+        <i class="fa-brands fa-instagram"></i>
       </div>
-      <p> A valuable component of our team, contributing technical skills and creative solutions to each project,
+      <p>A valuable component of our team, contributing technical skills and creative solutions to each project,
         guaranteeing that our digital undertakings are executed with originality and precision.</p>
     </div>
     <div class="profile-box">
       <h4>Nileena Rai</h4>
-      <small>Developer </small>
+      <small>Developer</small>
       <img src="{% static 'img/nileena.jpg' %}">
       <div class="social-box">
-        <i class="fab fa-facebook"></i>
-        <i class="fab fa-twitter"></i>
-        <i class="fab fa-linkedin"></i>
-        <i class="fab fa-instagram"></i>
+        <i class="fa-brands fa-facebook"></i>
+        <i class="fa-brands fa-twitter"></i>
+        <i class="fa-brands fa-linkedin"></i>
+        <i class="fa-brands fa-instagram"></i>
       </div>
-      <p> Our digital infrastructure runs smoothly and securely thanks to the skillful design of our coding maestro, who
+      <p>Our digital infrastructure runs smoothly and securely thanks to the skillful design of our coding maestro, who
         creates solid backend systems with great attention to detail.</p>
     </div>
     <div class="profile-box">
       <h4>Abraham Hyolmo</h4>
-      <small>Developer </small>
+      <small>Developer</small>
       <img src="{% static 'img/abraham.jpg' %}">
       <div class="social-box">
-        <i class="fab fa-facebook"></i>
-        <i class="fab fa-twitter"></i>
-        <i class="fab fa-linkedin"></i>
-        <i class="fab fa-instagram"></i>
+        <i class="fa-brands fa-facebook"></i>
+        <i class="fa-brands fa-twitter"></i>
+        <i class="fa-brands fa-linkedin"></i>
+        <i class="fa-brands fa-instagram"></i>
       </div>
-      <p> The creative mind behind our 'About Us' page, blending design flair with frontend expertise to craft an
+      <p>The creative mind behind our 'About Us' page, blending design flair with frontend expertise to craft an
         immersive and visually captivating narrative of our brand story.</p>
     </div>
   </div>
 </section>
 
 <style>
-
-*{
+* {
   margin: 2px;
   padding: 2px;
   box-sizing: border-box;
   font-family: "Arial", sans-serif;
 }
 
-.hero{
+.hero {
   width: 100%;
   background-color: #ffffff;
   overflow: hidden;
 }
-.heading h1{
+
+.heading h1 {
   color: #000000;
   font-size: 55px;
   text-align: center;
-  margin-top: 35px;
+  margin-top: 90px;
+  margin-bottom: 0;
 }
-.container{
+
+.container {
   display: flex;
   justify-content: center;
   align-items: center;
   width: 90%;
   margin: 65px auto;
 }
-.hero-content{
+
+.hero-content {
   flex: 1;
   width: 600px;
-  margin:0px 25px;
+  margin: 0px 25px;
   animation: fadeInUp 2s ease;
 }
-.hero-content h2{
-  
+
+.hero-content h2 {
+  margin-top: 10px;
   font-size: 38px;
   margin-bottom: 20px;
   color: #653939;
-
 }
-.hero-content p{
+
+.hero-content p {
   text-align: justify;
   font-size: 24px;
   line-height: 1.5;
   margin-bottom: 40px;
   color: #1a1717;
 }
-.hero-content button{
+
+.hero-content button {
   display: inline-block;
   background-color: #300973;
   color: #e1cccc;
@@ -165,74 +167,86 @@ Us{% endblock %} {% block content %}
   cursor: pointer;
   transition: 0.3s ease-in-out;
 }
-.hero-content button:hover{
+
+.hero-content button:hover {
   background: color #0f1b79;
   transform: scale(1.1);
 }
-.hero-image{
+
+.hero-image {
   flex: 1;
   width: 600px;
   margin: auto;
   animation: fadeInRight 2s ease;
 }
-img{
+
+img {
   width: 100%;
   height: auto;
   border-radius: 20px;
 }
-@media screen and (max-width:768px){
-    .heading h1{
-      font-size: 45px;
-      margin-top: 30px;
-    }  
-    .hero{
-      margin: 0px;
-    }
-    .container{
-      width: 100%;
-      flex-direction: column;
-      margin: 0px;
-      padding: 0px 40px;
-    }
-    .hero-content{
-      width: 100%;
-      margin: 35px 0px;
-    }
-    .hero-content h2{
-      font-size: 30px;
-    }
-    .hero-content p{
-      font-size: 18px;
-      margin-bottom: 20px;
-    }
-    .hero-content button{
-      font-size: 16px;
-      padding: 8px 16px;
-    }
-    .hero-image{
-      width: 100%;
-    }
-}
-@keyframes fadeInUp {
-    0%{
-      opacity: 0;
-      transform: translate(50px);
-    }
-    100%{
-      opacity: 1;
-      transform: translate(0px);
-    }
-}
-@keyframes fadeInRight {
-  0%{
-    opacity: 0;
-    transform: translate(-50px);
+
+@media screen and (max-width: 768px) {
+  .heading h1 {
+    font-size: 45px;
+    margin-top: 30px;
   }
-  100%{
+
+  .hero {
+    margin: 0px;
+  }
+
+  .container {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .hero-content {
+    width: 100%;
+    margin: 35px 0px;
+  }
+
+  .hero-content h2 {
+    font-size: 30px;
+  }
+
+  .hero-content p {
+    font-size: 18px;
+    margin-bottom: 20px;
+  }
+
+  .hero-content button {
+    font-size: 16px;
+    padding: 8px 16px;
+  }
+
+  .hero-image {
+    width: 100%;
+  }
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translate(50px);
+  }
+  100% {
     opacity: 1;
     transform: translate(0px);
   }
 }
+
+@keyframes fadeInRight {
+  0% {
+    opacity: 0;
+    transform: translate(-50px);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(0px);
+  }
+}
+
 .title-box {
   text-align: center;
 }
@@ -241,19 +255,22 @@ img{
   margin: 0 auto;
   max-width: 600px;
 }
-.title-box h2{
+
+.title-box h2 {
   color: #000000;
   font-size: 55px;
   text-align: center;
-  margin-top: 35px;
-}  
-.title-box p{
+  margin-top: 220px;
+}
+
+.title-box p {
   font-size: 24px;
   line-height: 24px;
   margin-top: 20px;
   color: #1a1717;
 }
-.profile-box{
+
+.profile-box {
   width: 360px;
   height: 330px;
   background: #fff;
@@ -264,7 +281,8 @@ img{
   position: relative;
   transition: background 0.5s;
 }
-.profile-box img{
+
+.profile-box img {
   width: 110px;
   position: absolute;
   top: 10px;
@@ -272,48 +290,53 @@ img{
   border-radius: 4px;
   transition: 0.5s;
 }
-.profile-box h4{
+
+.profile-box h4 {
   margin-top: 25px;
   margin-bottom: 5px;
   color: #0f1b79;
 }
-small{
+
+small {
   color: #555;
 }
-.social-box{
+
+.social-box {
   background: #0f1b79;
   margin: 60px auto 20px;
   text-align: center;
   border-radius: 3px;
 }
-.social-box .fab{
+
+.social-box .fa {
   margin: 5px;
-  color: #c59999;
+  color: #fff;
   cursor: pointer;
 }
-.profile-box p{
+
+.profile-box p {
   padding-top: 20px;
-  /* text-align:center; */
   text-align: justify;
   font-size: 16px;
-  line-height: 1.4; 
-  /* margin: 10px 5px; */
+  line-height: 1.4;
   color: #555;
 }
-.Member-row{
+
+.Member-row {
   display: grid;
-  grid-template-columns: repeat(3,1fr);
+  grid-template-columns: repeat(3, 1fr);
   justify-content: space-between;
-  flex-wrap:wrap-reverse;
+  flex-wrap: wrap-reverse;
   width: 110%;
   margin: 100px auto;
 }
-.profile-box img:hover{
+
+.profile-box img:hover {
   width: 250px;
 }
-.profile-box:hover{
-  background-color: #266c94;
 
+.profile-box:hover {
+  background-color: #266c94;
 }
 </style>
 {% endblock %}
