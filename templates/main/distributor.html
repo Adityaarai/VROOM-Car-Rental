@@ -58,7 +58,7 @@
           <h1>Welcome Distributor!!</h1>
           <!-- Default dashboard content goes here -->
           <div id="dashboard_card">
-            <div class="card" id="car_card">
+            <div class="car_card" id="car_card">
               <h3>Car Information</h3>
               <label id="Cars">
                 <i class="fas fa-users"></i>
@@ -69,23 +69,23 @@
                 <span id="car_types"></span>
               </label>
             </div>
-            <div class="card" id="book_card">
+            <div class="booking_card" id="book_card">
               <h3>Booking Information</h3>
               <label id="TotalBooking">
                 <i class="fa-solid fa-bookmark"></i>
-                <span id="booking"></span>
+                <span id="booking">2</span>
               </label>
               <label id="TotalApproved">
                 <i class="fa-solid fa-check"></i>
-                <span id="approved"></span>
+                <span id="approved">3</span>
               </label><br />
               <label id="TotalPending">
                 <i class="fa-solid fa-hourglass-half"></i>
-                <span id="pending"></span>
+                <span id="pending">4</span>
               </label>
               <label id="TotalPaid">
                 <i class="fa-solid fa-money-check-dollar"></i>
-                <span id="paid"></span>
+                <span id="paid">5</span>
               </label><br />
               <label id="completed"></label><br />
             </div>
@@ -200,14 +200,12 @@
                 <span class="close" onclick="closePopup('editCarPopup')">&times;</span>
                 <h2>Edit Car</h2>
                 <form id="editCarForm">
-                  <!-- Add fields for editing car details -->
-                  <input type="hidden" id="carId" name="carId" />
-                  <label for="editModel">Model:</label><br />
-                  <input type="text" id="editModel" name="editModel" /><br />
-                  <label for="editPrice">Price:</label><br />
-                  <input type="text" id="editPrice" name="editPrice" /><br />
-                  <label for="editImage">Car Image:</label><br />
-                  <input type="file" id="editImage" name="editImage" /><br /><br />
+                  <label id="status"> Status:</label><br />
+                  <select onchange="updateStatus('{{ order.id }}', this.value)">
+                    <option value="Available" {% if order.status == "Pending" %} selected {% endif %}>Available</option>
+                    <option value="Booking" {% if order.status == "Approved" %} selected {% endif %}>Booking</option>
+                    <option value="Unlisted" {% if order.status == "Paid" %} selected {% endif %}>Unlisted</option>
+                  </select><br />
                   <button type="submit">Save Changes</button>
                 </form>
               </div>
@@ -600,21 +598,30 @@
     box-sizing: border-box;
   }
 
-  #dashboard_card{
-    height: 35vh;
-    width: 80vw;
+  .car_card, .booking_card{
     font-size: 18px;
     margin: 10px;
     padding: 20px;
-    /* padding-left: 60px; */
+    padding-left: 60px;
     margin-bottom: 5vh;
     border-radius: 5px;
     box-sizing: border-box;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
 
+  .car_card label, .booking_card label{
+    font-size: 40px;
+    margin-right: 80px;
+  }
+
+  .car_card h3,
+  .booking_card h3{
+    font-size: 30px;
+    margin-top: 30px;
+    margin-bottom: 20px;
+  }
   
-  .dashboard-card label {
+  #car-card label,#booking-card label {
    font-size: 40px;
    margin-right: 80px;
   }
@@ -622,29 +629,32 @@
 
   #default-content #dashboard_card {
     display: flex;
-    justify-content: space-between;
   }
 
   #car_card,
   #book_card {
     width: 40vw;
-    height: 20vh;
+    height: 25vh;
   }
 
   #car_card {
     background-color: var(--cerulean);
+    color: var(--white);
   }
 
   #book_card {
     background-color: var(--platinum);
   }
 
-  #TotalCars,
-  #carModels,
-  #bookings,
-  #pending {
-    padding-right: 10vw;
-    /* padding-bottom: 5vh; */
+  #Cars,
+  #Types,
+  #TotalBooking,
+  #TotalApproved,
+  #TotalPending,
+  #TotalPaid {
+    font-size: 3rem;
+    padding-right: 5vw;
+    padding-bottom: 5vh;
   }
 
   #car-content,
@@ -686,7 +696,7 @@
 
   .card {
     position: relative;
-    height: 35vh;
+    height: 37vh;
     width: 18vw;
     margin: 2px;
     background-color: var(--platinum);
@@ -698,7 +708,6 @@
 
   .card:hover {
     background-color: #b4b4b3;
-    scale: 1.1;
   }
 
   .card h2 , h3, h4{
@@ -863,14 +872,19 @@
   background-color: var(--indigo);
   color: var(--white);
   border-radius: 20px;
-  width: 60%;
+  width: 35%;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  padding-left: 50px;
 }
 
+#editCarPopup select{
+  margin-top: 20px;
+  margin-bottom: 20px;
+  font-weight: 17px;
+  padding: 5px;
+}
 
   .close {
     color: #aaa;
@@ -895,18 +909,20 @@
 
 .popup-content form input{
   margin-bottom: 20px;
-  width: 250px;
-  font-size: 17px;
+  width: 350px;
+  font-size: 25px;
   border-radius:5px;
 }
 
 .popup-content label{
   font-weight: 600;
+  font-size: 25px;
 }
 
 
 .popup-content h2{
   margin-top: 50px;
+  text-align: center;
 }
 
 .popup-content button{
