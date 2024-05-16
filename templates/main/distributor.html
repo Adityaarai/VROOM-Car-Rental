@@ -192,6 +192,12 @@
                 </div>
               </div>
               {% endfor %}
+               <!-- button to navigate different pages of cars -->
+            <div class="page-btn">
+              <button id="previousPageBtn">Previous Page</button>
+              <h2 class="page-number"></h2>
+              <button id="nextPageBtn">Next Page</button>
+            </div>
             </div>
 
             <!-- Popup for editing car -->
@@ -236,12 +242,7 @@
               document.getElementById('Unlisted').innerHTML = 'Unlisted Cars : ' + totalUnlistedCarCount;
              </script>
 
-            <!-- button to navigate different pages of cars -->
-            <div class="page-btn">
-              <button id="previousPageBtn">Previous Page</button>
-              <h2 class="page-number"></h2>
-              <button id="nextPageBtn">Next Page</button>
-            </div>
+           
 
             <!-- popup to add car -->
             <div class="popup" id="addCarPopup">
@@ -282,8 +283,9 @@
           <table>
             <thead>
               <tr>
+                <th>Order Id</th>
                 <th>Product</th>
-                <th>Rentee Email</th>
+                <th>Rentee</th>
                 <th>Booking Start Date</th>
                 <th>Booking End Date</th>
                 <th>Status</th>
@@ -310,6 +312,7 @@
               </script>
           
               <tr>
+                <td>{{ order.order_id }}</td>
                 <td>{{ order.product }}</td>
                 <td>{{ order.rentee }}</td>
                 <td>{{ order.start_date }}</td>
@@ -355,7 +358,7 @@
   document.addEventListener("DOMContentLoaded", function () {
     var filterButtons = document.querySelectorAll(".filter-btn");
     var cards = document.querySelectorAll(".card");
-    var cardsPerPage = 20; // Set the number of cards per page
+    var cardsPerPage = 8; // Set the number of cards per page
     var currentPage = 1; // Initialize current page
 
     // Function to display filtered cards for the current page

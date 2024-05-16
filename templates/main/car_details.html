@@ -3,12 +3,12 @@
 {% block title %} VROOM - Car Details{% endblock %}
 {% block content %}
 <div class="main-container">
-  <div id="heading">Car Details</div>
+  <h1 id="heading">Car Details</h1>
   <div id="main">
     {% if details %} 
       {% for detail in details %}
-        <!--  Car Image -->
-        
+        <div class="details">  
+          <!--  Car Image -->
           <div id="image">
             <img src="{{ detail.image }}" alt="Car Image" />
           </div>
@@ -52,33 +52,30 @@
               </div>
             </form>
           </div>
-          <div class="message">
-            <!-- section to display success or error messages --> 
-            {% for message in messages %} 
-            {% if message.tags == 'error' %}
-              <div class="alert alert-danger" role="alert">{{ message }}</div>
-            {% elif message.tags == 'success' %}
-              <div class="alert alert-success" role="alert">{{ message }}</div>
-            {% endif %} 
-            {% endfor %}      
-          </div>
-        {% endfor %}
-      {% endif %}
-        
-              
-  </div>
-    <div class="after_booking">          
+           <!-- section to display success or error messages --> 
+           {% for message in messages %} 
+           {% if message.tags == 'error' %}
+             <div class="alert alert-danger" role="alert">{{ message }}</div>
+           {% elif message.tags == 'success' %}
+             <div class="alert alert-success" role="alert">{{ message }}</div>
+           {% endif %} 
+          {% endfor %}   
+        </div>
+      {% endfor %} 
+    {% else %} 
+      <div class="after_booking">
           {% if messages %} 
             {% for message in messages %}
               <h1 class="alert alert-success">{{ message }}</h1><br><br>
-              
+              <p id="thank">Thank you for choosing us for your travels.</p><br/>
             {% endfor %} 
           {% endif %}
-          <p id="thank">Thank you for choosing us for your travels.</p><br/>
+            
           <!-- return to carlisting -->
           <a href="{% url 'carlisting' %}?value=All">
             <button class="button" id="return">Return to Carlisting</button>
           </a>
+      {% endif %}
     </div>
   </div>
 </div>
