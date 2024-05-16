@@ -14,21 +14,21 @@
       <h1 id="logo">VROOM</h1>
         <ul>
             <li>
-                <a id="default-btn">
+                <a id="default-btn" onclick="toggleContent('default')"> <!-- Added onclick function -->
                     <i class="fas fa-house"></i>
-                    <span id="topic">Dashboard</span>
+                    <span id="default-topic">Dashboard</span> <!-- Unique ID -->
                 </a>
             </li>
             <li>
-                <a id="distributor-btn">
+                <a id="distributor-btn" onclick="toggleContent('distributor')"> <!-- Added onclick function -->
                     <i class="fas fa-users"></i>
-                    <span id="topic">Distributor</span>
+                    <span id="distributor-topic">Distributor</span> <!-- Unique ID -->
                 </a>
             </li>
             <li>
-                <a id="user-btn">
+                <a id="user-btn" onclick="toggleContent('user')"> <!-- Added onclick function -->
                     <i class="fas fa-user"></i>
-                    <span id="topic">User</span>
+                    <span id="user-topic">User</span> <!-- Unique ID -->
                 </a>
             </li>
             <li>
@@ -39,7 +39,6 @@
             </li>
         </ul>
     </div>
-  
   
 
     <!-- setting count variables -->
@@ -67,45 +66,36 @@
           <div class="card" id="distributor_card">
             <h3>Distributor Information</h3>
             <label id="TotalDistributors">
-              <i class="fas fa-users"></i>
-              <span id="distributor-count">5</span>
-            </label>
-            <label id="Location">
-              <i class="fas fa-map-marker-alt"></i>
-              <span id="location-count">5</span>
+              <span id="TotalDistributors"></span>
             </label>
           </div>
           <div class="card" id="user_card">
             <h3>User Information</h3>
-            <label id="verified">
-              <i class="fas fa-user-check"></i>
-              <span id="verified-count">5</span>
-            </label>
-            <label id="unverified">
-              <i class="fas fa-user-times"></i>
-              <span id="unverified-count">3</span>
+            <label id="TotalUsers">
+              <span id="TotalUsers"></span>
             </label>
           </div>
         </div>
 
         <h1>Recent User</h1>
-         <!-- table to show distributor information -->
-         <table>
+
+        <!-- table to show recent user information -->
+        <table>
           <tr>
+            <th>Name</th>
             <th>Username</th>
             <th>Email</th>
-            <th>Name</th>
             <th>Contact Number</th>
-            <th>Location Incharge</th>
+            <th>Address</th>
           </tr>
           {% for user in recent_users %}
           <tr>
+            <td>{{ user.user.get_full_name }}</td>
             <td>{{ user.user.username }}</td>
             <td>{{ user.user.email }}</td>
-            <td>{{ user.user.get_full_name }}</td>
             <td>{{ user.contact }}</td>
             <td>{{ user.address }}</td>
-          </tr>
+          </tr> 
           {% endfor %}
         </table>
       </div>
@@ -113,9 +103,9 @@
       <div id="distributor-content">
         <h2>Distributor Information</h2>
         <!-- buttons to add and delete distributor -->
-        <button id="distributor-add-btn">Add</button>
-        <button id="distributor-edit-btn">Edit</button>
-        <button id="distributor-delete-btn">Delete</button>
+        <button id="distributor-add-btn" onclick="openAddDistributorPopup()">Add</button>
+        <button id="distributor-edit-btn" onclick="openEditDistributorPopup()">Edit</button>
+        <button id="distributor-delete-btn" onclick="openDeleteDistributorPopup()">Delete</button>
         <!-- table to show distributor information -->
         <table>
           <tr>
@@ -188,7 +178,7 @@
               <!-- email for identifying distributors to edit -->
               <p>Enter email of the distributor to edit</p>
               <label for="editEmail">Email:</label><br />
-              <input type="email" id="editEmail" name="editEmail" required /><br />
+              <input type="email" id="email" name="email" required /><br />
 
               <!-- Input fields for editing distributor details -->
               <p>Enter new distributor details</p>
@@ -199,18 +189,13 @@
               <input type="text" id="LastName" name="LastName" required /><br />
 
               <label for="editUsername">Username:</label><br />
-              <input type="text" id="editUsername" name="editUsername" required /><br />
-
-              
+              <input type="text" id="username" name="username" required /><br />
 
               <label for="editLocation">Location Incharge:</label><br />
-              <input type="text" id="editLocation" name="editLocation" required /><br />
-
-              <label for="editPassword">Password:</label><br />
-              <input type="password" id="editPassword" name="editPassword" required /><br />
+              <input type="text" id="location" name="location" required /><br />
 
               <label for="editContactNumber">Contact Number:</label><br />
-              <input type="text" id="editContactNumber" name="editContactNumber" required /><br />
+              <input type="text" id="contactNumber" name="contactNumber" required /><br />
 
               <button type="submit" name="editDistributor">
                 Update Distributor
@@ -226,9 +211,9 @@
             <h2>Delete Distributor</h2>
             <form method="post" id="deleteDistributor">
               {% csrf_token %}
-              <label for="distributorID">Distributor ID:</label><br />
-              <input type="text" id="distributorID" name="distributorID" />
-              <button type="submit" name="deleteDistributor">Delete</button>
+              <label for="distributorID">Enter distributor email to delete distributor:</label><br />
+              <input type="text" id="email" name="email" /><br>
+              <button type="submit" name="deleteUser">Delete Distributor</button>
             </form>
           </div>
         </div>
@@ -237,9 +222,10 @@
       <div id="user-content">
         <h2>User Information</h2>
         <!-- buttons to add ,edit and delete user -->
-        <button id="user-add-btn">Add</button>
-        <button id="user-edit-btn">Edit</button>
-        <button id="user-delete-btn">Delete</button>
+        <button id="user-add-btn" onclick="openAddUserPopup()">Add</button>
+        <button id="user-edit-btn" onclick="openEditUserPopup()">Edit</button>
+        <button id="user-delete-btn" onclick="openDeleteUserPopup()">Delete</button>
+
         <!-- table to show user information -->
         <table>
           <tr>
@@ -313,24 +299,25 @@
             <h2>Edit User</h2>
             <form id="editUserForm" method="post">
               {% csrf_token %}
+
+              <!-- email for identifying users to edit -->
+              <p>Enter email of the user to edit</p>
+              <label for="editEmail">Email:</label><br />
+              <input type="email" id="email" name="email" required /><br />
+
               <!-- Input fields for editing user details -->
-              <label for="editUserFirstName">First Name:</label><br />
+              <p>Enter new distributor details</p>
+              <label for="editDistributorFirstName">First Name:</label><br />
               <input type="text" id="FirstName" name="FirstName" required /><br />
 
-              <label for="editUserLastName">Last Name:</label><br />
+              <label for="editDistributorLastName">Last Name:</label><br />
               <input type="text" id="LastName" name="LastName" required /><br />
 
               <label for="editUsername">Username:</label><br />
               <input type="text" id="username" name="username" required /><br />
 
-              <label for="editEmail">Email:</label><br />
-              <input type="email" id="email" name="email" required /><br />
-
-              <label for="editAddress">Address:</label><br />
-              <input type="text" id="address" name="address" required /><br />
-
-              <label for="editPassword">Password:</label><br />
-              <input type="password" id="password" name="password" required /><br />
+              <label for="editLocation">Address:</label><br />
+              <input type="text" id="location" name="location" required /><br />
 
               <label for="editContactNumber">Contact Number:</label><br />
               <input type="text" id="contactNumber" name="contactNumber" required /><br />
@@ -350,11 +337,15 @@
           <div class="popup-content">
             <span class="close" onclick="closePopup('deleteUserPopup')">&times;</span>
             <h2>Delete User</h2>
-            <label for="userID">User ID:</label><br />
-            <input type="text" id="userID" name="userID" />
-            <button onclick="deleteUser()">Delete</button>
+            <form method="post" id="deleteUser">
+              {% csrf_token %}
+              <label for="email">Enter user email to delete user:</label><br />
+              <input type="text" id="email" name="email" /><br>
+              <button type="submit" name="deleteUser">Delete User</button>
+            </form>
           </div>
         </div>
+
       </div>
     </div>
   </div>
@@ -364,101 +355,78 @@
 
 <script>
   // displaying the total count of distributors and user
-  document.getElementById("TotalDistributors").innerHTML =
-    "Total Distributors : " + totalDistributorCount;
-  document.getElementById("TotalUsers").innerHTML =
-    "Total Users : " + totalUserCount;
+  document.getElementById("TotalDistributors").innerHTML = "<i class='fas fa-user-check'></i> " + totalDistributorCount;
+  document.getElementById("TotalUsers").innerHTML = "<i class='fas fa-user-check'></i> " + totalUserCount;
 
-  // JavaScript to toggle content based on button clicks
-  document.getElementById("default-btn").addEventListener("click", function () {
-    document.getElementById("default-content").style.display = "block";
-    document.getElementById("distributor-content").style.display = "none";
-    document.getElementById("user-content").style.display = "none";
-  });
+function toggleContent(topic) {
+  document.getElementById("default-content").style.display = topic === 'default' ? "block" : "none";
+  document.getElementById("distributor-content").style.display = topic === 'distributor' ? "block" : "none";
+  document.getElementById("user-content").style.display = topic === 'user' ? "block" : "none";
+}
 
-  document
-    .getElementById("distributor-btn")
-    .addEventListener("click", function () {
-      document.getElementById("default-content").style.display = "none";
-      document.getElementById("distributor-content").style.display = "block";
-      document.getElementById("user-content").style.display = "none";
-    });
+ document.addEventListener("DOMContentLoaded", function () {
+    console.log("DOMContentLoaded");
+    toggleContent('default');
+});
 
-  document.getElementById("user-btn").addEventListener("click", function () {
-    document.getElementById("default-content").style.display = "none";
-    document.getElementById("distributor-content").style.display = "none";
-    document.getElementById("user-content").style.display = "block";
-  });
-
-  document.addEventListener("DOMContentLoaded", function () {
-    var disButton = document.getElementById("default-btn");
-    disButton.click();
-  });
-
-  // Distributor add button and popup
-  const distributorAddBtn = document.getElementById("distributor-add-btn");
+// Function to open the add distributor popup
+function openAddDistributorPopup() {
   const addDistributorPopup = document.getElementById("addDistributorPopup");
-  if (distributorAddBtn && addDistributorPopup) {
-    distributorAddBtn.addEventListener("click", () => {
-      addDistributorPopup.style.display = "block";
-    });
-  };
+  if (addDistributorPopup) {
+    addDistributorPopup.style.display = "block";
+  }
+}
 
-  // Distributor edit button and popup
-  const distributorEditBtn = document.getElementById("distributor-edit-btn");
+// Function to open the edit distributor popup
+function openEditDistributorPopup() {
   const editDistributorPopup = document.getElementById("editDistributorPopup");
-  if (distributorEditBtn && editDistributorPopup) {
-    distributorEditBtn.addEventListener("click", () => {
-      editDistributorPopup.style.display = "block";
-      // Here you can populate the form fields with existing distributor data if needed
-    });
+  if (editDistributorPopup) {
+    editDistributorPopup.style.display = "block";
+    // Here you can populate the form fields with existing distributor data if needed
   }
+}
 
-  // Distributor delete button and popup
-  const distributorDeleteBtn = document.getElementById("distributor-delete-btn");
+// Function to open the delete distributor popup
+function openDeleteDistributorPopup() {
   const deleteDistributorPopup = document.getElementById("deleteDistributorPopup");
-  if (distributorDeleteBtn && deleteDistributorPopup) {
-    distributorDeleteBtn.addEventListener("click", () => {
-      deleteDistributorPopup.style.display = "block";
-    });
-  };
+  if (deleteDistributorPopup) {
+    deleteDistributorPopup.style.display = "block";
+  }
+}
 
-
-  // User add button and popup
-  const userAddBtn = document.getElementById("user-add-btn");
+// Function to open the add user popup
+function openAddUserPopup() {
   const addUserPopup = document.getElementById("addUserPopup");
-  if (userAddBtn && addUserPopup) {
-    userAddBtn.addEventListener("click", () => {
-      addUserPopup.style.display = "block";
-    });
+  if (addUserPopup) {
+    addUserPopup.style.display = "block";
   }
+}
 
-  // User edit button and popup
-  const userEditBtn = document.getElementById("user-edit-btn");
+// Function to open the edit user popup
+function openEditUserPopup() {
   const editUserPopup = document.getElementById("editUserPopup");
-  if (userEditBtn && editUserPopup) {
-    userEditBtn.addEventListener("click", () => {
-      editUserPopup.style.display = "block";
-      // Here you can populate the form fields with existing user data if needed
-    });
+  if (editUserPopup) {
+    editUserPopup.style.display = "block";
+    // Here you can populate the form fields with existing user data if needed
   }
+}
 
-  // User delete button and popup
-  const userDeleteBtn = document.getElementById("user-delete-btn");
+// Function to open the delete user popup
+function openDeleteUserPopup() {
   const deleteUserPopup = document.getElementById("deleteUserPopup");
-  if (userDeleteBtn && deleteUserPopup) {
-    userDeleteBtn.addEventListener("click", () => {
-      deleteUserPopup.style.display = "block";
-    });
+  if (deleteUserPopup) {
+    deleteUserPopup.style.display = "block";
   }
+}
 
-  // Close popup function
-  function closePopup(id) {
-    const popup = document.getElementById(id);
-    if (popup) {
-      popup.style.display = "none";
-    }
+// Close popup function
+function closePopup(id) {
+  const popup = document.getElementById(id);
+  if (popup) {
+    popup.style.display = "none";
   }
+}
+
 </script>
 
 <style>
@@ -484,6 +452,7 @@
     --crimson: crimson;
     --white:#fff;
     --yellow: #f4a62a;
+    --darkyellow:#df9319;
   }
 
   /* Reset default margin, padding, and overflow */
@@ -551,7 +520,7 @@
   #logout {
       position: absolute;
       bottom: 30px;
-      left: 0;
+      left: 20px;
     }
 
   /* Content styles */
@@ -566,7 +535,7 @@
   .card {
     height: 35vh;
     width: 18vw;
-    font-size: 18px;
+    font-size: 10px;
     margin: 10px;
     padding: 20px;
     padding-left: 60px;
@@ -585,9 +554,7 @@
   #Location i{
     color: var(--indigo);
   }
-  #unverified i{
-    color: var(--red);
-  }
+
   #verified i{
     color: var(--green);
   }
@@ -619,11 +586,14 @@
   #TotalDistributors,
   #TotalUsers {
     padding-right: 10vw;
+    font-size: 3rem;
     /* padding-bottom: 5vh; */
   }
 
+  #default-content,
   #distributor-content,
   #user-content {
+    right: 0;
     display: none;
     margin-top: 20px;
   }
@@ -693,6 +663,12 @@
     background-color: var(--yellow);
   }
 
+
+  #distributor-edit-btn:hover,
+  #user-edit-btn:hover{
+    background-color: var(--darkyellow);
+  }
+
   /* For User Information Edit */
   table {
     margin-top: 15px;
@@ -716,35 +692,75 @@
   }
 
   .popup {
-    display: none;
-    position: fixed;
-    z-index: 9999;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-  }
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
 
-  .popup-content {
-    background-color: var(--platinum);
-    margin: 20% auto;
-    padding: 20px;
-    border-radius: 5px;
-    width: 60%;
-  }
+.popup-content {
+  background-color: var(--indigo);
+  color: var(--white);
+  border-radius: 20px;
+  width: 60%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding-left: 50px;
+}
 
-  .close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
-  }
+.close {
+  color: #aaa;
+  float: right;
+  margin-right: 20px;
+  margin-top: 20px;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
 
-  .close:hover,
-  .close:focus {
-    color: black;
-    text-decoration: none;
-  }
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+}
+
+.popup-content form {
+  margin: 70px;
+  text-align: center;
+}
+
+.popup-content form input{
+  margin-bottom: 20px;
+  width: 200px;
+  font-size: 15px;
+  border-radius:5px;
+}
+
+.popup-content label{
+  font-weight: 600;
+}
+
+
+.popup-content h2{
+  margin-top: 50px;
+}
+
+.popup-content button{
+  width: 150px;
+  height: 30px;
+  border: 0;
+  border-radius: 5px;
+  background-color: var(--platinum);
+}
+
+.popup-content button:hover{
+  background-color: var(--lapis);
+  color: var(--white);
+}
 </style>

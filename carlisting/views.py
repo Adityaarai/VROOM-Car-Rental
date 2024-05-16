@@ -10,6 +10,7 @@ from django.contrib.auth.models import Permission
 from django.contrib.contenttypes.models import ContentType
 from django.utils import timezone
 from datetime import datetime
+from django.core.exceptions import ObjectDoesNotExist
      
 def carlisting(request):
     items = CarDetail.objects.all()
@@ -22,7 +23,6 @@ def carlisting(request):
 
 def orders(request):
     current_url = request.get_full_path()
-    
     if request.method == 'POST':
       if request.user.is_authenticated:
         existing_order = CarOrder.objects.filter(rentee_email=request.user.email).first()
@@ -135,7 +135,37 @@ def distributorprofile(request):
   return render(request, 'main/distributor.html', context)
 
 def adminprofile(request):
+  try:
     if request.method == 'POST':
+      if 'deleteUser' in request.POST:
+        email = request.POST.get('email')
+        myuser = User.objects.get(email=email)
+        profile = Profile.objects.get(user=myuser)
+
+        CarOrder.objects.filter(rentee=profile).delete()
+
+        myuser.delete()
+        messages.success(request, "User deleted successfully")
+      elif 'editUser' in request.POST or 'editDistributor' in request.POST:
+        email = request.POST.get('email')
+        print(email)
+        myuser = User.objects.get(email=email)
+        if myuser:
+            myuser.first_name = request.POST.get('FirstName')
+            myuser.last_name = request.POST.get('LastName')
+            myuser.email = request.POST.get('email')
+            myuser.save()
+
+            profile, created = Profile.objects.get_or_create(user=myuser)
+            profile.address = request.POST.get('location')
+            profile.contact = request.POST.get('contactNumber')
+
+            if 'editDistributor' in request.POST:
+                profile.save()
+            else:
+                profile.license_number = request.POST.get('license_number')
+                profile.save()
+      else:  
         username = request.POST.get('username')
         if User.objects.filter(username=username).exists():
             # Username already exists, handle the error gracefully
@@ -185,19 +215,23 @@ def adminprofile(request):
                 profile.contact = contact
                 profile.license_number = license_number
                 profile.save()
-                messages.success(request, "Your account has been successfully created. Welcome!")
+                messages.success(request, "User added successfully!!")
             except IntegrityError:
                 # Handle the case where the username was created by another request between the exists() check and this block
                 messages.error(request, "An error occurred while creating the user.")
+  except ObjectDoesNotExist:
+    messages.error(request, "User does not exist")
 
-    user_details = Profile.objects.all()
+  user_details = Profile.objects.all()
 
-    recent_users = Profile.objects.select_related('user').order_by('-user__date_joined')[:5]
+  recent_users = Profile.objects.select_related('user').order_by('-user__date_joined')[:5]
 
-    context = {
-        'user_details': user_details,
-        'recent_users': recent_users,
-    }
-    return render(request, 'main/admin.html', context)
+  context = {
+    'user_details': user_details,
+    'recent_users': recent_users,
+  }
+  return render(request, 'main/admin.html', context)
+
+
 
 
