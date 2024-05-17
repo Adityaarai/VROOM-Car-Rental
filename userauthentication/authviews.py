@@ -19,6 +19,7 @@ from .forms import UserProfileForm
 from django.contrib.auth import update_session_auth_hash
 from carlisting.models import CarDetail, CarOrder
 from .models import Profile 
+from django.utils import timezone
 
 # Create your views here.
 # View for handling signup functionality
@@ -306,6 +307,13 @@ def payment_view(request):
                 approved_booking.status = 'Paid'
                 approved_booking.save()
                 messages.success(request, 'Payment successful!')
+
+                # Check if the end date has passed, if so, change the Status of the booking as 'Completed'
+                if approved_booking.end_date < timezone.now():
+                    approved_booking.status = 'Completed'
+                    approved_booking.save()
+                    messages.info(request, 'Booking completed!')
+
                 return redirect('user_profile')  # Redirect to the user's profile page
             else:
                 messages.error(request, 'Invalid payment details. Please try again.')
