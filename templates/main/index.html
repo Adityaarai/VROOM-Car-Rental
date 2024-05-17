@@ -273,19 +273,17 @@
     </ol>
 </div>
 
-{% if not user.is_authenticated %}
-<script>
-    const bookBtn = document.getElementById("bookBtn");
-    const loginPopup = document.getElementById("loginPopup");
-
-    bookBtn.addEventListener("click", () => {
-        loginPopup.style.display = "block";
-    });
-
-    function closePopup() {
-        loginPopup.style.display = "none";
-    }
-</script>
+{% if user.is_authenticated %}
+  {% if not user.profile.address or not user.profile.license_number or not user.profile.contact %}
+    <script>
+      window.addEventListener('DOMContentLoaded', function() {
+        setTimeout(function() {
+          alert("Please verify your profile before proceeding further.");
+          window.location.href = "{% url 'user_profile' %}"; // Redirect to user_profile
+        }, 1000); // Adjusted the delay time to load homepage first
+      });
+    </script>
+  {% endif %}
 {% endif %}
 
 <style>

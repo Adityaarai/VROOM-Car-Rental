@@ -26,32 +26,69 @@ def carlisting(request):
 def orders(request):
     current_url = request.get_full_path()
     if request.method == 'POST':
-      if request.user.is_authenticated:
-        rentee = Profile.objects.get(user=request.user)
-        existing_order = CarOrder.objects.filter(rentee=rentee, status='Pending').first()
-        if existing_order:
-          messages.error(request, "You have already placed an order.")
-          return redirect('orders')
+        if request.user.is_authenticated:
+            rentee = Profile.objects.get(user=request.user)
+            existing_order = CarOrder.objects.filter(rentee=rentee, status='Pending').first()
+            if existing_order:
+                messages.error(request, "You have already placed an order.")
+                return redirect('orders')
 
-        startdate = request.POST.get('bookingStartDate')
-        enddate = request.POST.get('bookingEndDate')
+            startdate = request.POST.get('bookingStartDate')
+            enddate = request.POST.get('bookingEndDate')
 
-        if not startdate or not enddate:
-          messages.error(request, "Please provide both start date and end date.")
-          return HttpResponseRedirect(current_url)
+            if not startdate or not enddate:
+                messages.error(request, "Please provide both start date and end date.")
+                return HttpResponseRedirect(current_url)
 
-        if datetime.strptime(startdate, '%Y-%m-%d').date() < timezone.now().date():
-          messages.error(request, "Cannot book cars in the past.")
-          return HttpResponseRedirect(current_url)
+            try:
+                start_date_obj = datetime.strptime(startdate, '%Y-%m-%d').date()
+                end_date_obj = datetime.strptime(enddate, '%Y-%m-%d').date()
+            except ValueError:
+                messages.error(request, "Invalid date format. Please use YYYY-MM-DD.")
+                return HttpResponseRedirect(current_url)
 
-        if startdate > enddate:
-          messages.error(request, "Start date must be before end date.")
-          return HttpResponseRedirect(current_url)
-          
-        renter_name = request.POST['renter_name']
-        renter_contact = request.POST['renter_contact']
-        car_model = request.POST['car_model']
+            if start_date_obj < timezone.now().date():
+                messages.error(request, "Cannot book cars in the past.")
+                return HttpResponseRedirect(current_url)
 
+<<<<<<< HEAD
+            renter_name = request.POST['renter_name']
+            renter_contact = request.POST['renter_contact']
+            car_model = request.POST['car_model']
+
+            try:
+                product = CarDetail.objects.get(car_model=car_model, renter_name=renter_name, renter_contact=renter_contact)
+            except CarDetail.DoesNotExist:
+                messages.error(request, "Car details not found.")
+                return HttpResponseRedirect(current_url)
+
+            if product.availability == 'Booked':
+                car_order = CarOrder.objects.filter(product=product).order_by('-end_date').first()
+                if car_order and start_date_obj <= car_order.end_date:
+                    messages.error(request, f"It is available only after {car_order.end_date}.")
+                    return HttpResponseRedirect(current_url)
+
+            if start_date_obj > end_date_obj:
+                messages.error(request, "Start date must be before end date.")
+                return HttpResponseRedirect(current_url)
+
+            price = product.price
+            duration = (end_date_obj - start_date_obj).days
+            total_price = price * duration
+
+            order = CarOrder.objects.create(
+                product=product,
+                start_date=start_date_obj,
+                end_date=end_date_obj,
+                rentee=rentee,
+                total_price=total_price
+            )
+            messages.success(request, "Your booking has been created successfully")
+            return redirect('orders')
+        else:
+            messages.error(request, "You must be logged in to book cars!")
+            return redirect('login')
+=======
         product = CarDetail.objects.get(car_model=car_model, renter_name=renter_name, renter_contact=renter_contact)
         price = product.price
         
@@ -69,14 +106,15 @@ def orders(request):
       else:
         messages.error(request,"You must be logged in to book cars!!")
         return redirect('login')
+>>>>>>> 78a066dc97268e53036b3cee51e7d87b96e22de6
     else:
         name = request.GET.get('renter_name')
         model = request.GET.get('car_model')
         details_queryset = CarDetail.objects.filter(renter_name=name, car_model=model)
 
-        # Convert queryset to list of dictionaries with image URLs
         details_list = []
         for detail in details_queryset:
+            car_order = CarOrder.objects.filter(product=detail).order_by('-end_date').first()
             detail_dict = {
                 'renter_name': detail.renter_name,
                 'renter_contact': detail.renter_contact,
@@ -84,7 +122,8 @@ def orders(request):
                 'car_model': detail.car_model,
                 'price': detail.price,
                 'availability': detail.availability,
-                'image': detail.image.url
+                'image': detail.image.url,
+                'end_date': car_order.end_date if car_order else None,
             }
             details_list.append(detail_dict)
         context = {
