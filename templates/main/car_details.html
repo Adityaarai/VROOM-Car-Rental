@@ -8,7 +8,7 @@
   <div id="main">
     {% if details %}
       {% for detail in details %}
-        <div class="details">
+        <div class="main_details">
           <!--  Car Image -->
           <div id="image">
             <img src="{{ detail.image }}" alt="Car Image" />
@@ -160,8 +160,6 @@
   #main {
     width: 80%;
     margin-left: 10%;
-    display: flex;
-    flex-direction: row;
     align-items: center;
   }
 
@@ -196,6 +194,10 @@
     margin-bottom: 20px;
   }
 
+  .main_details{
+    display: flex;
+  }
+
   #details {
     width: 100%;
     max-width: 400px;
@@ -203,7 +205,6 @@
     font-size: 20px;
     font-weight: 400;
     margin-left: 20px;
-    margin-top: -80px;
   }
 
   #details #model {
