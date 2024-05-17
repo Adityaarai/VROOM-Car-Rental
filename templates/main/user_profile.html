@@ -49,6 +49,7 @@ User profile{% endblock %} {% block content %}
       <p style="margin-bottom: 10px">
         Contact Number: <span id="contactNumber">{{ profile.contact }}</span>
       </p>
+
       <button class="button" id="editProfileBtn">Edit Profile</button>
       <button id="car-add-btn">Add Car</button>
       <button id="removeCarBtn">Remove Car</button>
@@ -100,7 +101,8 @@ User profile{% endblock %} {% block content %}
             id="editAddress"
             name="address"
             value="{{ profile.address }}"
-          /><br />
+          />
+          <br />
 
           <label for="editLicenseNumber">License Number:</label>
           <input
@@ -108,7 +110,8 @@ User profile{% endblock %} {% block content %}
             id="editLicenseNumber"
             name="license_number"
             value="{{ profile.license_number }}"
-          /><br />
+          />
+          <br />
 
           <label for="editContact">Contact Number:</label>
           <input
@@ -116,7 +119,8 @@ User profile{% endblock %} {% block content %}
             id="editContact"
             name="contact"
             value="{{ profile.contact }}"
-          /><br />
+          />
+          <br />
 
           <span id="contactError" style="color: red; display: none"
             >Contact number must be a 10-digit number.</span
@@ -165,7 +169,7 @@ User profile{% endblock %} {% block content %}
       </form>
     </div>
 
-    <!-- popup to add car -->
+    <!-- Add Car Popup -->
     <div class="popup" id="addCarPopup">
       <div class="popup-content">
         <span class="close" id="close" onclick="closePopup('addCarPopup')"
@@ -188,7 +192,12 @@ User profile{% endblock %} {% block content %}
           <label for="price">Price:</label><br />
           <input type="text" id="price" name="price" /><br />
           <label for="carImage">Car Image:</label><br />
-          <input type="file" id="carImage" name="carImage" /><br /><br />
+          <input
+            type="file"
+            id="carImage"
+            name="carImage"
+            required
+          /><br /><br />
           <button type="submit" id="car_done">Add Car</button>
         </form>
       </div>
@@ -449,6 +458,7 @@ User profile{% endblock %} {% block content %}
       var completedBtn = document.getElementById("completedBtn");
       var paymentBtn = document.getElementById("paymentButton");
       var removeCarBtn = document.getElementById("removeCarBtn");
+      var addCarForm = document.getElementById("addCarForm");
 
       profileBtn.addEventListener("click", function () {
         editProfileForm.style.display = "none";
@@ -526,33 +536,6 @@ User profile{% endblock %} {% block content %}
         approvedSection.style.display = "none";
         paidSection.style.display = "none";
         completedSection.style.display = "none";
-      });
-
-      function validateAddCarForm() {
-        var contactNumber = document.getElementById("contactNumber").value;
-        var carType = document.getElementById("car_type").value;
-        var model = document.getElementById("model").value;
-        var price = document.getElementById("price").value;
-        var carImage = document.getElementById("carImage").value;
-
-        if (!contactNumber || !carType || !model || !price || !carImage) {
-          alert("Please fill in all fields, including the car image.");
-          return false;
-        }
-
-        if (!/^\d{10}$/.test(contactNumber)) {
-          alert("Contact number must be a 10-digit number.");
-          return false;
-        }
-
-        return true;
-      }
-
-      var addCarForm = document.getElementById("addCarForm");
-      addCarForm.addEventListener("submit", function (event) {
-        if (!validateAddCarForm()) {
-          event.preventDefault(); // Prevent form submission if validation fails
-        }
       });
 
       // Event listener for Remove Car button

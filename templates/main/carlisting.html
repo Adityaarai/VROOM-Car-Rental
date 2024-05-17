@@ -1,6 +1,46 @@
 {% extends 'partials/base.html' %} {% load static %} {% block title %}
 Carlisting! VROOM {% endblock %} {% block content%}
 
+<!-- pre-booking section -->
+<div id="pre-booking_title">Pre-Booking</div>
+<div id="pre-book-container">
+  <form action="/search" method="get" id="pre-booking">
+    <div id="car_type">
+      <label for="car-type">Type of Car:</label>
+      <select id="car-type" name="car-type">
+        <option value="SUV">SUV</option>
+        <option value="EV">EV</option>
+        <option value="Truck">Truck</option>
+        <option value="Sedan">Sedan</option>
+      </select>
+    </div>
+
+    <div id="car_model">
+      <label for="car-model">Model of Car:</label>
+      <select id="car-model" name="car-model">
+        <option value="model-a">Model A</option>
+        <option value="model-b">Model B</option>
+        <option value="model-c">Model C</option>
+        <option value="model-d">Model D</option>
+      </select>
+    </div>
+
+    <div id="start_date">
+      <label for="start-date">Start Date:</label>
+      <input type="date" id="start-date" name="start-date">
+    </div>
+
+
+    <div id="end_date">
+      <label for="end-date">End Date:</label>
+      <input type="date" id="end-date" name="end-date">
+    </div>
+
+    <button type="submit">Search</button>
+  </form>
+</div>
+
+
 <div class="main-container">
   <!-- filter to navigate different catogeries of cars -->
   <div class="filter">
@@ -214,6 +254,68 @@ Carlisting! VROOM {% endblock %} {% block content%}
 
   .container {
     height: auto;
+  }
+
+  #pre-booking_title{
+    font-size: 50px;
+    font-weight: 600;
+    text-align: center;
+    margin-top: 15vh;
+  }
+
+  #pre-book-container {
+    background: var(--indigo);
+    width: 80%;
+    height: 13vh;
+    padding: 20px;
+    border-radius: 8px;
+    color: var(--white);
+    margin-left: 10%;
+    margin-bottom: 10vh;
+    margin-top: 5vh;
+  }
+
+  #pre-booking {
+    padding-left: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: grid;
+    grid-template-columns: repeat(5, 14.5vw);
+    gap: 20px;
+
+  }
+
+  #pre-booking label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 150px;
+  }
+
+  #pre-booking select,
+  #pre-booking input[type="date"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 16px;
+  }
+
+  #pre-booking button {
+    align-self: flex-end;
+    padding: 10px 20px;
+    background-color: var(--lapis);
+    border: none;
+    border-radius: 4px;
+    color: var(--white);
+    font-size: 16px;
+    cursor: pointer;
   }
 
   .main-container {
