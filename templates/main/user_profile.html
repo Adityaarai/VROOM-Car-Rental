@@ -17,12 +17,11 @@ User profile{% endblock %} {% block content %}
     <button class="button" id="myBookingsBtn">My Bookings</button>
 
     <!-- My Bookings dropdown -->
-    <div id="myBookingsDropdown" style="display: none;">
+    <div id="myBookingsDropdown" style="display: none">
       <button class="dropdown-btn1" id="pendingBtn">Pending</button>
       <button class="dropdown-btn2" id="approvedBtn">Approved</button>
       <button class="dropdown-btn3" id="paidBtn">Paid</button>
       <button class="dropdown-btn4" id="completedBtn">Completed</button>
-      
     </div>
 
     <!-- Profile section -->
@@ -44,7 +43,8 @@ User profile{% endblock %} {% block content %}
         Address: <span id="address">{{ profile.address }}</span>
       </p>
       <p style="margin-bottom: 10px">
-        License Number: <span id="licenseNumber">{{ profile.license_number }}</span>
+        License Number:
+        <span id="licenseNumber">{{ profile.license_number }}</span>
       </p>
       <p style="margin-bottom: 10px">
         Contact Number: <span id="contactNumber">{{ profile.contact }}</span>
@@ -81,7 +81,7 @@ User profile{% endblock %} {% block content %}
           <label for="editUsername">Username:</label>
           <input
             type="text"
-            id="editUsername" 
+            id="editUsername"
             name="username"
             value="{{ user.username }}"
           /><br />
@@ -95,30 +95,33 @@ User profile{% endblock %} {% block content %}
           /><br />
 
           <label for="editAddress">Address:</label>
-          <input 
-            type="text" 
-            id="editAddress" 
-            name="address" 
-            value="{{ profile.address }}" 
-            /><br />
-      
-          <label for="editLicenseNumber">License Number:</label>
-          <input 
-            type="text" 
-            id="editLicenseNumber" 
-            name="license_number" 
-            value="{{ profile.license_number }}" 
-            /><br />
-      
-          <label for="editContact">Contact Number:</label>
-          <input 
-            type="text" 
-            id="editContact" 
-            name="contact" 
-            value="{{ profile.contact }}" 
-            /><br /> 
+          <input
+            type="text"
+            id="editAddress"
+            name="address"
+            value="{{ profile.address }}"
+          /><br />
 
-            <span id="contactError" style="color: red; display: none;">Contact number must be a 10-digit number.</span><br /> <!-- Error message -->
+          <label for="editLicenseNumber">License Number:</label>
+          <input
+            type="text"
+            id="editLicenseNumber"
+            name="license_number"
+            value="{{ profile.license_number }}"
+          /><br />
+
+          <label for="editContact">Contact Number:</label>
+          <input
+            type="text"
+            id="editContact"
+            name="contact"
+            value="{{ profile.contact }}"
+          /><br />
+
+          <span id="contactError" style="color: red; display: none"
+            >Contact number must be a 10-digit number.</span
+          ><br />
+          <!-- Error message -->
           <button class="button" type="submit">Update Profile</button>
         </form>
       </div>
@@ -161,864 +164,891 @@ User profile{% endblock %} {% block content %}
         <button class="button" type="submit">Update Password</button>
       </form>
     </div>
-    
+
     <!-- popup to add car -->
     <div class="popup" id="addCarPopup">
-      <div class="popup-content" >
-          <span class="close" id="close" onclick="closePopup('addCarPopup')">&times;</span>
-          <h2>Add Car</h2>
-          <form id="addCarForm" method="POST" action="{% url 'add_car' %}" enctype="multipart/form-data">
-            {% csrf_token %}
-              <label for="contactNumber">Contact Number:</label><br>
-              <input type="text" id="contactNumber" name="contactNumber"><br>
-              <label for="car_type">Car Type:</label><br>
-              <input type="text" id="car_type" name="car_type"><br>
-              <label for="model">Model:</label><br>
-              <input type="text" id="model" name="model"><br>
-              <label for="price">Price:</label><br>
-              <input type="text" id="price" name="price"><br>
-              <label for="carImage">Car Image:</label><br>
-              <input type="file" id="carImage" name="carImage"><br><br>
-              <button type="submit" id="car_done">Add Car</button>
-          </form>
-          
+      <div class="popup-content">
+        <span class="close" id="close" onclick="closePopup('addCarPopup')"
+          >&times;</span
+        >
+        <h2>Add Car</h2>
+        <form
+          id="addCarForm"
+          method="POST"
+          action="{% url 'add_car' %}"
+          enctype="multipart/form-data"
+        >
+          {% csrf_token %}
+          <label for="contactNumber">Contact Number:</label><br />
+          <input type="text" id="contactNumber" name="contactNumber" /><br />
+          <label for="car_type">Car Type:</label><br />
+          <input type="text" id="car_type" name="car_type" /><br />
+          <label for="model">Model:</label><br />
+          <input type="text" id="model" name="model" /><br />
+          <label for="price">Price:</label><br />
+          <input type="text" id="price" name="price" /><br />
+          <label for="carImage">Car Image:</label><br />
+          <input type="file" id="carImage" name="carImage" /><br /><br />
+          <button type="submit" id="car_done">Add Car</button>
+        </form>
       </div>
-  </div>
+    </div>
 
-<!-- Remove Car section -->
-<div id="removeCarSection" class="section" style="display: none;">
-  <h3>My Cars</h3>
-  {% if cars %}
-  <table id="removeCarDetailsTable">
-    <thead>
-      <tr>
-        <th>Renter Name</th>
-        <th>Contact Number</th>
-        <th>Car Type</th>
-        <th>Model</th>
-        <th>Price</th>
-        <th>Car Image</th>
-        <th>Action</th> <!-- Add Action column for Remove button -->
-      </tr>
-    </thead>
-    <tbody>
-      {% for car in cars %}
-      <tr>
-        <td>{{ car.renter_name }}</td>
-        <td>{{ car.renter_contact }}</td>
-        <td>{{ car.car_type }}</td>
-        <td>{{ car.car_model }}</td>
-        <td>{{ car.price }}</td>
-        <td>
-          {% if car.image %}
-            <img src="{{ car.image.url }}" alt="Car Image" style="width: 100px;">
-          {% else %}
-            No Image Available
-          {% endif %}
-        </td>
-        <td>
-          <button class="removeCarDetailsButton" data-car-id="{{ car.id }}">Remove</button> <!-- Add Remove button -->
-        </td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-  {% else %}
-  <p>You haven't added any cars yet.</p>
-  {% endif %}
-</div>
-
-<!-- Popup for Remove Car Confirmation -->
-<div id="removeCarConfirmation" class="popup" style="display: none;">
-  <div class="popup-content">
-    <span class="close" onclick="closePopup('removeCarConfirmation')">&times;</span>
-    <h2>Remove Car</h2>
-    <p>Are you sure you want to remove this car?</p>
-    <form id="removeCarForm" method="POST" action="{% url 'remove_car' %}">
-      {% csrf_token %}
-      <input type="hidden" name="car_id" id="carIdInput">
-      <button type="submit">Yes</button>
-      <button type="button" onclick="closePopup('removeCarConfirmation')">No</button>
-    </form>
-  </div>
-</div>
-
-  <!-- My Car section -->
-  <div id="myCarSection" class="section" style="display: none;">
-    <h3>My Cars</h3>
-    {% if cars %}
-    <table id="carDetailsTable">
-      <thead>
-        <tr>
-          <th>Renter Name</th>
-          <th>Contact Number</th>
-          <th>Car Type</th>
-          <th>Model</th>
-          <th>Price</th>
-          <th>Car Image</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for car in cars %}
-        <tr>
-          <td>{{ car.renter_name }}</td>
-          <td>{{ car.renter_contact }}</td>
-          <td>{{ car.car_type }}</td>
-          <td>{{ car.car_model }}</td>
-          <td>{{ car.price }}</td>
-          <td>
-            {% if car.image %}
-              <img src="{{ car.image.url }}" alt="Car Image" style="width: 100px;">
-            {% else %}
-              No Image Available
-            {% endif %}
-          </td>
+    <!-- Remove Car section -->
+    <div id="removeCarSection" class="section" style="display: none">
+      <h3>My Cars</h3>
+      {% if cars %}
+      <table id="removeCarDetailsTable">
+        <thead>
+          <tr>
+            <th>Renter Name</th>
+            <th>Contact Number</th>
+            <th>Car Type</th>
+            <th>Model</th>
+            <th>Price</th>
+            <th>Car Image</th>
+            <th>Action</th>
+            <!-- Add Action column for Remove button -->
           </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-    {% else %}
-    <p>You haven't added any cars yet.</p>
-    {% endif %}
+        </thead>
+        <tbody>
+          {% for car in cars %}
+          <tr>
+            <td>{{ car.renter_name }}</td>
+            <td>{{ car.renter_contact }}</td>
+            <td>{{ car.car_type }}</td>
+            <td>{{ car.car_model }}</td>
+            <td>{{ car.price }}</td>
+            <td>
+              {% if car.image %}
+              <img
+                src="{{ car.image.url }}"
+                alt="Car Image"
+                style="width: 100px"
+              />
+              {% else %} No Image Available {% endif %}
+            </td>
+            <td>
+              <button class="removeCarDetailsButton" data-car-id="{{ car.id }}">
+                Remove
+              </button>
+              <!-- Add Remove button -->
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <p>You haven't added any cars yet.</p>
+      {% endif %}
+    </div>
+
+    <!-- Popup for Remove Car Confirmation -->
+    <div id="removeCarConfirmation" class="popup" style="display: none">
+      <div class="popup-content">
+        <span class="close" onclick="closePopup('removeCarConfirmation')"
+          >&times;</span
+        >
+        <h2>Remove Car</h2>
+        <p>Are you sure you want to remove this car?</p>
+        <form id="removeCarForm" method="POST" action="{% url 'remove_car' %}">
+          {% csrf_token %}
+          <input type="hidden" name="car_id" id="carIdInput" />
+          <button type="submit">Yes</button>
+          <button type="button" onclick="closePopup('removeCarConfirmation')">
+            No
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- My Car section -->
+    <div id="myCarSection" class="section" style="display: none">
+      <h3>My Cars</h3>
+      {% if cars %}
+      <table id="carDetailsTable">
+        <thead>
+          <tr>
+            <th>Renter Name</th>
+            <th>Contact Number</th>
+            <th>Car Type</th>
+            <th>Model</th>
+            <th>Price</th>
+            <th>Car Image</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for car in cars %}
+          <tr>
+            <td>{{ car.renter_name }}</td>
+            <td>{{ car.renter_contact }}</td>
+            <td>{{ car.car_type }}</td>
+            <td>{{ car.car_model }}</td>
+            <td>{{ car.price }}</td>
+            <td>
+              {% if car.image %}
+              <img
+                src="{{ car.image.url }}"
+                alt="Car Image"
+                style="width: 100px"
+              />
+              {% else %} No Image Available {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <p>You haven't added any cars yet.</p>
+      {% endif %}
+    </div>
+
+    <!--Pending Bookings Section-->
+    <div id="pendingSection" class="section" style="display: none">
+      <h3>Pending Bookings</h3>
+      {% if pending_bookings %}
+      <table id="pendingBookingDetailsTable">
+        <thead>
+          <tr>
+            <th>Car</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for booking in pending_bookings %}
+          <tr>
+            <td>{{ booking.product }}</td>
+            <td>{{ booking.start_date }}</td>
+            <td>{{ booking.end_date }}</td>
+            <td>{{ booking.status }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <p>You don't have any pending bookings.</p>
+      {% endif %}
+    </div>
+
+    <!--Approved Bookings Section-->
+    <div id="approvedSection" class="section" style="display: none">
+      <h3>Approved Bookings</h3>
+      {% if approved_bookings %}
+      <table id="approvedBookingDetailsTable">
+        <thead>
+          <tr>
+            <th>Car</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for booking in approved_bookings %}
+          <tr>
+            <td>{{ booking.product }}</td>
+            <td>{{ booking.start_date }}</td>
+            <td>{{ booking.end_date }}</td>
+            <td>{{ booking.status }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <!-- Payment button to show only if there are approved bookings-->
+      <button class="paymentButton" id="paymentButton">Payment</button>
+      {% else %}
+      <p>You don't have any approved bookings.</p>
+      {% endif %}
+    </div>
+
+    <!-- Paid Bookings Section -->
+    <div id="paidSection" class="section" style="display: none">
+      <h3>Paid Bookings</h3>
+      {% if paid_bookings %}
+      <table id="paidBookingDetailsTable">
+        <thead>
+          <tr>
+            <th>Car</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for booking in paid_bookings %}
+          <tr>
+            <td>{{ booking.product }}</td>
+            <td>{{ booking.start_date }}</td>
+            <td>{{ booking.end_date }}</td>
+            <td>{{ booking.status }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <p>You don't have any paid bookings.</p>
+      {% endif %}
+    </div>
+
+    <!--Completed Bookings Section-->
+    <div id="completedSection" class="section" style="display: none">
+      <h3>Completed Bookings</h3>
+      {% if completed_bookings %}
+      <table id="completedBookingDetailsTable">
+        <thead>
+          <tr>
+            <th>Car</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for booking in completed_bookings %}
+          <tr>
+            <td>{{ booking.product }}</td>
+            <td>{{ booking.start_date }}</td>
+            <td>{{ booking.end_date }}</td>
+            <td>{{ booking.status }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <p>You don't have any completed bookings.</p>
+      {% endif %}
+    </div>
   </div>
 
-  <!--Pending Bookings Section-->
-  <div id="pendingSection" class="section" style="display: none;">
-    <h3>Pending Bookings</h3>
-    {% if pending_bookings %}
-    <table id="pendingBookingDetailsTable">
-      <thead>
-        <tr>
-          <th>Car</th>
-          <th>Start Date</th>
-          <th>End Date</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for booking in pending_bookings %}
-        <tr>
-          <td>{{ booking.product }}</td>
-          <td>{{ booking.start_date }}</td>
-          <td>{{ booking.end_date }}</td>
-          <td>{{ booking.status }}</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-    {% else %}
-    <p>You don't have any pending bookings.</p>
-    {% endif %}
-  </div>
-   
-  <!--Approved Bookings Section-->
-  <div id="approvedSection" class="section" style="display: none;">
-    <h3>Approved Bookings</h3>
-    {% if approved_bookings %}
-    <table id="approvedBookingDetailsTable">
-      <thead>
-        <tr>
-          <th>Car</th>
-          <th>Start Date</th>
-          <th>End Date</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for booking in approved_bookings %}
-        <tr>
-          <td>{{ booking.product }}</td>
-          <td>{{ booking.start_date }}</td>
-          <td>{{ booking.end_date }}</td>
-          <td>{{ booking.status }}</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-    <!-- Payment button to show only if there are approved bookings-->
-    <button class="paymentButton" id="paymentButton">Payment</button>
-    {% else %}
-    <p>You don't have any approved bookings.</p>
-    {% endif %}
-  </div>
-
-  <!-- Paid Bookings Section -->
-  <div id="paidSection" class="section" style="display: none;">
-    <h3>Paid Bookings</h3>
-    {% if paid_bookings %}
-    <table id="paidBookingDetailsTable">
-      <thead>
-        <tr>
-          <th>Car</th>
-          <th>Start Date</th>
-          <th>End Date</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for booking in paid_bookings %}
-        <tr>
-          <td>{{ booking.product }}</td>
-          <td>{{ booking.start_date }}</td>
-          <td>{{ booking.end_date }}</td>
-          <td>{{ booking.status }}</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-    {% else %}
-    <p>You don't have any paid bookings.</p>
-    {% endif %}
-  </div>
-
-  <!--Completed Bookings Section-->
-  <div id="completedSection" class="section" style="display: none;">
-    <h3>Completed Bookings</h3>
-    {% if completed_bookings %}
-    <table id="completedBookingDetailsTable">
-      <thead>
-        <tr>
-          <th>Car</th>
-          <th>Start Date</th>
-          <th>End Date</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for booking in completed_bookings %}
-        <tr>
-          <td>{{ booking.product }}</td>
-          <td>{{ booking.start_date }}</td>
-          <td>{{ booking.end_date }}</td>
-          <td>{{ booking.status }}</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-    {% else %}
-    <p>You don't have any completed bookings.</p>
-    {% endif %}
-  </div>
-</div>
-
-<script>
-  function closePopup(id) {
+  <script>
+    function closePopup(id) {
       document.getElementById(id).style.display = "none";
     }
 
-  // Adding event listeners for buttons
-  document.addEventListener("DOMContentLoaded", function () {
-    var editProfileBtn = document.getElementById("editProfileBtn");
-    var editProfileForm = document.getElementById("editProfileForm");
-    var changePasswordBtn = document.getElementById("changePasswordBtn");
-    var changePasswordSection = document.getElementById("changePasswordSection");
-    var profileSection = document.getElementById("profileSection");
-    var profileBtn = document.getElementById("profileBtn");
-    var addCar = document.getElementById("addCarPopup");
-    var addBtn = document.getElementById("car-add-btn");
-    var myCarBtn = document.getElementById("myCarBtn");
-    var myCarSection = document.getElementById("myCarSection");
-    var myBookingsBtn = document.getElementById("myBookingsBtn");
-    var myBookingsDropdown = document.getElementById("myBookingsDropdown");
-    var pendingBtn = document.getElementById("pendingBtn");
-    var approvedBtn = document.getElementById("approvedBtn");
-    var paidBtn = document.getElementById("paidBtn");
-    var completedBtn = document.getElementById("completedBtn");
-    var paymentBtn = document.getElementById("paymentButton");
-    var removeCarBtn = document.getElementById('removeCarBtn');
+    // Adding event listeners for buttons
+    document.addEventListener("DOMContentLoaded", function () {
+      var editProfileBtn = document.getElementById("editProfileBtn");
+      var editProfileForm = document.getElementById("editProfileForm");
+      var changePasswordBtn = document.getElementById("changePasswordBtn");
+      var changePasswordSection = document.getElementById(
+        "changePasswordSection"
+      );
+      var profileSection = document.getElementById("profileSection");
+      var profileBtn = document.getElementById("profileBtn");
+      var addCar = document.getElementById("addCarPopup");
+      var addBtn = document.getElementById("car-add-btn");
+      var myCarBtn = document.getElementById("myCarBtn");
+      var myCarSection = document.getElementById("myCarSection");
+      var myBookingsBtn = document.getElementById("myBookingsBtn");
+      var myBookingsDropdown = document.getElementById("myBookingsDropdown");
+      var pendingBtn = document.getElementById("pendingBtn");
+      var approvedBtn = document.getElementById("approvedBtn");
+      var paidBtn = document.getElementById("paidBtn");
+      var completedBtn = document.getElementById("completedBtn");
+      var paymentBtn = document.getElementById("paymentButton");
+      var removeCarBtn = document.getElementById("removeCarBtn");
 
-    profileBtn.addEventListener("click", function () {
-      editProfileForm.style.display = "none";
-      changePasswordSection.style.display = "none";
-      profileSection.style.display = "block";
-      addCar.style.display = "none";
-      myCarSection.style.display = "none";
-      myBookingsDropdown.style.display = "none";
-      removeCarSection.style.display = "none";
-      pendingSection.style.display = "none";
-      approvedSection.style.display = "none";
-      paidSection.style.display = "none";
-      completedSection.style.display = "none";
-    });
-
-    editProfileBtn.addEventListener("click", function () {
-      editProfileForm.style.display = "block";
-      changePasswordSection.style.display = "none";
-      profileSection.style.display = "block";
-      addCar.style.display = "none";
-      myCarSection.style.display = "none";
-      myBookingsDropdown.style.display = "none";
-      removeCarSection.style.display = "none";
-      pendingSection.style.display = "none";
-      approvedSection.style.display = "none";
-      paidSection.style.display = "none";
-      completedSection.style.display = "none";
-    });
-    
-    // Adding validation for contact number to be 10 digits
-    function validateProfileForm() {
-      var contactNumber = document.getElementById("editContact").value;
-      var contactError = document.getElementById("contactError");
-
-      if (!/^\d{10}$/.test(contactNumber)) {
-        contactError.style.display = "block"; // Show error message
-        return false; // Prevent form submission
-      } else {
-        contactError.style.display = "none"; // Hide error message if validation passes
-        return true; // Allow form submission
-      }
-    }
-
-    var profileForm = document.getElementById("editProfileForm");
-
-    profileForm.addEventListener("submit", function (event) {
-      if (!validateProfileForm()) {
-        event.preventDefault(); // Prevent form submission if validation fails
-      }
-    });
-
-    changePasswordBtn.addEventListener("click", function () {
-      editProfileForm.style.display = "none";
-      changePasswordSection.style.display = "block";
-      profileSection.style.display = "none";
-      addCar.style.display = "none";
-      myCarSection.style.display = "none";
-      myBookingsDropdown.style.display = "none";
-      removeCarSection.style.display = "none";
-      pendingSection.style.display = "none";
-      approvedSection.style.display = "none";
-      paidSection.style.display = "none";
-      completedSection.style.display = "none";
-    });
-
-    addBtn.addEventListener("click", function () {
-      editProfileForm.style.display = "none";
-      changePasswordSection.style.display = "none";
-      profileSection.style.display = "block";
-      addCar.style.display = "block";
-      myCarSection.style.display = "none";
-      myBookingsDropdown.style.display = "none";
-      removeCarSection.style.display = "none";
-      pendingSection.style.display = "none";
-      approvedSection.style.display = "none";
-      paidSection.style.display = "none";
-      completedSection.style.display = "none";
-    });
-
-    function validateAddCarForm() {
-      var contactNumber = document.getElementById("contactNumber").value;
-      var carType = document.getElementById("car_type").value;
-      var model = document.getElementById("model").value;
-      var price = document.getElementById("price").value;
-      var carImage = document.getElementById("carImage").value;
-
-      if (!contactNumber || !carType || !model || !price || !carImage) {
-        alert("Please fill in all fields, including the car image.");
-        return false;
-      }
-
-      if (!/^\d{10}$/.test(contactNumber)) {
-        alert("Contact number must be a 10-digit number.");
-        return false;
-      }
-
-      return true;
-    }
-
-    var addCarForm = document.getElementById("addCarForm");
-    addCarForm.addEventListener("submit", function (event) {
-      if (!validateAddCarForm()) {
-        event.preventDefault(); // Prevent form submission if validation fails
-      }
-    });
-    
-    // Event listener for Remove Car button
-    removeCarBtn.addEventListener("click", function () {
-      editProfileForm.style.display = "none";
-      changePasswordSection.style.display = "none";
-      profileSection.style.display = "block";
-      addCar.style.display = "none";
-      myCarSection.style.display = "none";
-      myBookingsDropdown.style.display = "none";                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            removeCarSection.style.display = "block";
-      pendingSection.style.display = "none";
-      approvedSection.style.display = "none";
-      paidSection.style.display = "none";
-      completedSection.style.display = "none";
-    });
-    
-    // Event listener for Remove button in Remove Car Details table
-    document.querySelectorAll('.removeCarDetailsButton').forEach(button => { 
-      button.addEventListener('click', function () {
-        const carId = this.getAttribute('data-car-id');
-        // Set the value of the hidden input field in the form
-        document.getElementById('carIdInput').value = carId;
-        // Show the confirmation popup
-        document.getElementById('removeCarConfirmation').style.display = 'block';
-      });
-    });
-
-
-    myCarBtn.addEventListener("click", function () {
-      // Handle My Car button click
-      editProfileForm.style.display = "none";
-      changePasswordSection.style.display = "none";
-      profileSection.style.display = "none";
-      addCar.style.display = "none";
-      myCarSection.style.display = "block";
-      myBookingsDropdown.style.display = "none";
-      removeCarSection.style.display = "none";
-      pendingSection.style.display = "none";
-      approvedSection.style.display = "none";
-      paidSection.style.display = "none";
-      completedSection.style.display = "none";
-    });
-
-    // Event listener for My Bookings button
-    myBookingsBtn.addEventListener("click", function () {
-      // Toggle the display of the dropdown menu
-      if (myBookingsDropdown.style.display === "none") {
-        myBookingsDropdown.style.display = "block";
-      } else {
+      profileBtn.addEventListener("click", function () {
+        editProfileForm.style.display = "none";
+        changePasswordSection.style.display = "none";
+        profileSection.style.display = "block";
+        addCar.style.display = "none";
+        myCarSection.style.display = "none";
         myBookingsDropdown.style.display = "none";
+        removeCarSection.style.display = "none";
+        pendingSection.style.display = "none";
+        approvedSection.style.display = "none";
+        paidSection.style.display = "none";
+        completedSection.style.display = "none";
+      });
+
+      editProfileBtn.addEventListener("click", function () {
+        editProfileForm.style.display = "block";
+        changePasswordSection.style.display = "none";
+        profileSection.style.display = "block";
+        addCar.style.display = "none";
+        myCarSection.style.display = "none";
+        myBookingsDropdown.style.display = "none";
+        removeCarSection.style.display = "none";
+        pendingSection.style.display = "none";
+        approvedSection.style.display = "none";
+        paidSection.style.display = "none";
+        completedSection.style.display = "none";
+      });
+
+      // Adding validation for contact number to be 10 digits
+      function validateProfileForm() {
+        var contactNumber = document.getElementById("editContact").value;
+        var contactError = document.getElementById("contactError");
+
+        if (!/^\d{10}$/.test(contactNumber)) {
+          contactError.style.display = "block"; // Show error message
+          return false; // Prevent form submission
+        } else {
+          contactError.style.display = "none"; // Hide error message if validation passes
+          return true; // Allow form submission
+        }
       }
 
-      // Hide all other sections
-      editProfileForm.style.display = "none";
-      changePasswordSection.style.display = "none";
-      profileSection.style.display = "none";
-      addCar.style.display = "none";
-      myCarSection.style.display = "none";
-      removeCarSection.style.display = "none";
- 
+      var profileForm = document.getElementById("editProfileForm");
 
-      // Event listener for dropdown buttons
-      pendingBtn.addEventListener("click", function () {
-        // Show pending section, hide others
-        document.getElementById("pendingSection").style.display = "block";
-        document.getElementById("approvedSection").style.display = "none";
-        document.getElementById("paidSection").style.display = "none";
-        document.getElementById("completedSection").style.display = "none";
+      profileForm.addEventListener("submit", function (event) {
+        if (!validateProfileForm()) {
+          event.preventDefault(); // Prevent form submission if validation fails
+        }
       });
 
-      // Event listener for dropdown buttons
-      approvedBtn.addEventListener("click", function () {
-        // Show pending section, hide others
-        document.getElementById("approvedSection").style.display = "block";
+      changePasswordBtn.addEventListener("click", function () {
+        editProfileForm.style.display = "none";
+        changePasswordSection.style.display = "block";
+        profileSection.style.display = "none";
+        addCar.style.display = "none";
+        myCarSection.style.display = "none";
+        myBookingsDropdown.style.display = "none";
+        removeCarSection.style.display = "none";
+        pendingSection.style.display = "none";
+        approvedSection.style.display = "none";
+        paidSection.style.display = "none";
+        completedSection.style.display = "none";
+      });
+
+      addBtn.addEventListener("click", function () {
+        editProfileForm.style.display = "none";
+        changePasswordSection.style.display = "none";
+        profileSection.style.display = "block";
+        addCar.style.display = "block";
+        myCarSection.style.display = "none";
+        myBookingsDropdown.style.display = "none";
+        removeCarSection.style.display = "none";
+        pendingSection.style.display = "none";
+        approvedSection.style.display = "none";
+        paidSection.style.display = "none";
+        completedSection.style.display = "none";
+      });
+
+      function validateAddCarForm() {
+        var contactNumber = document.getElementById("contactNumber").value;
+        var carType = document.getElementById("car_type").value;
+        var model = document.getElementById("model").value;
+        var price = document.getElementById("price").value;
+        var carImage = document.getElementById("carImage").value;
+
+        if (!contactNumber || !carType || !model || !price || !carImage) {
+          alert("Please fill in all fields, including the car image.");
+          return false;
+        }
+
+        if (!/^\d{10}$/.test(contactNumber)) {
+          alert("Contact number must be a 10-digit number.");
+          return false;
+        }
+
+        return true;
+      }
+
+      var addCarForm = document.getElementById("addCarForm");
+      addCarForm.addEventListener("submit", function (event) {
+        if (!validateAddCarForm()) {
+          event.preventDefault(); // Prevent form submission if validation fails
+        }
+      });
+
+      // Event listener for Remove Car button
+      removeCarBtn.addEventListener("click", function () {
+        editProfileForm.style.display = "none";
+        changePasswordSection.style.display = "none";
+        profileSection.style.display = "block";
+        addCar.style.display = "none";
+        myCarSection.style.display = "none";
+        myBookingsDropdown.style.display = "none";
+        removeCarSection.style.display = "block";
+        pendingSection.style.display = "none";
+        approvedSection.style.display = "none";
+        paidSection.style.display = "none";
+        completedSection.style.display = "none";
+      });
+
+      // Event listener for Remove button in Remove Car Details table
+      document.querySelectorAll(".removeCarDetailsButton").forEach((button) => {
+        button.addEventListener("click", function () {
+          const carId = this.getAttribute("data-car-id");
+          // Set the value of the hidden input field in the form
+          document.getElementById("carIdInput").value = carId;
+          // Show the confirmation popup
+          document.getElementById("removeCarConfirmation").style.display =
+            "block";
+        });
+      });
+
+      myCarBtn.addEventListener("click", function () {
+        // Handle My Car button click
+        editProfileForm.style.display = "none";
+        changePasswordSection.style.display = "none";
+        profileSection.style.display = "none";
+        addCar.style.display = "none";
+        myCarSection.style.display = "block";
+        myBookingsDropdown.style.display = "none";
+        removeCarSection.style.display = "none";
+        pendingSection.style.display = "none";
+        approvedSection.style.display = "none";
+        paidSection.style.display = "none";
+        completedSection.style.display = "none";
+      });
+
+      // Event listener for My Bookings button
+      myBookingsBtn.addEventListener("click", function () {
+        // Toggle the display of the dropdown menu
+        if (myBookingsDropdown.style.display === "none") {
+          myBookingsDropdown.style.display = "block";
+        } else {
+          myBookingsDropdown.style.display = "none";
+        }
+
+        // Hide all other sections
+        editProfileForm.style.display = "none";
+        changePasswordSection.style.display = "none";
+        profileSection.style.display = "none";
+        addCar.style.display = "none";
+        myCarSection.style.display = "none";
+        removeCarSection.style.display = "none";
+
+        // Event listener for dropdown buttons
+        pendingBtn.addEventListener("click", function () {
+          // Show pending section, hide others
+          document.getElementById("pendingSection").style.display = "block";
+          document.getElementById("approvedSection").style.display = "none";
+          document.getElementById("paidSection").style.display = "none";
+          document.getElementById("completedSection").style.display = "none";
+        });
+
+        // Event listener for dropdown buttons
+        approvedBtn.addEventListener("click", function () {
+          // Show pending section, hide others
+          document.getElementById("approvedSection").style.display = "block";
+          document.getElementById("pendingSection").style.display = "none";
+          document.getElementById("paidSection").style.display = "none";
+          document.getElementById("completedSection").style.display = "none";
+        });
+      });
+
+      // Event listener for the Paid Bookings section
+      paidBtn.addEventListener("click", function () {
+        // Show paid section, hide others
+        document.getElementById("paidSection").style.display = "block";
         document.getElementById("pendingSection").style.display = "none";
-        document.getElementById("paidSection").style.display = "none";
+        document.getElementById("approvedSection").style.display = "none";
         document.getElementById("completedSection").style.display = "none";
       });
+
+      // Event listener for Completed Bookings button
+      completedBtn.addEventListener("click", function () {
+        // Show completed section, hide others
+        document.getElementById("completedSection").style.display = "block";
+        document.getElementById("paidSection").style.display = "none";
+        document.getElementById("pendingSection").style.display = "none";
+        document.getElementById("approvedSection").style.display = "none";
+      });
+
+      // Event listener for Payment button
+      paymentBtn.addEventListener("click", function () {
+        // Redirect to the payment page
+        window.location.href = "payment.html";
+      });
     });
+  </script>
 
-    // Event listener for the Paid Bookings section
-    paidBtn.addEventListener("click", function () {
-      // Show paid section, hide others
-      document.getElementById("paidSection").style.display = "block";
-      document.getElementById("pendingSection").style.display = "none";
-      document.getElementById("approvedSection").style.display = "none";
-      document.getElementById("completedSection").style.display = "none";
-    });
+  <style>
+    :root {
+      --indigo: #16425b;
+      --lapis: #2f6690;
+      --cerulean: #3a7ca5;
+      --skyblue: #81c3d7;
+      --platinum: #d9dcd6;
+      --darkgray: #b4b4b3;
+      --red: #f44336;
+      --green: #4caf50;
+      --darkgreen: darkgreen;
+      --crimson: crimson;
+      --white: #ffffff;
+    }
 
-    // Event listener for Completed Bookings button
-    completedBtn.addEventListener("click", function () {
-      // Show completed section, hide others
-      document.getElementById("completedSection").style.display = "block";
-      document.getElementById("paidSection").style.display = "none";
-      document.getElementById("pendingSection").style.display = "none";
-      document.getElementById("approvedSection").style.display = "none";
-    });
+    body {
+      font-family: "Montserrat", sans-serif;
+    }
 
-    // Event listener for Payment button
-    paymentBtn.addEventListener("click", function () {
-      // Redirect to the payment page
-      window.location.href = "payment.html";
-    });
-  });
+    .main-container {
+      width: 90vw;
+      margin: 0 5%;
+      margin-top: 9.8vh;
+      min-height: 65.6vh;
+    }
 
-</script>
+    .details {
+      padding: 40px;
+    }
 
-<style>
-  :root {
-    --indigo: #16425b;
-    --lapis: #2f6690;
-    --cerulean: #3a7ca5;
-    --skyblue: #81c3d7;
-    --platinum: #d9dcd6;
-    --darkgray: #b4b4b3;
-    --red: #f44336;
-    --green: #4CAF50;
-    --darkgreen: darkgreen;
-    --crimson: crimson;
-    --white:#ffffff;
-}
+    h2,
+    h3 {
+      color: var(--indigo);
+    }
 
-  body {
-    font-family: "Montserrat", sans-serif;
-  }
+    .button {
+      padding: 8px 16px;
+      border: none;
+      background-color: var(--lapis);
+      color: var(--platinum);
+      cursor: pointer;
+      border-radius: 5px;
+      margin-right: 10px;
+      font-size: medium;
+      margin-top: 20px;
+    }
 
-  .main-container {
-    width: 90vw;
-    margin: 0 5%;
-    margin-top: 9.8vh;
-    min-height: 65.6vh;
-  }
+    .button:hover {
+      background-color: var(--indigo);
+    }
 
-  .details {
-    padding: 40px;
-  }
+    .section {
+      margin-top: 20px;
+    }
 
-  h2,
-  h3 {
-    color: var(--indigo);
-  }
+    form {
+      margin-top: 10px;
+    }
 
-  .button {
-    padding: 8px 16px;
-    border: none;
-    background-color: var(--lapis);
-    color: var(--platinum);
-    cursor: pointer;
-    border-radius: 5px;
-    margin-right: 10px;
-    font-size: medium;
-    margin-top: 20px;
-  }
+    form label {
+      display: block;
+      margin-bottom: 5px;
+    }
 
-  .button:hover {
-    background-color: var(--indigo);
-  }
+    form input {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+    }
 
-  .section {
-    margin-top: 20px;
-  }
+    form button {
+      padding: 8px 20px;
+      background-color: var(--indigo);
+      color: var(--white);
+      border: none;
+      cursor: pointer;
+    }
 
-  form {
-    margin-top: 10px;
-  }
+    form button:hover {
+      background-color: var(--lapis);
+    }
 
-  form label {
-    display: block;
-    margin-bottom: 5px;
-  }
+    /* Customizing alert colors */
+    .alert-danger {
+      color: var(--red);
+      font-weight: bold;
+    }
 
-  form input {
-    width: 100%;
-    padding: 8px;
-    margin-bottom: 10px;
-  }
+    .alert-success {
+      color: var(--green);
+      font-weight: bold;
+    }
 
-  form button {
-    padding: 8px 20px;
-    background-color: var(--indigo);
-    color: var(--white);
-    border: none;
-    cursor: pointer;
-  }
+    /* Adjusting message display */
+    .message {
+      margin-top: 20px;
+      max-width: 300px;
+      word-wrap: break-word; /* Allow long messages to wrap */
+    }
 
-  form button:hover {
-    background-color: var(--lapis);
-  }
+    #addCarPopup {
+      display: none;
+    }
 
-  /* Customizing alert colors */
-  .alert-danger {
-    color: var(--red);
-    font-weight: bold;
-  }
+    #close {
+      float: right;
+      font-size: 30px;
+      cursor: pointer;
+    }
 
-  .alert-success {
-    color: var(--green);
-    font-weight: bold;
-  }
+    #car-add-btn {
+      margin-top: 2vh;
+      background-color: var(--lapis);
+      padding: 8px 27px;
+      border: none;
+      color: var(--white);
+      cursor: pointer;
+      border-radius: 5px;
+      margin: 10px 0px 10px;
+      font-size: medium;
+    }
 
-  /* Adjusting message display */
-  .message {
-    margin-top: 20px;
-    max-width: 300px;
-    word-wrap: break-word; /* Allow long messages to wrap */
-  }
+    #car_done {
+      margin-top: 2vh;
+      background-color: var(--green);
+      padding: 8px 27px;
+      border: none;
+      color: var(--white);
+      cursor: pointer;
+      border-radius: 5px;
+      margin: 10px 0px 10px;
+      font-size: medium;
+    }
 
-  #addCarPopup{
-    display: none;
-  }
-
-  #close{
-    float: right;
-    font-size: 30px;
-    cursor: pointer;
-  }
-
-  #car-add-btn {
-    margin-top: 2vh;
-    background-color: var(--lapis);
-    padding: 8px 27px;
-    border: none;
-    color: var(--white);
-    cursor: pointer;
-    border-radius: 5px;
-    margin: 10px 0px 10px;
-    font-size: medium;
-  }
-
-  #car_done{
-    margin-top: 2vh;
-    background-color: var(--green);
-    padding: 8px 27px;
-    border: none;
-    color: var(--white);
-    cursor: pointer;
-    border-radius: 5px;
-    margin: 10px 0px 10px;
-    font-size: medium;
-  }
-
-  #car_done:hover {
+    #car_done:hover {
       background-color: var(--darkgreen);
-  }
+    }
 
-  /* CSS for table */
-  #carDetailsTable {
-    width: 100%;
-    border-collapse: collapse;
-  }
+    /* CSS for table */
+    #carDetailsTable {
+      width: 100%;
+      border-collapse: collapse;
+    }
 
-  #carDetailsTable th,
-  #carDetailsTable td {
-    border: 1px solid #dddddd;
-    padding: 8px;
-    text-align: left;
-  }
+    #carDetailsTable th,
+    #carDetailsTable td {
+      border: 1px solid #dddddd;
+      padding: 8px;
+      text-align: left;
+    }
 
-  #carDetailsTable th {
-    background-color: #f2f2f2;
-  }
+    #carDetailsTable th {
+      background-color: #f2f2f2;
+    }
 
-  #myCarSection {
-    margin-top: 30px;
-  }
+    #myCarSection {
+      margin-top: 30px;
+    }
 
-  #carDetailsTable{
-    margin-top: 15px;
-  }
+    #carDetailsTable {
+      margin-top: 15px;
+    }
 
-  #bookingDetailsTable {
-    width: 100%;
-    border-collapse: collapse;
-  }
+    #bookingDetailsTable {
+      width: 100%;
+      border-collapse: collapse;
+    }
 
-  #bookingDetailsTable th,
-  #bookingDetailsTable td {
-    border: 1px solid #dddddd;
-    padding: 8px;
-    text-align: left;
-  }
+    #bookingDetailsTable th,
+    #bookingDetailsTable td {
+      border: 1px solid #dddddd;
+      padding: 8px;
+      text-align: left;
+    }
 
-  #bookingDetailsTable th {
-    background-color: #f2f2f2;
-  }
+    #bookingDetailsTable th {
+      background-color: #f2f2f2;
+    }
 
-  #myBookingsSection {
-    margin-top: 30px;
-  }
+    #myBookingsSection {
+      margin-top: 30px;
+    }
 
-  #bookingDetailsTable{
-    margin-top: 15px;
-  }
+    #bookingDetailsTable {
+      margin-top: 15px;
+    }
 
-  #myBookingsDropdown {
-    margin-top: 30px; 
-  }
+    #myBookingsDropdown {
+      margin-top: 30px;
+    }
 
-/* CSS for dropdown buttons */
-.dropdown-btn1,
-.dropdown-btn2,
-.dropdown-btn3,
-.dropdown-btn4 {
-  padding: 11px 22px; /* Increasing padding to make the buttons wider */
-  margin-right: 15px; /* Adjusting margin to provide spacing between buttons */
-  border: 1px solid var(--indigo); /* Adding border for better visibility */
-  background-color: var(--platinum); /* Changing background color */
-  color: var(--indigo); /* Changing text color */
-  cursor: pointer;
-  border-radius: 4px;
-  transition: background-color 0.3s ease;
-}
+    /* CSS for dropdown buttons */
+    .dropdown-btn1,
+    .dropdown-btn2,
+    .dropdown-btn3,
+    .dropdown-btn4 {
+      padding: 11px 22px; /* Increasing padding to make the buttons wider */
+      margin-right: 15px; /* Adjusting margin to provide spacing between buttons */
+      border: 1px solid var(--indigo); /* Adding border for better visibility */
+      background-color: var(--platinum); /* Changing background color */
+      color: var(--indigo); /* Changing text color */
+      cursor: pointer;
+      border-radius: 4px;
+      transition: background-color 0.3s ease;
+    }
 
-/* Hover effect */
-.dropdown-btn1:hover,
-.dropdown-btn2:hover,
-.dropdown-btn3:hover,
-.dropdown-btn4:hover {
-  background-color: var(--indigo);
-  color: var(--platinum);
-}
+    /* Hover effect */
+    .dropdown-btn1:hover,
+    .dropdown-btn2:hover,
+    .dropdown-btn3:hover,
+    .dropdown-btn4:hover {
+      background-color: var(--indigo);
+      color: var(--platinum);
+    }
 
-/* Active state */
-.dropdown-btn1:active,
-.dropdown-btn2:active,
-.dropdown-btn3:active,
-.dropdown-btn3:active {
-  background-color: var(--lapis);
-}
+    /* Active state */
+    .dropdown-btn1:active,
+    .dropdown-btn2:active,
+    .dropdown-btn3:active,
+    .dropdown-btn3:active {
+      background-color: var(--lapis);
+    }
 
-/* CSS for payment button */
-#paymentButton {
-  padding: 11px 22px; /* Increasing padding to make the buttons wider */
-  margin-right: 15px; /* Adjusting margin to provide spacing between buttons */
-  border: 1px solid var(--indigo); /* Adding border for better visibility */
-  background-color: var(--platinum); /* Changing background color */
-  color: var(--indigo); /* Changing text color */
-  cursor: pointer;
-  border-radius: 4px;
-  transition: background-color 0.3s ease;
-  margin-top:25px;
-}
+    /* CSS for payment button */
+    #paymentButton {
+      padding: 11px 22px; /* Increasing padding to make the buttons wider */
+      margin-right: 15px; /* Adjusting margin to provide spacing between buttons */
+      border: 1px solid var(--indigo); /* Adding border for better visibility */
+      background-color: var(--platinum); /* Changing background color */
+      color: var(--indigo); /* Changing text color */
+      cursor: pointer;
+      border-radius: 4px;
+      transition: background-color 0.3s ease;
+      margin-top: 25px;
+    }
 
-/* Hover effect */
-#paymentButton:hover {
-  background-color: var(--indigo);
-  color: var(--platinum);
-}
+    /* Hover effect */
+    #paymentButton:hover {
+      background-color: var(--indigo);
+      color: var(--platinum);
+    }
 
-/* Active state */
-#paymentButton:active {
-  background-color: var(--lapis);
-}
+    /* Active state */
+    #paymentButton:active {
+      background-color: var(--lapis);
+    }
 
-/* Adjusting the margin-top for the Remove Car section */
-#removeCarSection {
-  margin-top: 20px;
-}
+    /* Adjusting the margin-top for the Remove Car section */
+    #removeCarSection {
+      margin-top: 20px;
+    }
 
-#removeCarBtn {
-  margin-top: 2vh;
-  background-color: var(--lapis);
-  padding: 8px 27px;
-  border: none;
-  color: var(--white);
-  cursor: pointer;
-  border-radius: 5px;
-  margin-left: 10px;
-  font-size: medium;
-}
+    #removeCarBtn {
+      margin-top: 2vh;
+      background-color: var(--lapis);
+      padding: 8px 27px;
+      border: none;
+      color: var(--white);
+      cursor: pointer;
+      border-radius: 5px;
+      margin-left: 10px;
+      font-size: medium;
+    }
 
-#removeCarDetailsTable {
-  width: 100%;
-  border-collapse: collapse;
-}
+    #removeCarDetailsTable {
+      width: 100%;
+      border-collapse: collapse;
+    }
 
-#removeCarDetailsTable th,
-#removeCarDetailsTable td {
-  border: 1px solid #dddddd;
-  padding: 8px;
-  text-align: left;
-}
+    #removeCarDetailsTable th,
+    #removeCarDetailsTable td {
+      border: 1px solid #dddddd;
+      padding: 8px;
+      text-align: left;
+    }
 
-#removeCarDetailsTable th {
-  background-color: #f2f2f2;
-}
+    #removeCarDetailsTable th {
+      background-color: #f2f2f2;
+    }
 
-#removeCarDetailsTable{
-  margin-top: 15px;
-}
+    #removeCarDetailsTable {
+      margin-top: 15px;
+    }
 
-.removeCarDetailsButton {
-  padding: 10px 20px; /* Increase padding for larger button size */
-  background-color: var(--red); /* Change background color */
-  color: var(--white); /* Change text color */
-  border: none;
-  cursor: pointer;
-  border-radius: 5px;
-  font-size: medium;
-  transition: background-color 0.3s ease; /* Add transition for hover effect */
-}
+    .removeCarDetailsButton {
+      padding: 10px 20px; /* Increase padding for larger button size */
+      background-color: var(--red); /* Change background color */
+      color: var(--white); /* Change text color */
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+      font-size: medium;
+      transition: background-color 0.3s ease; /* Add transition for hover effect */
+    }
 
-.removeCarDetailsButton:hover {
-  background-color: var(--crimson); /* Change background color on hover */
-}
+    .removeCarDetailsButton:hover {
+      background-color: var(--crimson); /* Change background color on hover */
+    }
 
-#removeCarConfirmation {
-  display: none;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: #ffff; /* Semi-transparent white background */
-  width: 400px; 
-  padding: 20px;
-  border-radius: 10px;
-  z-index: 1000; /* Ensure it's above other content */
-  border: 5px solid var(--lapis); /* Decreased border size and changed border color */
+    #removeCarConfirmation {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #ffff; /* Semi-transparent white background */
+      width: 400px;
+      padding: 20px;
+      border-radius: 10px;
+      z-index: 1000; /* Ensure it's above other content */
+      border: 5px solid var(--lapis); /* Decreased border size and changed border color */
+    }
 
-}
+    .popup-content {
+      text-align: center;
+      background-color: #ffff;
+      padding: 20px;
+      border-radius: 10px;
+      color: var(--indigo); /* Text color */
+    }
 
-.popup-content {
-  text-align: center;
-  background-color: #ffff; 
-  padding: 20px;
-  border-radius: 10px;
-  color: var(--indigo); /* Text color */
-}
+    .popup-content h2 {
+      margin-top: 0;
+    }
 
-.popup-content h2 {
-  margin-top: 0;
-}
+    .popup-content p {
+      margin-bottom: 20px;
+    }
 
-.popup-content p {
-  margin-bottom: 20px;
-}
+    .close {
+      position: absolute;
+      top: 2px;
+      right: 15px;
+      color: var(--indigo); /* Close button color */
+      font-size: 30px;
+      cursor: pointer;
+    }
 
-.close {
-  position: absolute;
-  top: 2px;
-  right: 15px;
-  color: var(--indigo); /* Close button color */
-  font-size: 30px;
-  cursor: pointer;
-}
+    /* Styling for buttons */
+    #confirmRemoveCar,
+    #removeCarConfirmation button {
+      padding: 12px 24px; /* Increased padding for larger buttons */
+      background-color: var(--lapis); /* Button background color */
+      color: var(--platinum); /* Button text color */
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+      font-size: medium; /* Increased font size */
+      margin-right: 10px;
+    }
 
-/* Styling for buttons */
-#confirmRemoveCar,
-#removeCarConfirmation button {
-  padding: 12px 24px; /* Increased padding for larger buttons */
-  background-color: var(--lapis); /* Button background color */
-  color: var(--platinum); /* Button text color */
-  border: none;
-  cursor: pointer;
-  border-radius: 5px;
-  font-size: medium; /* Increased font size */
-  margin-right: 10px;
-}
+    #confirmRemoveCar:hover,
+    #removeCarConfirmation button:hover {
+      background-color: var(--indigo); /* Button background color on hover */
+    }
 
-#confirmRemoveCar:hover,
-#removeCarConfirmation button:hover {
-  background-color: var(--indigo); /* Button background color on hover */
-}
+    #pendingBookingDetailsTable,
+    #approvedBookingDetailsTable,
+    #paidBookingDetailsTable,
+    #completedBookingDetailsTable {
+      width: 100%;
+      border-collapse: collapse;
+    }
 
-#pendingBookingDetailsTable, #approvedBookingDetailsTable,
-#paidBookingDetailsTable, #completedBookingDetailsTable {
-    width: 100%;
-    border-collapse: collapse;
-  }
+    #pendingBookingDetailsTable th,
+    #approvedBookingDetailsTable th,
+    #paidBookingDetailsTable th,
+    #completedBookingDetailsTable th,
+    #pendingBookingDetailsTable td,
+    #approvedBookingDetailsTable td,
+    #paidBookingDetailsTable td,
+    #completedBookingDetailsTable td {
+      border: 1px solid #dddddd;
+      padding: 8px;
+      text-align: left;
+    }
 
-  #pendingBookingDetailsTable th, #approvedBookingDetailsTable th,
-  #paidBookingDetailsTable th, #completedBookingDetailsTable th,
-  #pendingBookingDetailsTable td, #approvedBookingDetailsTable td,
-  #paidBookingDetailsTable td, #completedBookingDetailsTable td {
-    border: 1px solid #dddddd;
-    padding: 8px;
-    text-align: left;
-  }
+    #pendingBookingDetailsTable th,
+    #approvedBookingDetailsTable th,
+    #paidBookingDetailsTable th,
+    #completedBookingDetailsTable th {
+      background-color: #f2f2f2;
+    }
 
-  #pendingBookingDetailsTable th, #approvedBookingDetailsTable th,
-  #paidBookingDetailsTable th, #completedBookingDetailsTable th {
-    background-color: #f2f2f2;
-  }
-
-  #pendingBookingDetailsTable, #approvedBookingDetailsTable,
-  #paidBookingDetailsTable, #completedBookingDetailsTable {
-    margin-top: 15px;
-  }
-
-
-</style>
-{% endblock %}
+    #pendingBookingDetailsTable,
+    #approvedBookingDetailsTable,
+    #paidBookingDetailsTable,
+    #completedBookingDetailsTable {
+      margin-top: 15px;
+    }
+  </style>
+  {% endblock %}
+</div>

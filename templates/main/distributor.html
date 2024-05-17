@@ -10,34 +10,34 @@
       <!-- main button to navigate between car and booking -->
       <div class="sidebar">
         <h1 id="logo">VROOM</h1>
-         <ul>
-            <li>
-                <a id="default-btn" onclick="toggleContent('default')"> 
-                    <i class="fas fa-house"></i>
-                    <span id="default-topic">Dashboard</span> 
-                </a>
-            </li>
-            <li>
-                <a id="car-btn" onclick="toggleContent('car')"> 
-                    <i class="fas fa-car"></i>
-                    <span id="distributor-topic">Car</span> 
-                </a>
-            </li>
-            <li>
-                <a id="booking-btn" onclick="toggleContent('booking')"> 
-                    <i class="fas fa-bookmark"></i>
-                    <span id="user-topic">Booking</span>
-                </a>
-            </li>
-            
-            <li>
-                <a href="{% url 'logout' %}" id="logout">
-                    <i class="fas fa-sign-out-alt"></i>
-                    <span id="topic">Log Out</span>
-                </a>
-            </li>
+        <ul>
+          <li>
+            <a id="default-btn" onclick="toggleContent('default')">
+              <i class="fas fa-house"></i>
+              <span id="default-topic">Dashboard</span>
+            </a>
+          </li>
+          <li>
+            <a id="car-btn" onclick="toggleContent('car')">
+              <i class="fas fa-car"></i>
+              <span id="distributor-topic">Car</span>
+            </a>
+          </li>
+          <li>
+            <a id="booking-btn" onclick="toggleContent('booking')">
+              <i class="fas fa-bookmark"></i>
+              <span id="user-topic">Booking</span>
+            </a>
+          </li>
+
+          <li>
+            <a href="{% url 'logout' %}" id="logout">
+              <i class="fas fa-sign-out-alt"></i>
+              <span id="topic">Log Out</span>
+            </a>
+          </li>
         </ul>
-    </div>
+      </div>
 
       <!-- initializing count value to 0 for all required details -->
       <script>
@@ -76,22 +76,23 @@
               </label>
               <label id="TotalApproved">
                 <i class="fas fa-check"></i>
-                <span id="approved">3</span>
-              </label><br /><br>
+                <span id="approved">3</span> </label
+              ><br /><br />
               <label id="TotalPending">
                 <i class="fas fa-hourglass-start"></i>
                 <span id="pending">4</span>
               </label>
               <label id="TotalPaid">
                 <i class="fas fa-money-check-alt"></i>
-                <span id="paid">5</span>
-              </label><br />
+                <span id="paid">5</span> </label
+              ><br />
               <label id="completed"></label><br />
             </div>
           </div>
-           <!-- table to show booking information -->
-           <h1 id="recent_booking">Recent Booking</h1>
-           <table>
+
+          <!-- table to show booking information -->
+          <h1 id="recent_booking">Recent Booking</h1>
+          <table>
             <thead>
               <tr>
                 <th>Product</th>
@@ -120,7 +121,7 @@
               <script>
                 totalBookingCount++;
               </script>
-          
+
               <tr>
                 <td>{{ order.product }}</td>
                 <td>{{ order.rentee_email }}</td>
@@ -129,9 +130,9 @@
                 <td>
                   <!-- Dropdown menu for status -->
                   <select onchange="updateStatus('{{ order.id }}', this.value)">
-                    <option value="Pending" {% if order.status == "Pending" %} selected {% endif %}>Pending</option>
+                    <!-- <option value="Pending" {% if order.status == "Pending" %} selected {% endif %}>Pending</option>
                     <option value="Approved" {% if order.status == "Approved" %} selected {% endif %}>Approved</option>
-                    <option value="Paid" {% if order.status == "Paid" %} selected {% endif %}>Paid</option>
+                    <option value="Paid" {% if order.status == "Paid" %} selected {% endif %}>Paid</option> -->
                   </select>
                 </td>
               </tr>
@@ -153,191 +154,208 @@
 
             <div class="cards-container">
               <!-- Cards will be dynamically added here -->
-              {% for item in items %} 
+              {% for item in items %}
 
               <!-- checking car details and updating count -->
               {% if item.availability == "Unlisted" %}
-                <script>
-                  totalUnlistedCarCount++;
-                </script>
+              <script>
+                totalUnlistedCarCount++;
+              </script>
               {% elif item.availability == "Available" %}
-                <script>
-                  totalAvailableCarCount++;
-                </script>
+              <script>
+                totalAvailableCarCount++;
+              </script>
               {% elif item.availability == "Booked" %}
-                <script>
-                  totalBookedCarCount++;
-                </script>
+              <script>
+                totalBookedCarCount++;
+              </script>
               {% endif %}
               <script>
                 totalCarCount++;
               </script>
 
+              {% if not item.availability == 'Unlisted' %}
               <div class="card">
-                <div class="availability-container  availability-unavailable">
+                <div
+                  class="availability-container {% if item.availability == 'Available' %}availability-available{% else %}availability-unavailable{% endif %}"
+                >
                   <a class="availability">{{ item.availability }}</a>
                 </div>
                 <img src="{{ item.image.url }}" alt="Car Image" />
                 <div class="card-text">
                   <div class="card-details">
                     <h2 class="car-model">{{ item.car_model }}</h2>
+                    <!-- <h4 class="renter-name">{{ item.renter_name }}</h4> -->
                     <h3 class="car-type">{{ item.car_type }}</h3>
                     <h4 class="car-price">Rs {{ item.price }} / day</h4>
                   </div>
+
                   <div class="buttons">
-                      <button id="car-edit-btn" onclick="openEditCarPopup()">Edit</button>
-                      <button  id="car-delete-btn" onclick="openDeleteCarPopup()">Delete</button>
+                    <button id="car-edit-btn" onclick="openEditCarPopup()">
+                      Edit
+                    </button>
+                    <button id="car-delete-btn" onclick="openDeleteCarPopup()">
+                      Delete
+                    </button>
                   </div>
                 </div>
               </div>
-              {% endfor %}
-               <!-- button to navigate different pages of cars -->
+              {% endif %} {% endfor %}
+            </div>
+
+            <!-- button to navigate different pages of cars -->
             <div class="page-btn">
               <button id="previousPageBtn">Previous Page</button>
               <h2 class="page-number"></h2>
               <button id="nextPageBtn">Next Page</button>
             </div>
-            </div>
+          </div>
 
-            <!-- Popup for editing car -->
-            <div class="popup" id="editCarPopup">
-              <div class="popup-content">
-                <span class="close" onclick="closePopup('editCarPopup')">&times;</span>
-                <h2>Edit Car</h2>
-                <form id="editCarForm">
-                  <label id="status"> Status:</label><br />
-                  <select onchange="updateStatus('{{ order.id }}', this.value)">
-                    <option value="Available" {% if order.status == "Pending" %} selected {% endif %}>Available</option>
+          <!-- Popup for editing car -->
+          <div class="popup" id="editCarPopup">
+            <div class="popup-content">
+              <span class="close" onclick="closePopup('editCarPopup')"
+                >&times;</span
+              >
+              <h2>Edit Car</h2>
+              <form id="editCarForm" method="post">
+                <label id="status"> Status:</label><br />
+                <select onchange="updateStatus('{{ order.id }}', this.value)">
+                  <!-- <option value="Available" {% if order.status == "Pending" %} selected {% endif %}>Available</option>
                     <option value="Booking" {% if order.status == "Approved" %} selected {% endif %}>Booking</option>
-                    <option value="Unlisted" {% if order.status == "Paid" %} selected {% endif %}>Unlisted</option>
-                  </select><br />
-                  <button type="submit">Save Changes</button>
-                </form>
-              </div>
+                    <option value="Unlisted" {% if order.status == "Paid" %} selected {% endif %}>Unlisted</option> --></select
+                ><br />
+                <button type="submit" name="editCar">Save Changes</button>
+              </form>
             </div>
+          </div>
 
-            <!-- Popup to delete car -->
-            <div class="popup" id="deleteCarPopup">
-              <div class="popup-content">
-                <span class="close" onclick="closePopup('deleteCarPopup')">&times;</span>
-                <h2>Delete Car</h2>
-                <form id="deleteCarForm">
-                  <label for="carIdToDelete">Car ID:</label><br />
-                  <input type="text" id="carIdToDelete" name="carIdToDelete" /><br />
-                  <button onclick="deleteCar()">Delete</button>
-                </form>
-                
-              </div>
+          <!-- Popup to delete car -->
+          <div class="popup" id="deleteCarPopup">
+            <div class="popup-content">
+              <span class="close" onclick="closePopup('deleteCarPopup')"
+                >&times;</span
+              >
+              <h2>Delete Car</h2>
+              <form id="deleteCarForm">
+                <label for="carIdToDelete">Car ID:</label><br />
+                <input
+                  type="text"
+                  id="carIdToDelete"
+                  name="carIdToDelete"
+                /><br />
+                <button onclick="deleteCar()">Delete</button>
+              </form>
             </div>
+          </div>
 
+          <!-- displaying the total car count in distributor dashboard -->
+          <script>
+            document.getElementById("TotalCars").innerHTML =
+              "Total Cars : " + totalCarCount;
+            document.getElementById("Available").innerHTML =
+              "Available Cars : " + totalAvailableCarCount;
+            document.getElementById("Booked").innerHTML =
+              "Booked Cars : " + totalBookedCarCount;
+            document.getElementById("Unlisted").innerHTML =
+              "Unlisted Cars : " + totalUnlistedCarCount;
+          </script>
 
-            <!-- displaying the total car count in distributor dashboard -->
-            <script>
-              document.getElementById('TotalCars').innerHTML = 'Total Cars : ' + totalCarCount;
-              document.getElementById('Available').innerHTML = 'Available Cars : ' + totalAvailableCarCount;
-              document.getElementById('Booked').innerHTML = 'Booked Cars : ' + totalBookedCarCount;
-              document.getElementById('Unlisted').innerHTML = 'Unlisted Cars : ' + totalUnlistedCarCount;
-             </script>
-
-           
-
-            <!-- popup to add car -->
-            <div class="popup" id="addCarPopup">
-              <div class="popup-content">
-                <span class="close" onclick="closePopup('addCarPopup')"
-                  >&times;</span
-                >
-                <h2>Add Car</h2>
-                <form id="addCarForm">
-                  <label for="renterName">Renter Name:</label><br />
-                  <input type="text" id="renterName" name="renterName" /><br />
-                  <label for="contactNumber">Contact Number:</label><br />
-                  <input
-                    type="text"
-                    id="contactNumber"
-                    name="contactNumber"
-                  /><br />
-                  <label for="model">Model:</label><br />
-                  <input type="text" id="model" name="model" /><br />
-                  <label for="price">Price:</label><br />
-                  <input type="text" id="price" name="price" /><br />
-                  <label for="carImage">Car Image:</label><br />
-                  <input
-                    type="file"
-                    id="carImage"
-                    name="carImage"
-                  /><br /><br />
-                  <button type="submit">Add Car</button>
-                </form>
-              </div>
+          <!-- popup to add car -->
+          <div class="popup" id="addCarPopup">
+            <div class="popup-content">
+              <span class="close" onclick="closePopup('addCarPopup')"
+                >&times;</span
+              >
+              <h2>Add Car</h2>
+              <form id="addCarForm">
+                <label for="renterName">Renter Name:</label><br />
+                <input type="text" id="renterName" name="renterName" /><br />
+                <label for="contactNumber">Contact Number:</label><br />
+                <input
+                  type="text"
+                  id="contactNumber"
+                  name="contactNumber"
+                /><br />
+                <label for="model">Model:</label><br />
+                <input type="text" id="model" name="model" /><br />
+                <label for="price">Price:</label><br />
+                <input type="text" id="price" name="price" /><br />
+                <label for="carImage">Car Image:</label><br />
+                <input type="file" id="carImage" name="carImage" /><br /><br />
+                <button type="submit">Add Car</button>
+              </form>
             </div>
           </div>
         </div>
-        <div id="booking-content">
-          <h2>Booking Information</h2>
+      </div>
+      <div id="booking-content">
+        <h2>Booking Information</h2>
 
-          <!-- table to show booking information -->
-          <table>
-            <thead>
-              <tr>
-                <th>Order Id</th>
-                <th>Product</th>
-                <th>Rentee</th>
-                <th>Booking Start Date</th>
-                <th>Booking End Date</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for order in orders %}
-              <!-- Checking order details and updating count -->
-              {% if order.status == "Pending" %}
-              <script>
-                totalPendingOrderCount++;
-              </script>
-              {% elif order.status == "Approved" %}
-              <script>
-                totalApprovedOrderCount++;
-              </script>
-              {% elif order.status == "Paid" %}
-              <script>
-                totalPaidOrderCount++;
-              </script>
-              {% endif %}
-              <script>
-                totalBookingCount++;
-              </script>
-          
-              <tr>
-                <td>{{ order.order_id }}</td>
-                <td>{{ order.product }}</td>
-                <td>{{ order.rentee }}</td>
-                <td>{{ order.start_date }}</td>
-                <td>{{ order.end_date }}</td>
-                <td>
-                  <!-- Dropdown menu for status -->
-                  <select onchange="updateStatus('{{ order.id }}', this.value)">
-                    <option value="Pending" {% if order.status == "Pending" %} selected {% endif %}>Pending</option>
+        <!-- table to show booking information -->
+        <table>
+          <thead>
+            <tr>
+              <th>Order Id</th>
+              <th>Product</th>
+              <th>Rentee</th>
+              <th>Booking Start Date</th>
+              <th>Booking End Date</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for order in orders %}
+            <!-- Checking order details and updating count -->
+            {% if order.status == "Pending" %}
+            <script>
+              totalPendingOrderCount++;
+            </script>
+            {% elif order.status == "Approved" %}
+            <script>
+              totalApprovedOrderCount++;
+            </script>
+            {% elif order.status == "Paid" %}
+            <script>
+              totalPaidOrderCount++;
+            </script>
+            {% endif %}
+            <script>
+              totalBookingCount++;
+            </script>
+
+            <tr>
+              <td>{{ order.order_id }}</td>
+              <td>{{ order.product }}</td>
+              <td>{{ order.rentee }}</td>
+              <td>{{ order.start_date }}</td>
+              <td>{{ order.end_date }}</td>
+              <td>
+                <!-- Dropdown menu for status -->
+                <select onchange="updateStatus('{{ order.id }}', this.value)">
+                  <!-- <option value="Pending" {% if order.status == "Pending" %} selected {% endif %}>Pending</option>
                     <option value="Approved" {% if order.status == "Approved" %} selected {% endif %}>Approved</option>
-                    <option value="Paid" {% if order.status == "Paid" %} selected {% endif %}>Paid</option>
-                  </select>
-                </td>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-          
+                    <option value="Paid" {% if order.status == "Paid" %} selected {% endif %}>Paid</option> -->
+                </select>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
 
-          <!-- displaying the total order count in distributor dashboard -->
-          <script>
-            document.getElementById('bookings').innerHTML = 'Total Bookings : ' + totalBookingCount;
-            document.getElementById('approved').innerHTML = 'Approved Bookings : ' + totalApprovedOrderCount;
-            document.getElementById('paid').innerHTML = 'Paid Bookings : ' + totalPaidOrderCount;
-            document.getElementById('pending').innerHTML = 'Pending Bookings : ' + totalPendingOrderCount;
-            document.getElementById('completed').innerHTML = 'Completed Bookings : ' + totalCompletedOrderCount;
-            
-           </script>
-        </div>
+        <!-- displaying the total order count in distributor dashboard -->
+        <script>
+          document.getElementById("bookings").innerHTML =
+            "Total Bookings : " + totalBookingCount;
+          document.getElementById("approved").innerHTML =
+            "Approved Bookings : " + totalApprovedOrderCount;
+          document.getElementById("paid").innerHTML =
+            "Paid Bookings : " + totalPaidOrderCount;
+          document.getElementById("pending").innerHTML =
+            "Pending Bookings : " + totalPendingOrderCount;
+          document.getElementById("completed").innerHTML =
+            "Completed Bookings : " + totalCompletedOrderCount;
+        </script>
       </div>
     </div>
   </body>
@@ -347,10 +365,13 @@
   // JavaScript to toggle content based on button clicks
 
   function toggleContent(topic) {
-  document.getElementById("default-content").style.display = topic === 'default' ? "block" : "none";
-  document.getElementById("car-content").style.display = topic === 'car' ? "block" : "none";
-  document.getElementById("booking-content").style.display = topic === 'booking' ? "block" : "none";
-}
+    document.getElementById("default-content").style.display =
+      topic === "default" ? "block" : "none";
+    document.getElementById("car-content").style.display =
+      topic === "car" ? "block" : "none";
+    document.getElementById("booking-content").style.display =
+      topic === "booking" ? "block" : "none";
+  }
 
   document.addEventListener("DOMContentLoaded", function () {
     var filterButtons = document.querySelectorAll(".filter-btn");
@@ -492,20 +513,19 @@
     if (deleteCarPopup) deleteCarPopup.style.display = "block";
   }
 
-
   function closePopup(id) {
     document.getElementById(id).style.display = "none";
   }
 </script>
 
 <style>
-   /* Font Awesome styles */
-   @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css');
+  /* Font Awesome styles */
+  @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css");
 
   /* Set Font Awesome solid icons font family and font weight */
   .fa-solid {
-      font-family: 'Font Awesome 6 Solid';
-      font-weight: 900;
+    font-family: "Font Awesome 6 Solid";
+    font-weight: 900;
   }
 
   :root {
@@ -519,9 +539,9 @@
     --green: #4caf50;
     --darkgreen: darkgreen;
     --crimson: crimson;
-    --white:#fff;
+    --white: #fff;
     --yellow: #f4a62a;
-    --darkyellow:#df9319;
+    --darkyellow: #df9319;
   }
 
   body {
@@ -532,16 +552,16 @@
     font-family: "Montserrat", sans-serif;
   }
 
-  table{
+  table {
     font-size: 18px;
   }
 
-  table td{
+  table td {
     font-size: 20px;
   }
 
-    /* Logo styles */
-    #logo {
+  /* Logo styles */
+  #logo {
     color: var(--platinum);
     margin-top: 30px;
     text-align: center;
@@ -556,7 +576,7 @@
     height: 100vh;
   }
 
-  .sidebar i{
+  .sidebar i {
     color: var(--white);
     margin-left: 50px;
     margin-right: 10px;
@@ -569,28 +589,28 @@
   }
 
   .sidebar li {
-      margin-bottom: 10px;
+    margin-bottom: 10px;
   }
 
   .sidebar a {
-      font-size: 25px;
-      width: 15vw;;
-      text-decoration: none;
-      color: var(--white);
-      display: block;
-      margin-top: 50px;
+    font-size: 25px;
+    width: 15vw;
+    text-decoration: none;
+    color: var(--white);
+    display: block;
+    margin-top: 50px;
   }
 
   .sidebar a:hover {
-      cursor: pointer;
+    cursor: pointer;
   }
 
   /* Log Out button styles */
   #logout {
-      position: absolute;
-      bottom: 30px;
-      left: 20px;
-    }
+    position: absolute;
+    bottom: 30px;
+    left: 20px;
+  }
 
   /* Content styles */
   .content {
@@ -600,7 +620,8 @@
     box-sizing: border-box;
   }
 
-  .car_card, .booking_card{
+  .car_card,
+  .booking_card {
     font-size: 18px;
     margin: 10px;
     padding: 20px;
@@ -611,23 +632,24 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
 
-  .car_card label, .booking_card label{
+  .car_card label,
+  .booking_card label {
     font-size: 40px;
     margin-right: 80px;
   }
 
   .car_card h3,
-  .booking_card h3{
+  .booking_card h3 {
     font-size: 30px;
     margin-top: 30px;
     margin-bottom: 20px;
   }
-  
-  #car-card label,#booking-card label {
-   font-size: 40px;
-   margin-right: 80px;
-  }
 
+  #car-card label,
+  #booking-card label {
+    font-size: 40px;
+    margin-right: 80px;
+  }
 
   #default-content #dashboard_card {
     display: flex;
@@ -665,7 +687,7 @@
     margin-top: 20px;
   }
 
-  #booking-content select{
+  #booking-content select {
     font-size: 18px;
   }
 
@@ -712,7 +734,9 @@
     background-color: #b4b4b3;
   }
 
-  .card h2 , h3, h4{
+  .card h2,
+  h3,
+  h4 {
     margin: 0;
     margin-top: 10px;
   }
@@ -726,19 +750,19 @@
   }
 
   .availability-available {
-    background-color: var(--green); 
+    background-color: var(--green);
   }
 
   .availability-unavailable {
-    background-color: var(--crimson); 
+    background-color: var(--crimson);
   }
 
   .availability {
-    color: var(--white); 
+    color: var(--white);
     font-weight: normal;
     font-size: 14px;
   }
-    
+
   .card img {
     margin: 0 0;
     border-top-right-radius: 15px;
@@ -762,7 +786,7 @@
     font-weight: 500;
   }
 
-  .buttons{
+  .buttons {
     display: flex;
     justify-content: space-between;
     width: 70%;
@@ -770,7 +794,7 @@
     margin-top: 20px;
   }
 
-  .buttons button{
+  .buttons button {
     width: 100px;
     height: 30px;
     font-size: 17px;
@@ -780,7 +804,7 @@
     padding: 5px 5px;
   }
 
-  #car-add-btn{
+  #car-add-btn {
     background-color: var(--green);
     width: 100px;
     height: 30px;
@@ -789,22 +813,21 @@
     border-radius: 5px;
     border: 0;
     padding: 5px 5px;
-
   }
 
-  #car-edit-btn{
+  #car-edit-btn {
     background-color: var(--yellow);
   }
 
-  #car-edit-btn:hover{
+  #car-edit-btn:hover {
     background-color: var(--darkyellow);
   }
 
-  #car-delete-btn{
+  #car-delete-btn {
     background-color: var(--red);
   }
 
-  #car-delete-btn:hover{
+  #car-delete-btn:hover {
     background-color: var(--crimson);
   }
 
@@ -860,33 +883,33 @@
   }
 
   .popup {
-  display: none;
-  position: fixed;
-  z-index: 9999;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-}
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
 
-.popup-content {
-  background-color: var(--indigo);
-  color: var(--white);
-  border-radius: 20px;
-  width: 35%;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
+  .popup-content {
+    background-color: var(--indigo);
+    color: var(--white);
+    border-radius: 20px;
+    width: 35%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
 
-#editCarPopup select{
-  margin-top: 20px;
-  margin-bottom: 20px;
-  font-weight: 17px;
-  padding: 5px;
-}
+  #editCarPopup select {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-weight: 17px;
+    padding: 5px;
+  }
 
   .close {
     color: #aaa;
@@ -905,29 +928,28 @@
   }
 
   .popup-content form {
-  margin: 70px;
-  text-align: center;
-}
+    margin: 70px;
+    text-align: center;
+  }
 
-.popup-content form input{
-  margin-bottom: 20px;
-  width: 350px;
-  font-size: 25px;
-  border-radius:5px;
-}
+  .popup-content form input {
+    margin-bottom: 20px;
+    width: 350px;
+    font-size: 25px;
+    border-radius: 5px;
+  }
 
-.popup-content label{
-  font-weight: 600;
-  font-size: 25px;
-}
+  .popup-content label {
+    font-weight: 600;
+    font-size: 25px;
+  }
 
+  .popup-content h2 {
+    margin-top: 50px;
+    text-align: center;
+  }
 
-.popup-content h2{
-  margin-top: 50px;
-  text-align: center;
-}
-
-.popup-content button{
+  .popup-content button {
     width: 150px;
     height: 30px;
     border: 0;
@@ -935,7 +957,7 @@
     background-color: var(--platinum);
   }
 
-  .popup-content button:hover{
+  .popup-content button:hover {
     background-color: var(--lapis);
     color: var(--white);
   }

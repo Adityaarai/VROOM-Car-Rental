@@ -14,7 +14,11 @@
     {% endif %}
     <div id="loginPopup" class="popup">
       <div class="popup-content">
-        <img src="{% static 'img/loginpopup.jpg'%}" alt="Image" class="popup-img" />
+        <img
+          src="{% static 'img/loginpopup.jpg'%}"
+          alt="Image"
+          class="popup-img"
+        />
 
         <!-- login block -->
         <div class="login-form">
@@ -23,16 +27,28 @@
           <form id="login-form" method="post" action="{% url 'login' %}">
             {% csrf_token %}
             <div class="form-group">
-              <label for="username_or_email">Username or Email</label>  
-              <input type="text" name="username_or_email" id="username_or_email"
-                placeholder="Enter your username or email" required />
+              <label for="username_or_email">Username or Email</label>
+              <input
+                type="text"
+                name="username_or_email"
+                id="username_or_email"
+                placeholder="Enter your username or email"
+                required
+              />
               <label for="password">Password</label>
-              <input type="password" name="password" id="password" placeholder="Enter your password" required />
+              <input
+                type="password"
+                name="password"
+                id="password"
+                placeholder="Enter your password"
+                required
+              />
               <div class="links">
-                <a href="{% url 'reset_password' %}">Forgot your password?</a><a class="title"href="{% url 'signup' %}">Sign Up</a>
+                <a href="{% url 'reset_password' %}">Forgot your password?</a
+                ><a class="title" href="{% url 'signup' %}">Sign Up</a>
               </div>
             </div>
-            
+
             <button type="submit">Sign In</button>
           </form>
           <div class="message">
@@ -184,13 +200,12 @@
 
     <div id="start_date">
       <label for="start-date">Start Date:</label>
-      <input type="date" id="start-date" name="start-date">
+      <input type="date" id="start-date" name="start-date" />
     </div>
-
 
     <div id="end_date">
       <label for="end-date">End Date:</label>
-      <input type="date" id="end-date" name="end-date">
+      <input type="date" id="end-date" name="end-date" />
     </div>
 
     <button type="submit">Search</button>
@@ -296,7 +311,7 @@
     margin-bottom: 10px;
   }
 
-  #login-form label{
+  #login-form label {
     margin-bottom: 15px;
     font-size: 30px;
   }
@@ -309,7 +324,7 @@
     color: var(--platinum);
     border-radius: 10px;
   }
-  .links{
+  .links {
     margin-bottom: 20px;
   }
 
@@ -408,7 +423,7 @@
     width: 100%;
   }
 
-  #pre-booking_title{
+  #pre-booking_title {
     font-size: 50px;
     font-weight: 600;
     text-align: center;
@@ -434,7 +449,6 @@
     display: grid;
     grid-template-columns: repeat(5, 14.5vw);
     gap: 20px;
-
   }
 
   #pre-booking label {
@@ -470,7 +484,6 @@
     font-size: 16px;
     cursor: pointer;
   }
-
 
   #vroom {
     color: var(--white);
