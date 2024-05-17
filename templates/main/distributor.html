@@ -204,7 +204,7 @@
             <!-- button to navigate different pages of cars -->
             <div class="page-btn">
               <button id="previousPageBtn">Previous Page</button>
-              <h2 class="page-number"></h2>
+              <a class="page-number"></a>
               <button id="nextPageBtn">Next Page</button>
             </div>
           </div>
@@ -477,8 +477,7 @@
   --crimson: crimson;
   --white: #fff;
   --yellow: #f4a62a;
-  --darkyellow: #df9319;
-  --orange:##E67C0E;
+  --orange:#E67C0E;
 }
 
 body {
@@ -566,7 +565,7 @@ table tr:nth-child(even) {
 .content {
   float: left;
   width: 80%;
-  padding: 20px 0 0 20px;
+  padding-left:20px;
   box-sizing: border-box;
 }
 
@@ -613,7 +612,7 @@ table tr:nth-child(even) {
 }
 
 .filter {
-  margin: 40px 2%;
+  margin-bottom: 10px;
   padding-top: 20px;
 }
 
@@ -636,7 +635,7 @@ table tr:nth-child(even) {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  padding: 0 20px;
+  /* padding: 0 20px; */
 }
 
 .card {
@@ -655,7 +654,7 @@ table tr:nth-child(even) {
   background-color: var(--darkgray);
 }
 
-.card h2, h3, h4 {
+.card-text h2, h3, h4 {
   margin: 0;
   margin-top: 10px;
 }
@@ -712,19 +711,24 @@ table tr:nth-child(even) {
 .buttons {
   display: flex;
   justify-content: space-between;
-  width: 70%;
-  margin-left: 15%;
+  width: 80%;
+  margin-left: 10%;
   margin-top: 20px;
 }
 
 .buttons button {
-  width: 80px;
+  flex-grow: 1;
+  width: 30%;
   height: 30px;
   font-size: 17px;
   color: var(--white);
   border-radius: 5px;
   border: 0;
   padding: 5px 5px;
+}
+
+.buttons form{
+  width: 100%;
 }
 
 #car-add-btn {
@@ -747,11 +751,15 @@ table tr:nth-child(even) {
 }
 
 .unlist:hover {
-  background-color: var(--darkyellow);
+  background-color: var(--orange);
 }
 
 .list{
-  background-color: var(--orange);
+  background-color: var(--lapis);
+}
+
+.list:hover{
+  background-color: var(--indigo);
 }
 
 #car-delete-btn {
@@ -763,11 +771,20 @@ table tr:nth-child(even) {
 }
 
 .page-btn {
-  margin-top: 20px;
+  margin-left: 35vw;
+  display: flex;
+  margin-top: 10px;
   text-align: center;
 }
 
+.page-btn a{
+  margin-top: 5px;
+  margin-right: 10px;
+  font-size: 20px;
+}
+
 .page-btn button {
+  height: 30px;
   padding: 10px 20px;
   background-color: var(--lapis);
   color: var(--platinum);
@@ -860,7 +877,6 @@ table tr:nth-child(even) {
 
 .error, .success{
   color: var(--white);
-  background-color: var(--indigo);
   width: 30vw;
   height: 40px;
   margin-left: 25vw;
@@ -868,4 +884,13 @@ table tr:nth-child(even) {
   border-radius: 5px;
   text-align: center;
 }
+
+.error{
+  background-color: var(--red);
+}
+
+.success{
+  background-color: var(--green);
+}
+
 </style>
