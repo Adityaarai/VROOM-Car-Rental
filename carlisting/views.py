@@ -11,6 +11,8 @@ from django.contrib.contenttypes.models import ContentType
 from django.utils import timezone
 from datetime import datetime
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.mail import send_mail
+from django.conf import settings
      
 def carlisting(request):
     items = CarDetail.objects.all()
@@ -52,7 +54,14 @@ def orders(request):
 
         product = CarDetail.objects.get(car_model=car_model, renter_name=renter_name, renter_contact=renter_contact)
         price = product.price
-        total_price = price * (enddate - startdate)
+        
+        # Convert string representations of dates into datetime objects
+        startdate_calc = datetime.strptime(startdate, '%Y-%m-%d')
+        enddate_calc = datetime.strptime(enddate, '%Y-%m-%d')
+
+        # Perform necessary calculations
+        total_days = (enddate_calc - startdate_calc).days
+        total_price = total_days * price
                 
         order = CarOrder.objects.create(product=product, start_date=startdate, end_date=enddate, rentee=rentee, total_price=total_price)
         messages.success(request, "Your booking has been created successfully")
@@ -78,7 +87,6 @@ def orders(request):
                 'image': detail.image.url
             }
             details_list.append(detail_dict)
-
         context = {
             'details': details_list,
         }
@@ -124,12 +132,70 @@ def userprofile(request):
    return render(request, 'main/user_profile.html')
 
 def distributorprofile(request):
+  try:
+    if request.method == 'POST':
+      renter_name = request.POST.get('renter_name')
+      car_model = request.POST.get('car_model')
+      
+      car_detail = CarDetail.objects.filter(renter_name=renter_name, car_model=car_model).first()
+   
+      if car_detail:
+        if 'changeUnlisted' in request.POST:
+          car_detail.availability = "Unlisted"
+          car_detail.save()
+          messages.success(request, "Car status updated to Unlisted successfully")
+        elif 'changeAvailable' in request.POST:
+          car_detail.availability = "Available"
+          car_detail.save()
+          messages.success(request, "Car status updated to Available successfully")
+        elif 'deleteCarDetails' in request.POST:
+          car_detail.delete()
+          messages.success(request, "Car deleted successfully")       
+        else:
+          messages.error(request, "Invalid action")
+      else:
+        order_id = request.POST.get('order_id')
+        print(order_id)
+        car_order = CarOrder.objects.filter(order_id=order_id).first()
+        print(car_order)
+
+        if 'approve' in request.POST:
+          car_order.status = "Approved"
+          car_order.save()
+          
+         # Welcome Email
+          subject = "Your Order has been Approved!"
+          message = f"""Hello {car_order.rentee.user.username}:,
+
+We are excited to inform you that your order has been successfully approved!
+Please proceed with the payment to fully complete this booking request. After payment the car will be delivered according to your needs.
+
+Thank you for choosing VROOM-Car-Rental-Service. We are delighted to have you as a valued customer and look forward to providing you with an exceptional car rental experience.
+
+If you have any questions or need further assistance, please don't hesitate to reach out to our support team.
+
+Best regards,
+The VROOM-Car-Rental-Service Team
+"""
+
+        from_email = settings.EMAIL_HOST_USER
+        to_list = [car_order.rentee.user.email]
+        send_mail(subject, message, from_email, to_list, fail_silently=True)
+
+        messages.success(request, "Order  approved successfully")     
+  except Exception as e:
+    messages.error(request, f"Error: {str(e)}")
+
+
   items = CarDetail.objects.all()
   orders = CarOrder.objects.all()
+
+  recent_orders = CarOrder.objects.all()[:5]
 
   context = {
     'items': items,
     'orders': orders,
+    'recent_orders': recent_orders,
   }
 
   return render(request, 'main/distributor.html', context)
