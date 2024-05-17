@@ -1,9 +1,12 @@
-{% extends 'partials/base.html' %} {% load static %} {% block title %} VROOM -
-Car Details{% endblock %} {% block content %}
+{% extends 'partials/base.html' %}
+{% load static %}
+{% block title %} VROOM - Car Details{% endblock %}
+{% block content %}
 <div class="main-container">
   <h1 id="heading">Car Details</h1>
   <div id="main">
-    {% if details %} {% for detail in details %}
+    {% if details %}
+    {% for detail in details %}
     <div class="details">
       <!--  Car Image -->
       <div id="image">
@@ -23,6 +26,13 @@ Car Details{% endblock %} {% block content %}
           <p>Rs. {{ detail.price }}</p>
         </div>
 
+        {% if detail.availability == 'Booked' %}
+        <p style="color: red;">
+          This car has been booked. You can pre-order it after {{ detail.end_date }}.
+        </p>
+        <input type="hidden" id="bookedEndDate" value="{{ detail.end_date|date:'Y-m-d' }}" />
+        {% endif %}
+        
         <!-- car details booking form -->
         <form id="booking-form" method="post">
           {% csrf_token %}
@@ -96,6 +106,17 @@ Car Details{% endblock %} {% block content %}
     </div>
   </div>
 </div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const bookedEndDate = document.getElementById('bookedEndDate');
+    const startDateInput = document.getElementById('bookingStartDate');
+  
+    if (bookedEndDate && startDateInput) {
+      startDateInput.min = bookedEndDate.value;
+    }
+  });
+  </script>
 
 <style>
   :root {

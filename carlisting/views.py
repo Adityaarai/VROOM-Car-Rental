@@ -49,10 +49,6 @@ def orders(request):
                 messages.error(request, "Cannot book cars in the past.")
                 return HttpResponseRedirect(current_url)
 
-            if start_date_obj > end_date_obj:
-                messages.error(request, "Start date must be before end date.")
-                return HttpResponseRedirect(current_url)
-              
             renter_name = request.POST['renter_name']
             renter_contact = request.POST['renter_contact']
             car_model = request.POST['car_model']
@@ -61,6 +57,16 @@ def orders(request):
                 product = CarDetail.objects.get(car_model=car_model, renter_name=renter_name, renter_contact=renter_contact)
             except CarDetail.DoesNotExist:
                 messages.error(request, "Car details not found.")
+                return HttpResponseRedirect(current_url)
+
+            if product.availability == 'Booked':
+                car_order = CarOrder.objects.filter(product=product).order_by('-end_date').first()
+                if car_order and start_date_obj <= car_order.end_date:
+                    messages.error(request, f"It is available only after {car_order.end_date}.")
+                    return HttpResponseRedirect(current_url)
+
+            if start_date_obj > end_date_obj:
+                messages.error(request, "Start date must be before end date.")
                 return HttpResponseRedirect(current_url)
 
             price = product.price
@@ -86,6 +92,7 @@ def orders(request):
 
         details_list = []
         for detail in details_queryset:
+            car_order = CarOrder.objects.filter(product=detail).order_by('-end_date').first()
             detail_dict = {
                 'renter_name': detail.renter_name,
                 'renter_contact': detail.renter_contact,
@@ -93,7 +100,8 @@ def orders(request):
                 'car_model': detail.car_model,
                 'price': detail.price,
                 'availability': detail.availability,
-                'image': detail.image.url
+                'image': detail.image.url,
+                'end_date': car_order.end_date if car_order else None,
             }
             details_list.append(detail_dict)
 
