@@ -146,77 +146,71 @@ def activate(request, uidb64, token):
 def user_profile_view(request):
     user = request.user
 
-    # Retrieve logged-in user's email
-    user_email = user.email
-
     try:
         profile = Profile.objects.get(user=user)
     except Profile.DoesNotExist:
-        profile = None
+        profile = Profile(user=user)
+        profile.save()  # Ensure the profile is saved if it doesn't exist
 
     if request.method == 'POST':
-        form = PasswordChangeForm(user, request.POST)
+        profile_form = UserProfileForm(request.POST, instance=profile, user=user)
+        password_form = PasswordChangeForm(user, request.POST)
 
         if 'update_profile' in request.POST:
-            profile_form = UserProfileForm(request.POST, instance=profile)
             if profile_form.is_valid():
-                if profile:
-                    profile_form.save()
-                    messages.success(request, "Profile information updated successfully.")
-                else:
-                    # If profile does not exist, create a new one
-                    profile = profile_form.save(commit=False)
-                    profile.user = user
-                    profile.save()
-                    messages.success(request, "Profile created successfully.")
+                profile_form.save()
+                messages.success(request, "Profile updated successfully.")
+                return redirect('user_profile')  # Redirect to the same page to ensure data is refreshed
             else:
                 messages.error(request, "Failed to update profile information. Please check the provided data.")
 
-            # Update username if it's changed
-            new_username = request.POST.get('username')
-            if new_username != user.username:
-                user.username = new_username
-                user.save()
-
-        elif 'change_password' in request.POST:  # Check if the change password form is submitted
+        elif 'change_password' in request.POST:
             form = PasswordChangeForm(user, request.POST)
             if form.is_valid():
                 form.save()
                 update_session_auth_hash(request, form.user)
                 messages.success(request, "Password updated successfully.")
+                return redirect('user_profile')  # Redirect to the same page to ensure data is refreshed
             else:
                 for field, errors in form.errors.items():
                     for error in errors:
                         messages.error(request, f"{field}: {error}")
+
+    else:
+        profile_form = UserProfileForm(instance=profile, user=user)
+        password_form = PasswordChangeForm(user)
     
     # Filter CarDetail objects based on renter_name matching the logged-in user's username
     cars = CarDetail.objects.filter(renter_name=user.username)
 
     # Filter bookings based on user's email and status ("Pending")
-    pending_bookings = CarOrder.objects.filter(rentee_email=user_email, status='Pending')
+    pending_bookings = CarOrder.objects.filter(rentee=user.profile, status='Pending')
 
     # Filter bookings based on user's email and status ("Approved")
-    approved_bookings = CarOrder.objects.filter(rentee_email=user_email, status='Approved')
+    approved_bookings = CarOrder.objects.filter(rentee=user.profile, status='Approved')
 
     # Filter bookings based on user's email and status ("Paid")
-    paid_bookings = CarOrder.objects.filter(rentee_email=user_email, status='Paid')
+    paid_bookings = CarOrder.objects.filter(rentee=user.profile, status='Paid')
 
     # Filter bookings based on user's email and status ("Completed")
-    completed_bookings = CarOrder.objects.filter(rentee_email=user_email, status='Completed')
+    completed_bookings = CarOrder.objects.filter(rentee=user.profile, status='Completed')
 
-    if not cars:  # If no cars found for the user
-        message = "You haven't added any cars yet."
-        return render(request, 'main/user_profile.html', {'user': user, 'message': message})
-    else:
-        return render(request, 'main/user_profile.html', {
-          'user': user,
-          'profile': profile,
-          'cars': cars,
-          'pending_bookings': pending_bookings,
-          'approved_bookings': approved_bookings,
-          'paid_bookings': paid_bookings,
-          'completed_bookings': completed_bookings
-        })
+    context = {
+        'user': user,
+        'profile': profile,
+        'profile_form': profile_form,
+        'password_form': password_form,
+        'cars': cars,
+        'pending_bookings': pending_bookings,
+        'approved_bookings': approved_bookings,
+        'paid_bookings': paid_bookings,
+        'completed_bookings': completed_bookings
+    }
+
+    if not cars: # If no cars found in the database
+        context['message'] = "You haven't added any cars yet."
+
+    return render(request, 'main/user_profile.html', context)
 
 # View for logging out
 @login_required
@@ -234,6 +228,17 @@ def add_car(request):
         price = request.POST.get('price')
         car_image = request.FILES.get('carImage')
 
+        # Regular expression pattern to match exactly 10 digits for contact number
+        pattern = r'^\d{10}$'
+
+        if not contact_number or not car_type or not model or not price or not car_image:
+            messages.error(request, 'Please fill in all fields, including the car image.')
+            return redirect('user_profile')
+
+        if not re.match(pattern, contact_number):
+            messages.error(request, 'Contact number must be a 10-digit number.')
+            return redirect('user_profile')
+            
         # Assuming the user is authenticated
         user = request.user
 
