@@ -8,4 +8,4 @@ class Profile(models.Model):
     contact = models.CharField(max_length=100, null=True)
 
     def __str__(self):
-        return f'{self.user.username} - Profile'
+        return f'{self.user.username} - {self.user.email}'
