@@ -1,14 +1,19 @@
-{% extends 'partials/base.html' %} {% load static %} {% block title %} VROOM -
-User profile{% endblock %} {% block content %}
+{% extends 'partials/base.html' %} 
+{% load static %} 
+{% block title %} VROOM - User profile{% endblock %} 
+
+{% block content %}
 
 <div class="main-container">
   <div class="details">
     <h2>User Profile</h2>
-    {% for message in messages %} {% if message.tags == 'error' %}
-    <div class="alert alert-danger" role="alert">{{ message }}</div>
-    {% elif message.tags == 'success' %}
-    <div class="alert alert-success" role="alert">{{ message }}</div>
-    {% endif %} {% endfor %}
+    {% for message in messages %} 
+      {% if message.tags == 'error' %}
+        <div class="alert alert-danger" role="alert">{{ message }}</div>
+      {% elif message.tags == 'success' %}
+        <div class="alert alert-success" role="alert">{{ message }}</div>
+      {% endif %} 
+    {% endfor %}
 
     <!--buttons in profile page-->
     <button class="button" id="profileBtn">Profile</button>
