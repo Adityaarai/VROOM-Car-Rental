@@ -295,7 +295,21 @@ def payment_view(request):
             'dropoff_date': approved_booking.end_date,
             'image': car_image
         }
+        
+        if request.method == 'POST':
+            esewa_number = request.POST.get('esewa_number')
+            password = request.POST.get('password')
+            
+            # Perform any necessary validation on esewa_number and password
+            if esewa_number and password and len(esewa_number) == 10 and len(password) == 4:
+                # Update the status to 'Paid'
+                approved_booking.status = 'Paid'
+                approved_booking.save()
+                messages.success(request, 'Payment successful!')
+                return redirect('user_profile')  # Redirect to the user's profile page
+            else:
+                messages.error(request, 'Invalid payment details. Please try again.')
     else:
         context = {}
-    
+
     return render(request, 'main/payment.html', context)
