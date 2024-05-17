@@ -88,17 +88,17 @@
                 <p id="Booking"></p>
               </label>
               <label id="Bookings">
-                <p id="Approved"></p> </label
-              ><br /><br />
+                <p id="Approved"></p> 
+              </label>
               <label id="Bookings">
                 <p id="Pending"></p>
               </label>
               <label id="Bookings">
-                <p id="Paid"></p> </label
-              ><br />
+                <p id="Paid"></p> 
+              </label>
               <label id="Bookings">
-                <p id="Completed"></p> </label
-              ><br />
+                <p id="Completed"></p> 
+              </label><br />
             </div>
           </div>
 
@@ -192,8 +192,8 @@
                         >
                           Delete
                         </button>
-                        <button type="submit" id="car-edit-btn" name="changeUnlisted">Unlist</button>
-                        <button type="submit" id="car-edit-btn" name="changeAvailable">List</button>
+                        <button type="submit" id="car-edit-btn" class="unlist" name="changeUnlisted">Unlist</button>
+                        <button type="submit" id="car-edit-btn" class="list" name="changeAvailable">List</button>
                       </form>
                     </div>
                   </div>
@@ -204,7 +204,7 @@
             <!-- button to navigate different pages of cars -->
             <div class="page-btn">
               <button id="previousPageBtn">Previous Page</button>
-              <h2 class="page-number"></h2>
+              <a class="page-number"></a>
               <button id="nextPageBtn">Next Page</button>
             </div>
           </div>
@@ -222,79 +222,80 @@
           </script>
 
         </div>
-      </div>
-      <div id="booking-content">
-        <h2>Booking Information</h2>
-
-        <!-- table to show booking information -->
-        <table>
-          <thead>
-            <tr>
-              <th>Order Id</th>
-              <th>Product</th>
-              <th>Rentee</th>
-              <th>Booking Start Date</th>
-              <th>Booking End Date</th>
-              <th>Status</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for order in orders %}
-            <!-- Checking order details and updating count -->
-            {% if order.status == "Pending" %}
-            <script>
-              totalPendingOrderCount++;
-            </script>
-            {% elif order.status == "Approved" %}
-            <script>
-              totalApprovedOrderCount++;
-            </script>
-            {% elif order.status == "Paid" %}
-            <script>
-              totalPaidOrderCount++;
-            </script>
-            {% elif order.status == "Completed" %}
-            <script>
-              totalCompletedOrderCount++;
-            </script>
-            {% endif %}
-            <script>
-              totalBookingCount++;
-            </script>
-
-            <tr>
-              <td>{{ order.order_id }}</td>
-              <td>{{ order.product }}</td>
-              <td>{{ order.rentee }}</td>
-              <td>{{ order.start_date }}</td>
-              <td>{{ order.end_date }}</td>
-              <td>{{ order.status }}</td>
-              {% if order.status == 'Pending' %}
-              <td>
-                <form method="post">
-                  {% csrf_token %}
-                  <!-- Hidden inputs to include car model and renter name -->
-                  <input type="hidden" id="orderid" name="order_id" value="{{ order.order_id }}" />
-
-                  <button type="submit" name="approve">Approve</button>
-                </form>
-              </td>
+        <div id="booking-content">
+          <h2>Booking Information</h2>
+  
+          <!-- table to show booking information -->
+          <table>
+            <thead>
+              <tr>
+                <th>Order Id</th>
+                <th>Product</th>
+                <th>Rentee</th>
+                <th>Booking Start Date</th>
+                <th>Booking End Date</th>
+                <th>Status</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for order in orders %}
+              <!-- Checking order details and updating count -->
+              {% if order.status == "Pending" %}
+              <script>
+                totalPendingOrderCount++;
+              </script>
+              {% elif order.status == "Approved" %}
+              <script>
+                totalApprovedOrderCount++;
+              </script>
+              {% elif order.status == "Paid" %}
+              <script>
+                totalPaidOrderCount++;
+              </script>
+              {% elif order.status == "Completed" %}
+              <script>
+                totalCompletedOrderCount++;
+              </script>
               {% endif %}
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-
-        <!-- displaying the total order count in distributor dashboard -->
-        <script>
-          document.getElementById("Booking").innerHTML = "Total Bookings : " + totalBookingCount;
-          document.getElementById("Approved").innerHTML = "Approved Bookings : " + totalApprovedOrderCount;
-          document.getElementById("Paid").innerHTML = "Paid Bookings : " + totalPaidOrderCount;
-          document.getElementById("Pending").innerHTML = "Pending Bookings : " + totalPendingOrderCount;
-          document.getElementById("Completed").innerHTML    = "Completed Bookings : " + totalCompletedOrderCount;
-        </script>
+              <script>
+                totalBookingCount++;
+              </script>
+  
+              <tr>
+                <td>{{ order.order_id }}</td>
+                <td>{{ order.product }}</td>
+                <td>{{ order.rentee }}</td>
+                <td>{{ order.start_date }}</td>
+                <td>{{ order.end_date }}</td>
+                <td>{{ order.status }}</td>
+                {% if order.status == 'Pending' %}
+                <td>
+                  <form method="post">
+                    {% csrf_token %}
+                    <!-- Hidden inputs to include car model and renter name -->
+                    <input type="hidden" id="orderid" name="order_id" value="{{ order.order_id }}" />
+  
+                    <button type="submit" name="approve">Approve</button>
+                  </form>
+                </td>
+                {% endif %}
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+  
+          <!-- displaying the total order count in distributor dashboard -->
+          <script>
+            document.getElementById("Booking").innerHTML = "Total Bookings : " + totalBookingCount;
+            document.getElementById("Approved").innerHTML = "Approved Bookings : " + totalApprovedOrderCount;
+            document.getElementById("Paid").innerHTML = "Paid Bookings : " + totalPaidOrderCount;
+            document.getElementById("Pending").innerHTML = "Pending Bookings : " + totalPendingOrderCount;
+            document.getElementById("Completed").innerHTML    = "Completed Bookings : " + totalCompletedOrderCount;
+          </script>
+        </div>
       </div>
+      
     </div>
   </body>
 </html>
@@ -476,7 +477,7 @@
   --crimson: crimson;
   --white: #fff;
   --yellow: #f4a62a;
-  --darkyellow: #df9319;
+  --orange:#E67C0E;
 }
 
 body {
@@ -564,7 +565,7 @@ table tr:nth-child(even) {
 .content {
   float: left;
   width: 80%;
-  padding: 20px 0 0 20px;
+  padding-left:20px;
   box-sizing: border-box;
 }
 
@@ -592,12 +593,13 @@ table tr:nth-child(even) {
 
 #car_card, #book_card {
   width: 40vw;
-  height: 25vh;
+  height: 30vh;
 }
 
 #car_card {
   background-color: var(--cerulean);
   color: var(--white);
+  margin-right: 20px;
 }
 
 #book_card {
@@ -610,7 +612,7 @@ table tr:nth-child(even) {
 }
 
 .filter {
-  margin: 40px 2%;
+  margin-bottom: 10px;
   padding-top: 20px;
 }
 
@@ -633,7 +635,7 @@ table tr:nth-child(even) {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  padding: 0 20px;
+  /* padding: 0 20px; */
 }
 
 .card {
@@ -652,7 +654,7 @@ table tr:nth-child(even) {
   background-color: var(--darkgray);
 }
 
-.card h2, h3, h4 {
+.card-text h2, h3, h4 {
   margin: 0;
   margin-top: 10px;
 }
@@ -709,19 +711,24 @@ table tr:nth-child(even) {
 .buttons {
   display: flex;
   justify-content: space-between;
-  width: 70%;
-  margin-left: 15%;
+  width: 80%;
+  margin-left: 10%;
   margin-top: 20px;
 }
 
 .buttons button {
-  width: 100px;
+  flex-grow: 1;
+  width: 30%;
   height: 30px;
   font-size: 17px;
   color: var(--white);
   border-radius: 5px;
   border: 0;
   padding: 5px 5px;
+}
+
+.buttons form{
+  width: 100%;
 }
 
 #car-add-btn {
@@ -735,12 +742,24 @@ table tr:nth-child(even) {
   padding: 5px 5px;
 }
 
-#car-edit-btn {
+#car-add-btn:hover {
+  background-color: var(--darkgreen);
+}
+
+.unlist{
   background-color: var(--yellow);
 }
 
-#car-edit-btn:hover {
-  background-color: var(--darkyellow);
+.unlist:hover {
+  background-color: var(--orange);
+}
+
+.list{
+  background-color: var(--lapis);
+}
+
+.list:hover{
+  background-color: var(--indigo);
 }
 
 #car-delete-btn {
@@ -752,11 +771,20 @@ table tr:nth-child(even) {
 }
 
 .page-btn {
-  margin-top: 20px;
+  margin-left: 35vw;
+  display: flex;
+  margin-top: 10px;
   text-align: center;
 }
 
+.page-btn a{
+  margin-top: 5px;
+  margin-right: 10px;
+  font-size: 20px;
+}
+
 .page-btn button {
+  height: 30px;
   padding: 10px 20px;
   background-color: var(--lapis);
   color: var(--platinum);
@@ -769,10 +797,6 @@ table tr:nth-child(even) {
 
 .page-btn button:hover {
   background-color: var(--indigo);
-}
-
-#car-add-btn:hover {
-  background-color: var(--darkgreen);
 }
 
 /* Popup styles */
@@ -849,6 +873,24 @@ table tr:nth-child(even) {
 .popup-content button:hover {
   background-color: var(--lapis);
   color: var(--white);
+}
+
+.error, .success{
+  color: var(--white);
+  width: 30vw;
+  height: 40px;
+  margin-left: 25vw;
+  padding-top: 15px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.error{
+  background-color: var(--red);
+}
+
+.success{
+  background-color: var(--green);
 }
 
 </style>
