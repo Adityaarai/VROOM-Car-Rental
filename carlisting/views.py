@@ -25,7 +25,8 @@ def orders(request):
     current_url = request.get_full_path()
     if request.method == 'POST':
       if request.user.is_authenticated:
-        existing_order = CarOrder.objects.filter(rentee_email=request.user.email).first()
+        rentee = Profile.objects.get(user=request.user)
+        existing_order = CarOrder.objects.filter(rentee=rentee, status='Pending').first()
         if existing_order:
           messages.error(request, "You have already placed an order.")
           return redirect('orders')
@@ -48,11 +49,12 @@ def orders(request):
         renter_name = request.POST['renter_name']
         renter_contact = request.POST['renter_contact']
         car_model = request.POST['car_model']
-        rentee_email = request.user.email
 
         product = CarDetail.objects.get(car_model=car_model, renter_name=renter_name, renter_contact=renter_contact)
+        price = product.price
+        total_price = price * (enddate - startdate)
                 
-        order = CarOrder.objects.create(product=product, start_date=startdate, end_date=enddate, rentee_email=rentee_email)
+        order = CarOrder.objects.create(product=product, start_date=startdate, end_date=enddate, rentee=rentee, total_price=total_price)
         messages.success(request, "Your booking has been created successfully")
         return redirect('orders')
       else:
@@ -67,7 +69,6 @@ def orders(request):
         details_list = []
         for detail in details_queryset:
             detail_dict = {
-                'id': detail.id,
                 'renter_name': detail.renter_name,
                 'renter_contact': detail.renter_contact,
                 'car_type': detail.car_type,
@@ -82,7 +83,6 @@ def orders(request):
             'details': details_list,
         }
         return render(request, 'main/car_details.html', context)
-
 
 # Create your views here.
 def index(request):

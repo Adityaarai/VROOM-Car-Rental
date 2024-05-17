@@ -1,23 +1,33 @@
-{% extends 'partials/base.html' %} 
-{% load static %} 
-{% block title %} Password Reset {% endblock %} 
-
-{% block content %}
+{% extends 'partials/base.html' %} {% load static %} {% block title %} Password
+Reset {% endblock %} {% block content %}
 
 <main class="formPage my-xl">
-    <div class="content-box">
-        <div class="formWrapper" style="margin-left: 20px;">
-            <h3 style="margin-top: 110px; margin-bottom: 30px; ">Enter new password</h3>
-            
-            <p style="margin-bottom: 10px;">Please enter your new password twice so we can verify you typed it in correctly.</p>
+  <div class="content-box">
+    <div class="formWrapper" style="margin-left: 20px">
+      <h3 style="margin-top: 110px; margin-bottom: 30px">Enter new password</h3>
 
-            <form class="form" method="POST" style="margin-bottom: 135px;">
-                {% csrf_token %}
-                {{form.as_p}}
-                <button class="btn btn--sub btn--lg my-md" type="submit" style="background-color: #2f6690; color: white; padding: 10px 20px; margin-top: 15px;">Submit</button>
-            </form>
-        </div>
+      <p style="margin-bottom: 10px">
+        Please enter your new password twice so we can verify you typed it in
+        correctly.
+      </p>
+
+      <form class="form" method="POST" style="margin-bottom: 135px">
+        {% csrf_token %} {{form.as_p}}
+        <button
+          class="btn btn--sub btn--lg my-md"
+          type="submit"
+          style="
+            background-color: #2f6690;
+            color: white;
+            padding: 10px 20px;
+            margin-top: 15px;
+          "
+        >
+          Submit
+        </button>
+      </form>
     </div>
+  </div>
 </main>
 
 {% endblock content %}

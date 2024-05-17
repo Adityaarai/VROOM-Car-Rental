@@ -1,83 +1,95 @@
-{% extends 'partials/base.html' %}
-{% load static %}
-{% block title %}
-Payment! VROOM
-{% endblock %}
-{% block content%}
+{% extends 'partials/base.html' %} {% load static %} {% block title %} Payment!
+VROOM {% endblock %} {% block content%}
 <div class="main">
-    <h1 id="header">Car Rental Payment</h1>
-    <div class="container">
-      <div class="car-image">
-        <img src="{{ image }}" alt="Car Image">
-      </div>
-      <div class="car-details">
-        <h2>Car Details</h2>
-        <div class="inner-car-details">
-          <p><strong>Car:</strong> </p><p id="model">{{ car_name }}</p>
-          <p><strong>Price:</strong> </p><p id="price">{{ price }}</p>
-          <p><strong>Pickup Date:</strong></p> <label type="date" id="pick-date">{{ pickup_date }}</label>
-          <p><strong>Drop-off Date:</strong></p> <label type="date" id="drop-date">{{ dropoff_date }}</label>
-        </div>
-      </div>
-      <div class="payment-form">
-        <h2>Payment Information</h2>
-        <form id="payment-form" method="post">
-          {% csrf_token %}
-          <label for="Esewa-number">eSewa ID:</label>
-          <input type="text" id="Esewa-number" placeholder="Enter esewa number" required>
-          <label for="Password">MPIN/Password:</label>
-          <input type="text" id="Password" placeholder="Enter password" required>
-          <button type="submit">Pay Now</button>
-        </form>
+  <h1 id="header">Car Rental Payment</h1>
+  <div class="container">
+    <div class="car-image">
+      <img src="{{ image }}" alt="Car Image" />
+    </div>
+    <div class="car-details">
+      <h2>Car Details</h2>
+      <div class="inner-car-details">
+        <p><strong>Car:</strong></p>
+        <p id="model">{{ car_name }}</p>
+        <p><strong>Price:</strong></p>
+        <p id="price">{{ price }}</p>
+        <p><strong>Pickup Date:</strong></p>
+        <label type="date" id="pick-date">{{ pickup_date }}</label>
+        <p><strong>Drop-off Date:</strong></p>
+        <label type="date" id="drop-date">{{ dropoff_date }}</label>
       </div>
     </div>
+    <div class="payment-form">
+      <h2>Payment Information</h2>
+      <form id="payment-form" method="post">
+        {% csrf_token %}
+        <label for="Esewa-number">eSewa ID:</label>
+        <input
+          type="text"
+          id="Esewa-number"
+          placeholder="Enter esewa number"
+          required
+        />
+        <label for="Password">MPIN/Password:</label>
+        <input
+          type="text"
+          id="Password"
+          placeholder="Enter password"
+          required
+        />
+        <button type="submit">Pay Now</button>
+      </form>
+    </div>
+  </div>
 </div>
 
 <script>
-  document.getElementById('payment-form').addEventListener('submit', function(event) {
-    event.preventDefault();
-    const esewaNumber = document.getElementById('Esewa-number').value;
-    const password = document.getElementById('Password').value;
+  document
+    .getElementById("payment-form")
+    .addEventListener("submit", function (event) {
+      event.preventDefault();
+      const esewaNumber = document.getElementById("Esewa-number").value;
+      const password = document.getElementById("Password").value;
 
-    // Check if fields are empty
-    if (!esewaNumber.trim() || !password.trim()) {
-      alert('Please fill in all fields.');
-      return;
-    }
+      // Check if fields are empty
+      if (!esewaNumber.trim() || !password.trim()) {
+        alert("Please fill in all fields.");
+        return;
+      }
 
-    // Validate Esewa ID
+      // Validate Esewa ID
       if (esewaNumber.length !== 10 || isNaN(esewaNumber)) {
-      alert('eSewa ID must be 10 digits.');
-      return;
-    }
+        alert("eSewa ID must be 10 digits.");
+        return;
+      }
 
-    // Validate MPIN/Password
-    if (password.length !== 4 || isNaN(password)) {
-      alert('MPIN/Password must be 4 digits.');
-      return;
-    }
+      // Validate MPIN/Password
+      if (password.length !== 4 || isNaN(password)) {
+        alert("MPIN/Password must be 4 digits.");
+        return;
+      }
 
-    // If all validations pass, submit the form
-    alert('Payment successful! Thank you for renting with us.');
-    // Redirect user after they click "OK"
-    window.location.href = '/user/profile';
-  });
+      // If all validations pass, submit the form
+      alert("Payment successful! Thank you for renting with us.");
+      // Redirect user after they click "OK"
+      window.location.href = "/user/profile";
+    });
 </script>
 
 <style>
   :root {
-  --indigo: #16425b;
-  --lapis: #2f6690;
-  --cerulean: #3a7ca5;
-  --skyblue: #81c3d7;
-  --platinum: #d9dcd6;
-  --darkgray: #b4b4b3;
-  --red: #f44336;
-  --green: #4caf50;
-  --darkgreen: darkgreen;
-  --crimson: crimson;
-  --white: white;
-   }
+    --indigo: #16425b;
+    --lapis: #2f6690;
+    --cerulean: #3a7ca5;
+    --skyblue: #81c3d7;
+    --platinum: #d9dcd6;
+    --darkgray: #b4b4b3;
+    --red: #f44336;
+    --green: #4caf50;
+    --darkgreen: darkgreen;
+    --crimson: crimson;
+    --white: white;
+  }
 
   body {
     font-family: "Montserrat", sans-serif;
@@ -87,19 +99,20 @@ Payment! VROOM
     overflow-x: hidden;
   }
 
-  #main{
+  #main {
     margin-top: 9.5vh;
   }
 
-  img{
-      height: 90%;
-      width: 80%;
+  img {
+    height: 90%;
+    width: 80%;
   }
 
-  h1, h2 {
+  h1,
+  h2 {
     text-align: center;
   }
-  #header{
+  #header {
     width: 100vw;
     margin-top: 5vh;
     margin-bottom: 8vh;
@@ -113,22 +126,27 @@ Payment! VROOM
     margin-bottom: 11.9vh;
   }
 
-  #inner-car-details{
+  #inner-car-details {
     padding-left: 100px;
   }
 
-  .car-details, .payment-form {
+  .car-details,
+  .payment-form {
     padding: 20px;
     border: 1px solid var(--lapis);
     border-radius: 5px;
   }
 
-  .car-details p, .payment-form label, .payment-form input {
+  .car-details p,
+  .payment-form label,
+  .payment-form input {
     margin-bottom: 10px;
   }
 
-  .payment-form input[type="text"], .payment-form input[type="date"], .payment-form button {
-    width: 100%; 
+  .payment-form input[type="text"],
+  .payment-form input[type="date"],
+  .payment-form button {
+    width: 100%;
     padding: 10px;
     font-size: 16px;
     border: 1px solid var(--lapis);

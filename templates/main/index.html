@@ -7,6 +7,20 @@
     <div id="text">
         <p><br />Travel Anywhere<br />You Want</p>
 
+    {% if user.is_authenticated %}
+    <a href="{% url 'carlisting' %}">
+      <button id="bookBtn">Book Now</button>
+    </a>
+    {% else %}
+    <button id="bookBtn">Book Now</button>
+    {% endif %}
+    <div id="loginPopup" class="popup">
+      <div class="popup-content">
+        <img
+          src="{% static 'img/loginpopup.jpg'%}"
+          alt="Image"
+          class="popup-img"
+        />
         {% if user.is_authenticated %}
         <a href="{% url 'carlisting' %}">
             <button id="bookBtn">Book Now</button>
@@ -18,6 +32,49 @@
             <div class="popup-content">
                 <img src="{% static 'img/loginpopup.jpg' %}" alt="Image" class="popup-img" />
 
+        <!-- login block -->
+        <div class="login-form">
+          <span class="close" onclick="closePopup()">&times;</span>
+          <h2>Login</h2>
+          <form id="login-form" method="post" action="{% url 'login' %}">
+            {% csrf_token %}
+            <div class="form-group">
+              <label for="username_or_email">Username or Email</label>
+              <input
+                type="text"
+                name="username_or_email"
+                id="username_or_email"
+                placeholder="Enter your username or email"
+                required
+              />
+              <label for="password">Password</label>
+              <input
+                type="password"
+                name="password"
+                id="password"
+                placeholder="Enter your password"
+                required
+              />
+              <div class="links">
+                <a href="{% url 'reset_password' %}">Forgot your password?</a
+                ><a class="title" href="{% url 'signup' %}">Sign Up</a>
+              </div>
+            </div>
+
+            <button type="submit">Sign In</button>
+          </form>
+          <div class="message">
+            {% for message in messages %} {% if message.tags == 'error' %}
+            <div class="alert alert-danger" role="alert">{{ message }}</div>
+            {% elif message.tags == 'success' %}
+            <div class="alert alert-success" role="alert">{{ message }}</div>
+            {% endif %} {% endfor %}
+          </div>
+        </div>
+        <!-- login block -->
+      </div>
+    </div>
+  </div>
                 <!-- login block -->
                 <div class="login-form">
                     <span class="close" onclick="closePopup()">&times;</span>
@@ -164,6 +221,44 @@
     </div>
 </div>
 
+<!-- pre-booking section -->
+<div id="pre-booking_title">Pre-Booking</div>
+<div id="pre-book-container">
+  <form action="/search" method="get" id="pre-booking">
+    <div id="car_type">
+      <label for="car-type">Type of Car:</label>
+      <select id="car-type" name="car-type">
+        <option value="SUV">SUV</option>
+        <option value="EV">EV</option>
+        <option value="Truck">Truck</option>
+        <option value="Sedan">Sedan</option>
+      </select>
+    </div>
+
+    <div id="car_model">
+      <label for="car-model">Model of Car:</label>
+      <select id="car-model" name="car-model">
+        <option value="model-a">Model A</option>
+        <option value="model-b">Model B</option>
+        <option value="model-c">Model C</option>
+        <option value="model-d">Model D</option>
+      </select>
+    </div>
+
+    <div id="start_date">
+      <label for="start-date">Start Date:</label>
+      <input type="date" id="start-date" name="start-date" />
+    </div>
+
+    <div id="end_date">
+      <label for="end-date">End Date:</label>
+      <input type="date" id="end-date" name="end-date" />
+    </div>
+
+    <button type="submit">Search</button>
+  </form>
+</div>
+
 <!-- why choose vroom page -->
 <div id="vroom">
     <h2 id="vroom-title">Why Choose Us?</h2>
@@ -261,11 +356,26 @@
         margin-bottom: 10px;
     }
 
+  #login-form label {
+    margin-bottom: 15px;
+    font-size: 30px;
+  }
     #login-form label {
         margin-bottom: 15px;
         font-size: 30px;
     }
 
+  .login-form button {
+    height: 60px;
+    width: 340px;
+    font-size: 20px;
+    background-color: var(--indigo);
+    color: var(--platinum);
+    border-radius: 10px;
+  }
+  .links {
+    margin-bottom: 20px;
+  }
     .login-form button {
         height: 60px;
         width: 340px;
@@ -353,6 +463,89 @@
         margin-bottom: 60px;
     }
 
+  #brand-upper,
+  #brand-lower {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+    max-width: 1300px;
+    margin: 20px auto;
+    text-align: center;
+    border: #000;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+    max-width: 1300px;
+    margin: 20px auto;
+    text-align: center;
+    border: #000;
+    width: 100%;
+  }
+
+  #pre-booking_title {
+    font-size: 50px;
+    font-weight: 600;
+    text-align: center;
+    margin-top: 10vh;
+    /* margin-bottom: 5vh; */
+  }
+
+  #pre-book-container {
+    background: var(--indigo);
+    width: 80%;
+    height: 10vh;
+    padding: 20px;
+    border-radius: 8px;
+    color: var(--white);
+    margin-left: 10%;
+    margin-bottom: 10vh;
+    margin-top: 5vh;
+  }
+
+  #pre-booking {
+    padding-left: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: grid;
+    grid-template-columns: repeat(5, 14.5vw);
+    gap: 20px;
+  }
+
+  #pre-booking label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 150px;
+  }
+
+  #pre-booking select,
+  #pre-booking input[type="date"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 16px;
+  }
+
+  #pre-booking button {
+    align-self: flex-end;
+    padding: 10px 20px;
+    background-color: var(--lapis);
+    border: none;
+    border-radius: 4px;
+    color: var(--white);
+    font-size: 16px;
+    cursor: pointer;
+  }
     #brand-upper,
     #brand-lower {
         display: flex;

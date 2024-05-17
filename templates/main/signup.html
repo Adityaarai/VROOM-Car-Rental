@@ -1,8 +1,5 @@
-{% extends 'partials/base.html' %} 
-{% load static %} 
-{% block title %} VROOM - Signup {% endblock %} 
-
-{% block content %}
+{% extends 'partials/base.html' %} {% load static %} {% block title %} VROOM -
+Signup {% endblock %} {% block content %}
 <div class="main-container">
   <div class="left-panel" style="margin-left: 80px">
     <img src="{% static 'img/vehicle.jpg' %}" alt="Vehicle Image" />
@@ -75,15 +72,12 @@
 
       <div class="login-link">
         <p>Already have an account? <a href="{% url 'login' %}">Sign In</a></p>
-        {% if messages %} 
-          {% for message in messages %} 
-            {% if message.tags == 'error' %}
-              <p class="error">{{ message }}</p>
-            {% elif message.tags == 'success' %}
-              <p class="success">{{ message }}</p>
-            {% endif %} 
-          {% endfor %} 
-        {% endif %}
+        {% if messages %} {% for message in messages %} {% if message.tags ==
+        'error' %}
+        <p class="error">{{ message }}</p>
+        {% elif message.tags == 'success' %}
+        <p class="success">{{ message }}</p>
+        {% endif %} {% endfor %} {% endif %}
       </div>
     </form>
   </div>
@@ -98,9 +92,9 @@
   }
 
   body {
-      font-family: "Montserrat", sans-serif;
-      margin: 0;
-      padding: 0;
+    font-family: "Montserrat", sans-serif;
+    margin: 0;
+    padding: 0;
   }
 
   .main-container {
@@ -114,37 +108,37 @@
   }
 
   .left-panel {
-      flex: 1;
-      padding: 20px;
+    flex: 1;
+    padding: 20px;
   }
 
   .right-panel {
-      flex: 1;
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+    flex: 1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
   .right-panel h2 {
-      margin-right: 210px;
+    margin-right: 210px;
   }
 
   .right-panel form {
-      margin-top: 30px;
+    margin-top: 30px;
   }
 
   img {
-      max-width: 100%;
+    max-width: 100%;
   }
 
   input[type="text"],
   input[type="email"],
   input[type="password"] {
-      width: 100%;
-      padding: 10px;
-      border-radius: 5px;
-      border: 1px solid #ccc;
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
   }
 
   .button {
@@ -164,27 +158,26 @@
   }
 
   .login-link {
-      margin-top: 20px;
+    margin-top: 20px;
   }
 
   .login-link a {
-      color: var(--primary-color);
-      text-decoration: none;
+    color: var(--primary-color);
+    text-decoration: none;
   }
 
   .login-link a:hover {
-      text-decoration: underline;
+    text-decoration: underline;
   }
 
   .error {
-      color: var(--error-color);
-      font-weight: bold;
+    color: var(--error-color);
+    font-weight: bold;
   }
 
   .success {
-      color: var(--success-color);
-      font-weight: bold;
+    color: var(--success-color);
+    font-weight: bold;
   }
-
 </style>
 {% endblock %}
