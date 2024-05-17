@@ -279,60 +279,23 @@ def remove_car(request):
     return redirect('user_profile')  # Redirecting to user profile page
 
 # View for payment
+@login_required
 def payment_view(request):
-    # Retrieve logged-in user's email
-    user_email = request.user.email
-
-    # Retrieve CarOrder data for the user's email
-    user_orders = CarOrder.objects.filter(rentee_email=user_email, status='Approved')  # Filter only approved orders
-
-    # Assuming only one order is retrieved
-    if user_orders.exists():
-        order = user_orders.first()
-        product = order.product
-
-        # Join car model and type
-        car_name = f"{product.car_model} {product.car_type}"
-
-        # Retrieve CarDetail matching the car name
-        car_details = CarDetail.objects.filter(car_model__icontains=product.car_model, car_type__icontains=product.car_type)
-
-        if car_details.exists():
-            car_detail = car_details.first()
-            price = car_detail.price
-            image = car_detail.image.url
-        else:
-            # Handle case where no matching car details are found
-            price = "Price not available"
-            image = "Image not available"
-
-        # Retrieve pickup and drop-off dates from the order
-        pickup_date = order.start_date.strftime('%Y-%m-%d')
-        dropoff_date = order.end_date.strftime('%Y-%m-%d')
-
+    user = request.user
+    approved_booking = CarOrder.objects.filter(rentee=user.profile, status='Approved').first()
+    
+    if approved_booking:
+        car_detail = approved_booking.product
+        car_name = f"{car_detail.car_type} {car_detail.car_model}"
+        car_image = car_detail.image.url
+        context = {
+            'car_name': car_name,
+            'price': approved_booking.total_price,
+            'pickup_date': approved_booking.start_date,
+            'dropoff_date': approved_booking.end_date,
+            'image': car_image
+        }
     else:
-        # Handle case where no orders are found for the user
-        car_name = "Car not available"
-        price = "Price not available"
-        image = "Car not available"
-        pickup_date = "Pickup date not available"
-        dropoff_date = "Drop-off date not available"
-
-    context = {
-        'car_name': car_name,
-        'price': price,
-        'image': image,
-        'pickup_date': pickup_date,
-        'dropoff_date': dropoff_date,
-    }
-
-    if request.method == 'POST':
-        # Update the status of the CarOrder to 'Paid'
-        if user_orders.exists():  # Check if the order exists
-            order = user_orders.first()  # Retrieve the order
-            order.status = 'Paid'  # Update the status
-            order.save()  # Save the changes
-            # Redirect the user to their profile page
-            return redirect('/user/profile')
-
+        context = {}
+    
     return render(request, 'main/payment.html', context)
