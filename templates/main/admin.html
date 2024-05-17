@@ -61,12 +61,16 @@
         <div id="default-content">
           <h1>Welcome Admin!!</h1>
           <!-- Default dashboard content goes here -->
-          {% if messages %} {% for message in messages %} {% if message.tags ==
-          'error' %}
-          <p class="error">{{ message }}</p>
-          {% endif %} {% if message.tags == 'success' %}
-          <p class="success">{{ message }}</p>
-          {% endif %} {% endfor %} {% endif %}
+          {% if messages %} 
+            {% for message in messages %} 
+              {% if message.tags == 'error' %}
+                <p class="error">{{ message }}</p>
+              {% endif %}
+              {% if message.tags == 'success' %}
+                <p class="success">{{ message }}</p>
+              {% endif %} 
+            {% endfor %} 
+          {% endif %}
 
           <div id="card">
             <div class="card" id="distributor_card">
@@ -95,13 +99,13 @@
               <th>Address</th>
             </tr>
             {% for user in recent_users %}
-            <tr>
-              <td>{{ user.user.get_full_name }}</td>
-              <td>{{ user.user.username }}</td>
-              <td>{{ user.user.email }}</td>
-              <td>{{ user.contact }}</td>
-              <td>{{ user.address }}</td>
-            </tr>
+              <tr>
+                <td>{{ user.user.get_full_name }}</td>
+                <td>{{ user.user.username }}</td>
+                <td>{{ user.user.email }}</td>
+                <td>{{ user.contact }}</td>
+                <td>{{ user.address }}</td>
+              </tr>
             {% endfor %}
           </table>
         </div>
@@ -133,19 +137,20 @@
               <th>Contact Number</th>
               <th>Location Incharge</th>
             </tr>
-            {% for user_detail in user_details %} {% if '.vroom@gmail.com' in
-            user_detail.user.email and user_detail.user.is_staff %}
-            <script>
-              totalDistributorCount++;
-            </script>
-            <tr>
-              <td>{{ user_detail.user.username }}</td>
-              <td>{{ user_detail.user.email }}</td>
-              <td>{{ user_detail.user.get_full_name }}</td>
-              <td>{{ user_detail.contact }}</td>
-              <td>{{ user_detail.address }}</td>
-            </tr>
-            {% endif %} {% endfor %}
+            {% for user_detail in user_details %} 
+              {% if '.vroom@gmail.com' in user_detail.user.email and user_detail.user.is_staff %}
+                <script>
+                  totalDistributorCount++;
+                </script>
+                <tr>
+                  <td>{{ user_detail.user.username }}</td>
+                  <td>{{ user_detail.user.email }}</td>
+                  <td>{{ user_detail.user.get_full_name }}</td>
+                  <td>{{ user_detail.contact }}</td>
+                  <td>{{ user_detail.address }}</td>
+                </tr>
+              {% endif %} 
+            {% endfor %}
           </table>
 
           <!-- popup to add distributor -->
@@ -320,20 +325,21 @@
               <th>Contact Number</th>
               <th>Address</th>
             </tr>
-            {% for user_detail in user_details %} {% if not
-            user_detail.user.is_staff %}
-            <script>
-              totalUserCount++;
-            </script>
-            <tr>
-              <td>{{ user_detail.user.get_full_name }}</td>
-              <td>{{ user_detail.user.username }}</td>
-              <td>{{ user_detail.user.email }}</td>
-              <td>{{ user_detail.license_number }}</td>
-              <td>{{ user_detail.contact }}</td>
-              <td>{{ user_detail.address }}</td>
-            </tr>
-            {% endif %} {% endfor %}
+            {% for user_detail in user_details %}
+              {% if not user_detail.user.is_staff %}
+                <script>
+                  totalUserCount++;
+                </script>
+                <tr>
+                  <td>{{ user_detail.user.get_full_name }}</td>
+                  <td>{{ user_detail.user.username }}</td>
+                  <td>{{ user_detail.user.email }}</td>
+                  <td>{{ user_detail.license_number }}</td>
+                  <td>{{ user_detail.contact }}</td>
+                  <td>{{ user_detail.address }}</td>
+                </tr>
+              {% endif %} 
+            {% endfor %}
           </table>
 
           <!-- popup to add user -->

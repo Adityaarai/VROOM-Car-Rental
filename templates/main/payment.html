@@ -1,52 +1,52 @@
 {% extends 'partials/base.html' %}
 {% load static %}
-{% block title %} Payment! VROOM {% endblock %}
+{% block title %}  VROOM - Payment {% endblock %}
 {% block content %}
 <div class="main">
   <h1 id="header">Car Rental Payment</h1>
   <div class="container">
     {% if car_name and price and pickup_date and dropoff_date %}
-    <div class="car-image">
-      <img src="{{ image }}" alt="Car Image" />
-    </div>
-    <div class="car-details">
-      <h2>Car Details</h2>
-      <div class="inner-car-details">
-        <p><strong>Car:</strong></p>
-        <p id="model">{{ car_name }}</p>
-        <p><strong>Price:</strong></p>
-        <p id="price">{{ price }}</p>
-        <p><strong>Pickup Date:</strong></p>
-        <label type="date" id="pick-date">{{ pickup_date }}</label>
-        <p><strong>Drop-off Date:</strong></p>
-        <label type="date" id="drop-date">{{ dropoff_date }}</label>
+      <div class="car-image">
+        <img src="{{ image }}" alt="Car Image" />
       </div>
-    </div>
-    <div class="payment-form">
-      <h2>Payment Information</h2>
-      <form id="payment-form" method="post">
-        {% csrf_token %}
-        <label for="Esewa-number">eSewa ID:</label>
-        <input
-          type="text"
-          id="Esewa-number"
-          name="esewa_number"
-          placeholder="Enter esewa number"
-          required
-        />
-        <label for="Password">MPIN/Password:</label>
-        <input
-          type="password"
-          id="Password"
-          name="password"
-          placeholder="Enter password"
-          required
-        />
-        <button type="submit">Pay Now</button>
-      </form>
-    </div>
+      <div class="car-details">
+        <h2>Car Details</h2>
+        <div class="inner-car-details">
+          <p><strong>Car:</strong></p>
+          <p id="model">{{ car_name }}</p>
+          <p><strong>Price:</strong></p>
+          <p id="price">{{ price }}</p>
+          <p><strong>Pickup Date:</strong></p>
+          <label type="date" id="pick-date">{{ pickup_date }}</label>
+          <p><strong>Drop-off Date:</strong></p>
+          <label type="date" id="drop-date">{{ dropoff_date }}</label>
+        </div>
+      </div>
+      <div class="payment-form">
+        <h2>Payment Information</h2>
+        <form id="payment-form" method="post">
+          {% csrf_token %}
+          <label for="Esewa-number">eSewa ID:</label>
+          <input
+            type="text"
+            id="Esewa-number"
+            name="esewa_number"
+            placeholder="Enter esewa number"
+            required
+          />
+          <label for="Password">MPIN/Password:</label>
+          <input
+            type="password"
+            id="Password"
+            name="password"
+            placeholder="Enter password"
+            required
+          />
+          <button type="submit">Pay Now</button>
+        </form>
+      </div>
     {% else %}
-    <p>No approved bookings found for payment.</p>
+      <p>No approved bookings found for payment.</p>
     {% endif %}
   </div>
 </div>

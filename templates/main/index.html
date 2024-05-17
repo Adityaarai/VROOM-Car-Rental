@@ -1,17 +1,21 @@
-{% extends 'partials/base.html' %} {% load static %} {% block title %} VROOM
-{%endblock %} {% block content %}
+{% extends 'partials/base.html' %} 
+{% load static %} 
+{% block title %} VROOM - A Website for all your car booking needs {%endblock %} 
+
+{% block content %}
 <!-- main display -->
 <div id="slogan">
   <div id="text">
     <p><br />Travel Anywhere<br />You Want</p>
 
     {% if user.is_authenticated %}
-    <a href="{% url 'carlisting' %}">
-      <button id="bookBtn">Book Now</button>
-    </a>
+      <a href="{% url 'carlisting' %}">
+        <button id="bookBtn">Book Now</button>
+      </a>
     {% else %}
-    <button id="bookBtn">Book Now</button>
+      <button id="bookBtn">Book Now</button>
     {% endif %}
+    
     <div id="loginPopup" class="popup">
       <div class="popup-content">
         <img src="{% static 'img/loginpopup.jpg'%}" alt="Image" class="popup-img" />
@@ -36,11 +40,13 @@
             <button type="submit">Sign In</button>
           </form>
           <div class="message">
-            {% for message in messages %} {% if message.tags == 'error' %}
-            <div class="alert alert-danger" role="alert">{{ message }}</div>
-            {% elif message.tags == 'success' %}
-            <div class="alert alert-success" role="alert">{{ message }}</div>
-            {% endif %} {% endfor %}
+            {% for message in messages %}
+              {% if message.tags == 'error' %}
+                <div class="alert alert-danger" role="alert">{{ message }}</div>
+              {% elif message.tags == 'success' %}
+                <div class="alert alert-success" role="alert">{{ message }}</div>
+              {% endif %} 
+            {% endfor %}
           </div>
         </div>
         <!-- login block -->
