@@ -51,7 +51,6 @@ def orders(request):
                 messages.error(request, "Cannot book cars in the past.")
                 return HttpResponseRedirect(current_url)
 
-<<<<<<< HEAD
             renter_name = request.POST['renter_name']
             renter_contact = request.POST['renter_contact']
             car_model = request.POST['car_model']
@@ -63,10 +62,10 @@ def orders(request):
                 return HttpResponseRedirect(current_url)
 
             if product.availability == 'Booked':
-                car_order = CarOrder.objects.filter(product=product).order_by('-end_date').first()
-                if car_order and start_date_obj <= car_order.end_date:
-                    messages.error(request, f"It is available only after {car_order.end_date}.")
-                    return HttpResponseRedirect(current_url)
+              car_order = CarOrder.objects.filter(product=product).order_by('-end_date').first()
+              if car_order and start_date_obj <= car_order.end_date.date():  # Convert to date for comparison
+                messages.error(request, f"It is available only after {car_order.end_date.date()}.")  # Convert to date for message
+                return HttpResponseRedirect(current_url)
 
             if start_date_obj > end_date_obj:
                 messages.error(request, "Start date must be before end date.")
@@ -88,25 +87,6 @@ def orders(request):
         else:
             messages.error(request, "You must be logged in to book cars!")
             return redirect('login')
-=======
-        product = CarDetail.objects.get(car_model=car_model, renter_name=renter_name, renter_contact=renter_contact)
-        price = product.price
-        
-        # Convert string representations of dates into datetime objects
-        startdate_calc = datetime.strptime(startdate, '%Y-%m-%d')
-        enddate_calc = datetime.strptime(enddate, '%Y-%m-%d')
-
-        # Perform necessary calculations
-        total_days = (enddate_calc - startdate_calc).days
-        total_price = total_days * price
-                
-        order = CarOrder.objects.create(product=product, start_date=startdate, end_date=enddate, rentee=rentee, total_price=total_price)
-        messages.success(request, "Your booking has been created successfully")
-        return redirect('orders')
-      else:
-        messages.error(request,"You must be logged in to book cars!!")
-        return redirect('login')
->>>>>>> 78a066dc97268e53036b3cee51e7d87b96e22de6
     else:
         name = request.GET.get('renter_name')
         model = request.GET.get('car_model')

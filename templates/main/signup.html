@@ -72,12 +72,15 @@ Signup {% endblock %} {% block content %}
 
       <div class="login-link">
         <p>Already have an account? <a href="{% url 'login' %}">Sign In</a></p>
-        {% if messages %} {% for message in messages %} {% if message.tags ==
-        'error' %}
-        <p class="error">{{ message }}</p>
-        {% elif message.tags == 'success' %}
-        <p class="success">{{ message }}</p>
-        {% endif %} {% endfor %} {% endif %}
+        {% if messages %}
+          {% for message in messages %}
+            {% if message.tags == 'error' %}
+              <p class="error">{{ message }}</p>
+            {% elif message.tags == 'success' %}
+              <p class="success">{{ message }}</p>
+            {% endif %}
+          {% endfor %}
+        {% endif %}
       </div>
     </form>
   </div>
