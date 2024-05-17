@@ -53,6 +53,16 @@
       </script>
 
       <div class="content">
+        {% if messages %} 
+          {% for message in messages %} 
+            {% if message.tags == 'error' %}
+              <p class="error">{{ message }}</p>
+            {% endif %}
+            {% if message.tags == 'success' %}
+              <p class="success">{{ message }}</p>
+            {% endif %} 
+          {% endfor %} 
+        {% endif %}
         <div id="default-content">
           <h1>Welcome Distributor!!</h1>
           <!-- Default dashboard content goes here -->
@@ -171,23 +181,20 @@
                   </div>
 
                   <div class="buttons">
-                    <button id="car-edit-btn" onclick="openEditCarPopup(openEditCarPopup('{{ item.car_model }}', '{{ item.renter_name }}'))">
-                      Edit
-                    </button>
                     <form method="post">
                       {% csrf_token %}
+                      <!-- Hidden inputs to include car model and renter name -->
+                      <input type="hidden" id="editCarModel" name="car_model" value="{{ item.car_model }}" />
+                      <input type="hidden" id="editRenterName" name="renter_name" value="{{ item.renter_name }}" />
                       <button
                         id="car-delete-btn"
                         name="deleteCarDetails"
                         type="submit"
                       >
-
                         Delete
                       </button>
-
-                      <!-- Hidden inputs to include car model and renter name -->
-                      <input type="hidden" id="editCarModel" name="car_model" value="{{ item.car_model }}" />
-                      <input type="hidden" id="editRenterName" name="renter_name" value="{{ item.renter_name }}" />
+                      <button type="submit" id="car-edit-btn" name="changeUnlisted">Unlist</button>
+                      <button type="submit" id="car-edit-btn" name="changeAvailable">List</button>
                     </form>
                   </div>
                 </div>
@@ -200,48 +207,6 @@
               <button id="previousPageBtn">Previous Page</button>
               <h2 class="page-number"></h2>
               <button id="nextPageBtn">Next Page</button>
-            </div>
-          </div>
-
-          <!-- Popup for editing car -->
-          <div class="popup" id="editCarPopup">
-            <div class="popup-content">
-              <span class="close" onclick="closePopup('editCarPopup')"
-                >&times;</span
-              >
-              <h2>Edit Car</h2>
-              <form id="editCarForm" method="post">
-                {% csrf_token %}
-                <label id="status"> Status:</label><br />
-                <button type="submit" name="changeUnlisted editCar">Mark Unlist</button>
-                <button type="submit" name="changeAvailable editCar">
-                  Mark Available
-                </button>
-
-                <!-- Hidden inputs to include car model and renter name -->
-                <input type="hidden" id="editCarModel" name="car_model" value="" />
-                <input type="hidden" id="editRenterName" name="renter_name" value="" />
-              </form>
-            </div>
-          </div>
-
-          <!-- Popup to delete car -->
-          <div class="popup" id="deleteCarPopup">
-            <div class="popup-content">
-              <span class="close" onclick="closePopup('deleteCarPopup')"
-                >&times;</span
-              >
-              <h2>Delete Car</h2>
-              <form id="deleteCarForm">
-                {% csrf_token %}
-                <label for="carIdToDelete">Car ID:</label><br />
-                <input
-                  type="text"
-                  id="carIdToDelete"
-                  name="carIdToDelete"
-                /><br />
-                <button onclick="deleteCar()">Delete</button>
-              </form>
             </div>
           </div>
 
@@ -337,6 +302,9 @@
               <td>
                 <form method="post">
                   {% csrf_token %}
+                  <!-- Hidden inputs to include car model and renter name -->
+                  <input type="hidden" id="orderid" name="order_id" value="{{ order.order_id }}" />
+                  
                   <button type="submit" name="approve">Approve</button>
                 </form>
               </td>
@@ -506,11 +474,6 @@
     document.getElementById('editRenterName').value = renterName;
     const editCarPopup = document.getElementById("editCarPopup");
     if (editCarPopup) editCarPopup.style.display = "block";
-  }
-
-  function openDeleteCarPopup() {
-    const deleteCarPopup = document.getElementById("deleteCarPopup");
-    if (deleteCarPopup) deleteCarPopup.style.display = "block";
   }
 
   function closePopup(id) {
@@ -736,6 +699,10 @@ table tr:nth-child(even) {
 
 .availability-unavailable {
   background-color: var(--crimson);
+}
+
+.availability-unlisted {
+  background-color: var(--darkgray);
 }
 
 .availability {
