@@ -60,33 +60,35 @@
             <div class="car_card" id="car_card">
               <h3>Car Information</h3>
               <label id="Cars">
-                <i class="fas fa-users"></i>
-                <span id="TotalCars"></span>
+                <p id="TotalCars"></p>
               </label>
-              <label id="Types">
-                <i class="fas fa-users"></i>
-                <span id="car_types"></span>
+              <label id="Cars">
+                <p id="Available"></p>
+              </label>
+              <label id="Cars">
+                <p id="Booked"></p>
+              </label>
+              <label id="Cars">
+                <p id="Unlisted"></p>
               </label>
             </div>
             <div class="booking_card" id="book_card">
               <h3>Booking Information</h3>
-              <label id="TotalBooking">
-                <i class="fas fa-bookmark"></i>
-                <span id="booking">2</span>
+              <label id="Bookings">
+                <p id="Booking"></p>
               </label>
-              <label id="TotalApproved">
-                <i class="fas fa-check"></i>
-                <span id="approved">3</span> </label
+              <label id="Bookings">
+                <p id="Approved"></p> </label
               ><br /><br />
-              <label id="TotalPending">
-                <i class="fas fa-hourglass-start"></i>
-                <span id="pending">4</span>
+              <label id="Bookings">
+                <p id="Pending"></p>
               </label>
-              <label id="TotalPaid">
-                <i class="fas fa-money-check-alt"></i>
-                <span id="paid">5</span> </label
+              <label id="Bookings">
+                <p id="Paid"></p> </label
               ><br />
-              <label id="completed"></label><br />
+              <label id="Bookings">
+                <p id="Completed"></p> </label
+              ><br />
             </div>
           </div>
 
@@ -96,50 +98,27 @@
             <thead>
               <tr>
                 <th>Product</th>
-                <th>Rentee Email</th>
+                <th>Rentee</th>
                 <th>Booking Start Date</th>
                 <th>Booking End Date</th>
                 <th>Status</th>
               </tr>
             </thead>
             <tbody>
-              {% for order in orders %}
-              <!-- Checking order details and updating count -->
-              {% if order.status == "Pending" %}
-              <script>
-                totalPendingOrderCount++;
-              </script>
-              {% elif order.status == "Approved" %}
-              <script>
-                totalApprovedOrderCount++;
-              </script>
-              {% elif order.status == "Paid" %}
-              <script>
-                totalPaidOrderCount++;
-              </script>
-              {% endif %}
-              <script>
-                totalBookingCount++;
-              </script>
-
+              {% for order in recent_orders %}
               <tr>
                 <td>{{ order.product }}</td>
-                <td>{{ order.rentee_email }}</td>
+                <td>{{ order.rentee }}</td>
                 <td>{{ order.start_date }}</td>
                 <td>{{ order.end_date }}</td>
-                <td>
-                  <!-- Dropdown menu for status -->
-                  <select onchange="updateStatus('{{ order.id }}', this.value)">
-                    <!-- <option value="Pending" {% if order.status == "Pending" %} selected {% endif %}>Pending</option>
-                    <option value="Approved" {% if order.status == "Approved" %} selected {% endif %}>Approved</option>
-                    <option value="Paid" {% if order.status == "Paid" %} selected {% endif %}>Paid</option> -->
-                  </select>
-                </td>
+                <td>{{ order.status }}</td>
               </tr>
               {% endfor %}
             </tbody>
           </table>
         </div>
+
+        <!-- displaying cars -->
         <div id="car-content">
           <div class="all">
             <!-- filter to navigate different catogeries of cars -->
@@ -174,10 +153,11 @@
                 totalCarCount++;
               </script>
 
-              {% if not item.availability == 'Unlisted' %}
               <div class="card">
                 <div
-                  class="availability-container {% if item.availability == 'Available' %}availability-available{% else %}availability-unavailable{% endif %}"
+                  class="availability-container {% if item.availability == 'Available' %}availability-available
+                  {% elif item.availability == 'Unlisted' %}availability-unlisted 
+                  {% else %}availability-unavailable{% endif %}"
                 >
                   <a class="availability">{{ item.availability }}</a>
                 </div>
@@ -191,16 +171,28 @@
                   </div>
 
                   <div class="buttons">
-                    <button id="car-edit-btn" onclick="openEditCarPopup()">
+                    <button id="car-edit-btn" onclick="openEditCarPopup(openEditCarPopup('{{ item.car_model }}', '{{ item.renter_name }}'))">
                       Edit
                     </button>
-                    <button id="car-delete-btn" onclick="openDeleteCarPopup()">
-                      Delete
-                    </button>
+                    <form method="post">
+                      {% csrf_token %}
+                      <button
+                        id="car-delete-btn"
+                        name="deleteCarDetails"
+                        type="submit"
+                      >
+
+                        Delete
+                      </button>
+
+                      <!-- Hidden inputs to include car model and renter name -->
+                      <input type="hidden" id="editCarModel" name="car_model" value="{{ item.car_model }}" />
+                      <input type="hidden" id="editRenterName" name="renter_name" value="{{ item.renter_name }}" />
+                    </form>
                   </div>
                 </div>
               </div>
-              {% endif %} {% endfor %}
+              {% endfor %}
             </div>
 
             <!-- button to navigate different pages of cars -->
@@ -219,13 +211,16 @@
               >
               <h2>Edit Car</h2>
               <form id="editCarForm" method="post">
+                {% csrf_token %}
                 <label id="status"> Status:</label><br />
-                <select onchange="updateStatus('{{ order.id }}', this.value)">
-                  <!-- <option value="Available" {% if order.status == "Pending" %} selected {% endif %}>Available</option>
-                    <option value="Booking" {% if order.status == "Approved" %} selected {% endif %}>Booking</option>
-                    <option value="Unlisted" {% if order.status == "Paid" %} selected {% endif %}>Unlisted</option> --></select
-                ><br />
-                <button type="submit" name="editCar">Save Changes</button>
+                <button type="submit" name="changeUnlisted editCar">Mark Unlist</button>
+                <button type="submit" name="changeAvailable editCar">
+                  Mark Available
+                </button>
+
+                <!-- Hidden inputs to include car model and renter name -->
+                <input type="hidden" id="editCarModel" name="car_model" value="" />
+                <input type="hidden" id="editRenterName" name="renter_name" value="" />
               </form>
             </div>
           </div>
@@ -238,6 +233,7 @@
               >
               <h2>Delete Car</h2>
               <form id="deleteCarForm">
+                {% csrf_token %}
                 <label for="carIdToDelete">Car ID:</label><br />
                 <input
                   type="text"
@@ -269,6 +265,7 @@
               >
               <h2>Add Car</h2>
               <form id="addCarForm">
+                {% csrf_token %}
                 <label for="renterName">Renter Name:</label><br />
                 <input type="text" id="renterName" name="renterName" /><br />
                 <label for="contactNumber">Contact Number:</label><br />
@@ -302,6 +299,7 @@
               <th>Booking Start Date</th>
               <th>Booking End Date</th>
               <th>Status</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -319,6 +317,10 @@
             <script>
               totalPaidOrderCount++;
             </script>
+            {% elif order.status == "Completed" %}
+            <script>
+              totalCompletedOrderCount++;
+            </script>
             {% endif %}
             <script>
               totalBookingCount++;
@@ -330,14 +332,15 @@
               <td>{{ order.rentee }}</td>
               <td>{{ order.start_date }}</td>
               <td>{{ order.end_date }}</td>
+              <td>{{ order.status }}</td>
+              {% if order.status == 'Pending' %}
               <td>
-                <!-- Dropdown menu for status -->
-                <select onchange="updateStatus('{{ order.id }}', this.value)">
-                  <!-- <option value="Pending" {% if order.status == "Pending" %} selected {% endif %}>Pending</option>
-                    <option value="Approved" {% if order.status == "Approved" %} selected {% endif %}>Approved</option>
-                    <option value="Paid" {% if order.status == "Paid" %} selected {% endif %}>Paid</option> -->
-                </select>
+                <form method="post">
+                  {% csrf_token %}
+                  <button type="submit" name="approve">Approve</button>
+                </form>
               </td>
+              {% endif %}
             </tr>
             {% endfor %}
           </tbody>
@@ -345,16 +348,11 @@
 
         <!-- displaying the total order count in distributor dashboard -->
         <script>
-          document.getElementById("bookings").innerHTML =
-            "Total Bookings : " + totalBookingCount;
-          document.getElementById("approved").innerHTML =
-            "Approved Bookings : " + totalApprovedOrderCount;
-          document.getElementById("paid").innerHTML =
-            "Paid Bookings : " + totalPaidOrderCount;
-          document.getElementById("pending").innerHTML =
-            "Pending Bookings : " + totalPendingOrderCount;
-          document.getElementById("completed").innerHTML =
-            "Completed Bookings : " + totalCompletedOrderCount;
+          document.getElementById("Booking").innerHTML = "Total Bookings : " + totalBookingCount;
+          document.getElementById("Approved").innerHTML = "Approved Bookings : " + totalApprovedOrderCount;
+          document.getElementById("Paid").innerHTML = "Paid Bookings : " + totalPaidOrderCount;
+          document.getElementById("Pending").innerHTML = "Pending Bookings : " + totalPendingOrderCount;
+          document.getElementById("Completed").innerHTML    = "Completed Bookings : " + totalCompletedOrderCount;
         </script>
       </div>
     </div>
@@ -373,7 +371,7 @@
       topic === "booking" ? "block" : "none";
   }
 
-  document.addEventListener("DOMContentLoaded", function () {
+  document.getElementById("car-content").addEventListener("click", function () {
     var filterButtons = document.querySelectorAll(".filter-btn");
     var cards = document.querySelectorAll(".card");
     var cardsPerPage = 8; // Set the number of cards per page
@@ -503,7 +501,9 @@
     if (addCarPopup) addCarPopup.style.display = "block";
   }
 
-  function openEditCarPopup() {
+  function openEditCarPopup(carModel, renterName) {
+    document.getElementById('editCarModel').value = carModel;
+    document.getElementById('editRenterName').value = renterName;
     const editCarPopup = document.getElementById("editCarPopup");
     if (editCarPopup) editCarPopup.style.display = "block";
   }
@@ -519,446 +519,397 @@
 </script>
 
 <style>
-  /* Font Awesome styles */
-  @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css");
-
-  /* Set Font Awesome solid icons font family and font weight */
-  .fa-solid {
-    font-family: "Font Awesome 6 Solid";
-    font-weight: 900;
-  }
-
-  :root {
-    --indigo: #16425b;
-    --lapis: #2f6690;
-    --cerulean: #3a7ca5;
-    --skyblue: #81c3d7;
-    --platinum: #d9dcd6;
-    --darkgray: #b4b4b3;
-    --red: #f44336;
-    --green: #4caf50;
-    --darkgreen: darkgreen;
-    --crimson: crimson;
-    --white: #fff;
-    --yellow: #f4a62a;
-    --darkyellow: #df9319;
-  }
-
-  body {
-    background-color: var(--white);
-    margin: 0;
-    padding-top: 0;
-    overflow-x: hidden;
-    font-family: "Montserrat", sans-serif;
-  }
-
-  table {
-    font-size: 18px;
-  }
-
-  table td {
-    font-size: 20px;
-  }
-
-  /* Logo styles */
-  #logo {
-    color: var(--platinum);
-    margin-top: 30px;
-    text-align: center;
-    font-size: 3rem;
-  }
-
-  /* Sidebar styles */
-  .sidebar {
-    float: left;
-    width: 15vw;
-    background-color: var(--indigo);
-    height: 100vh;
-  }
-
-  .sidebar i {
-    color: var(--white);
-    margin-left: 50px;
-    margin-right: 10px;
-  }
-
-  .sidebar ul {
-    list-style-type: none;
-    padding: 0;
-    margin-top: 8vh;
-  }
-
-  .sidebar li {
-    margin-bottom: 10px;
-  }
-
-  .sidebar a {
-    font-size: 25px;
-    width: 15vw;
-    text-decoration: none;
-    color: var(--white);
-    display: block;
-    margin-top: 50px;
-  }
-
-  .sidebar a:hover {
-    cursor: pointer;
-  }
-
-  /* Log Out button styles */
-  #logout {
-    position: absolute;
-    bottom: 30px;
-    left: 20px;
-  }
-
-  /* Content styles */
-  .content {
-    float: left;
-    width: 80%;
-    padding: 20px 0 0 20px;
-    box-sizing: border-box;
-  }
-
-  .car_card,
-  .booking_card {
-    font-size: 18px;
-    margin: 10px;
-    padding: 20px;
-    padding-left: 60px;
-    margin-bottom: 5vh;
-    border-radius: 5px;
-    box-sizing: border-box;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-
-  .car_card label,
-  .booking_card label {
-    font-size: 40px;
-    margin-right: 80px;
-  }
-
-  .car_card h3,
-  .booking_card h3 {
-    font-size: 30px;
-    margin-top: 30px;
-    margin-bottom: 20px;
-  }
-
-  #car-card label,
-  #booking-card label {
-    font-size: 40px;
-    margin-right: 80px;
-  }
-
-  #default-content #dashboard_card {
-    display: flex;
-  }
-
-  #car_card,
-  #book_card {
-    width: 40vw;
-    height: 25vh;
-  }
-
-  #car_card {
-    background-color: var(--cerulean);
-    color: var(--white);
-  }
-
-  #book_card {
-    background-color: var(--platinum);
-  }
-
-  #Cars,
-  #Types,
-  #TotalBooking,
-  #TotalApproved,
-  #TotalPending,
-  #TotalPaid {
-    font-size: 3rem;
-    padding-right: 5vw;
-    padding-bottom: 5vh;
-  }
-
-  #car-content,
-  #booking-content {
-    display: none;
-    margin-top: 20px;
-  }
-
-  #booking-content select {
-    font-size: 18px;
-  }
-
-  .filter {
-    margin: 40px 2%;
-    padding-top: 20px;
-  }
-
-  .filter-btn {
-    padding: 8px 16px;
-    border: none;
-    background-color: var(--lapis);
-    color: var(--platinum);
-    cursor: pointer;
-    border-radius: 5px;
-    margin-right: 10px;
-    font-size: medium;
-  }
-
-  .filter-btn:hover {
-    background-color: var(--indigo);
-  }
-
-  .cards-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    padding: 0 20px;
-  }
-
-  .card {
-    position: relative;
-    height: 37vh;
-    width: 18vw;
-    margin: 2px;
-    background-color: var(--platinum);
-    border-radius: 15px;
-    margin-bottom: 20px;
-    box-sizing: border-box;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-
-  .card:hover {
-    background-color: #b4b4b3;
-  }
-
-  .card h2,
-  h3,
-  h4 {
-    margin: 0;
-    margin-top: 10px;
-  }
-
-  .availability-container {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    padding: 5px 5px;
-    border-radius: 5px;
-  }
-
-  .availability-available {
-    background-color: var(--green);
-  }
-
-  .availability-unavailable {
-    background-color: var(--crimson);
-  }
-
-  .availability {
-    color: var(--white);
-    font-weight: normal;
-    font-size: 14px;
-  }
-
-  .card img {
-    margin: 0 0;
-    border-top-right-radius: 15px;
-    border-top-left-radius: 15px;
-    width: 100%;
-    height: 50%;
-  }
-
-  .card-details {
-    margin-top: 20px;
-    margin-left: 30px;
-  }
-
-  .car-price {
-    font-size: 1.2rem;
-    font-weight: 450;
-  }
-
-  .car-model {
-    font-size: 1.5rem;
-    font-weight: 500;
-  }
-
-  .buttons {
-    display: flex;
-    justify-content: space-between;
-    width: 70%;
-    margin-left: 15%;
-    margin-top: 20px;
-  }
-
-  .buttons button {
-    width: 100px;
-    height: 30px;
-    font-size: 17px;
-    color: var(--white);
-    border-radius: 5px;
-    border: 0;
-    padding: 5px 5px;
-  }
-
-  #car-add-btn {
-    background-color: var(--green);
-    width: 100px;
-    height: 30px;
-    font-size: 17px;
-    color: var(--white);
-    border-radius: 5px;
-    border: 0;
-    padding: 5px 5px;
-  }
-
-  #car-edit-btn {
-    background-color: var(--yellow);
-  }
-
-  #car-edit-btn:hover {
-    background-color: var(--darkyellow);
-  }
-
-  #car-delete-btn {
-    background-color: var(--red);
-  }
-
-  #car-delete-btn:hover {
-    background-color: var(--crimson);
-  }
-
-  .page-btn {
-    margin-top: 20px;
-    text-align: center;
-  }
-
-  .page-btn button {
-    padding: 10px 20px;
-    background-color: var(--lapis);
-    color: var(--platinum);
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-right: 10px;
-    margin-bottom: 10px;
-  }
-
-  .page-btn button:hover {
-    background-color: var(--indigo);
-  }
-
-  #car-add-btn {
-    background-color: var(--green);
-    float: right;
-  }
-
-  #car-add-btn:hover {
-    background-color: var(--darkgreen);
-  }
-
-  /* For User Information Edit */
-  table {
-    margin-top: 15px;
-    border-collapse: collapse;
-    width: 78vw;
-  }
-
-  th,
-  td {
-    border: 1px solid #dddddd;
-    text-align: left;
-    padding: 8px;
-  }
-
-  th {
-    background-color: #f2f2f2;
-  }
-
-  tr:nth-child(even) {
-    background-color: #f2f2f2;
-  }
-
-  .popup {
-    display: none;
-    position: fixed;
-    z-index: 9999;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-  }
-
-  .popup-content {
-    background-color: var(--indigo);
-    color: var(--white);
-    border-radius: 20px;
-    width: 35%;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-
-  #editCarPopup select {
-    margin-top: 20px;
-    margin-bottom: 20px;
-    font-weight: 17px;
-    padding: 5px;
-  }
-
-  .close {
-    color: #aaa;
-    float: right;
-    margin-right: 20px;
-    margin-top: 20px;
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
-  }
-
-  .close:hover,
-  .close:focus {
-    color: black;
-    text-decoration: none;
-  }
-
-  .popup-content form {
-    margin: 70px;
-    text-align: center;
-  }
-
-  .popup-content form input {
-    margin-bottom: 20px;
-    width: 350px;
-    font-size: 25px;
-    border-radius: 5px;
-  }
-
-  .popup-content label {
-    font-weight: 600;
-    font-size: 25px;
-  }
-
-  .popup-content h2 {
-    margin-top: 50px;
-    text-align: center;
-  }
-
-  .popup-content button {
-    width: 150px;
-    height: 30px;
-    border: 0;
-    border-radius: 5px;
-    background-color: var(--platinum);
-  }
-
-  .popup-content button:hover {
-    background-color: var(--lapis);
-    color: var(--white);
-  }
+ /* Import Font Awesome */
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css");
+
+/* Set Font Awesome solid icons font family and font weight */
+.fa-solid {
+  font-family: "Font Awesome 6 Solid";
+  font-weight: 900;
+}
+
+:root {
+  --indigo: #16425b;
+  --lapis: #2f6690;
+  --cerulean: #3a7ca5;
+  --skyblue: #81c3d7;
+  --platinum: #d9dcd6;
+  --darkgray: #b4b4b3;
+  --red: #f44336;
+  --green: #4caf50;
+  --darkgreen: darkgreen;
+  --crimson: crimson;
+  --white: #fff;
+  --yellow: #f4a62a;
+  --darkyellow: #df9319;
+}
+
+body {
+  background-color: var(--white);
+  margin: 0;
+  padding-top: 0;
+  overflow-x: hidden;
+  font-family: "Montserrat", sans-serif;
+}
+
+table {
+  font-size: 18px;
+  border-collapse: collapse;
+  width: 78vw;
+  margin-top: 15px;
+}
+
+table th, table td {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+table th {
+  background-color: #f2f2f2;
+}
+
+table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+/* Logo styles */
+#logo {
+  color: var(--platinum);
+  margin-top: 30px;
+  text-align: center;
+  font-size: 3rem;
+}
+
+/* Sidebar styles */
+.sidebar {
+  float: left;
+  width: 15vw;
+  background-color: var(--indigo);
+  height: 100vh;
+}
+
+.sidebar i {
+  color: var(--white);
+  margin-left: 50px;
+  margin-right: 10px;
+}
+
+.sidebar ul {
+  list-style-type: none;
+  padding: 0;
+  margin-top: 8vh;
+}
+
+.sidebar li {
+  margin-bottom: 10px;
+}
+
+.sidebar a {
+  font-size: 25px;
+  width: 15vw;
+  text-decoration: none;
+  color: var(--white);
+  display: block;
+  margin-top: 50px;
+}
+
+.sidebar a:hover {
+  cursor: pointer;
+}
+
+/* Log Out button styles */
+#logout {
+  position: absolute;
+  bottom: 30px;
+  left: 20px;
+}
+
+/* Content styles */
+.content {
+  float: left;
+  width: 80%;
+  padding: 20px 0 0 20px;
+  box-sizing: border-box;
+}
+
+.car_card, .booking_card {
+  padding-left: 60px;
+  margin-bottom: 5vh;
+  border-radius: 5px;
+  box-sizing: border-box;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.car_card h3, .booking_card h3 {
+  font-size: 30px;
+  margin-top: 30px;
+  margin-bottom: 20px;
+}
+
+#Bookings, #Cars {
+  font-size: 1.2rem;
+}
+
+#default-content #dashboard_card {
+  display: flex;
+}
+
+#car_card, #book_card {
+  width: 40vw;
+  height: 25vh;
+}
+
+#car_card {
+  background-color: var(--cerulean);
+  color: var(--white);
+}
+
+#book_card {
+  background-color: var(--platinum);
+}
+
+#car-content, #booking-content {
+  display: none;
+  margin-top: 20px;
+}
+
+.filter {
+  margin: 40px 2%;
+  padding-top: 20px;
+}
+
+.filter-btn {
+  padding: 8px 16px;
+  border: none;
+  background-color: var(--lapis);
+  color: var(--platinum);
+  cursor: pointer;
+  border-radius: 5px;
+  margin-right: 10px;
+  font-size: medium;
+}
+
+.filter-btn:hover {
+  background-color: var(--indigo);
+}
+
+.cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 0 20px;
+}
+
+.card {
+  position: relative;
+  height: 37vh;
+  width: 18vw;
+  margin: 2px;
+  background-color: var(--platinum);
+  border-radius: 15px;
+  margin-bottom: 20px;
+  box-sizing: border-box;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card:hover {
+  background-color: var(--darkgray);
+}
+
+.card h2, h3, h4 {
+  margin: 0;
+  margin-top: 10px;
+}
+
+.availability-container {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 5px 5px;
+  border-radius: 5px;
+}
+
+.availability-available {
+  background-color: var(--green);
+}
+
+.availability-unavailable {
+  background-color: var(--crimson);
+}
+
+.availability {
+  color: var(--white);
+  font-weight: normal;
+  font-size: 14px;
+}
+
+.card img {
+  margin: 0 0;
+  border-top-right-radius: 15px;
+  border-top-left-radius: 15px;
+  width: 100%;
+  height: 50%;
+}
+
+.card-details {
+  margin-top: 20px;
+  margin-left: 30px;
+}
+
+.car-price {
+  font-size: 1.2rem;
+  font-weight: 450;
+}
+
+.car-model {
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-between;
+  width: 70%;
+  margin-left: 15%;
+  margin-top: 20px;
+}
+
+.buttons button {
+  width: 100px;
+  height: 30px;
+  font-size: 17px;
+  color: var(--white);
+  border-radius: 5px;
+  border: 0;
+  padding: 5px 5px;
+}
+
+#car-add-btn {
+  background-color: var(--green);
+  width: 100px;
+  height: 30px;
+  font-size: 17px;
+  color: var(--white);
+  border-radius: 5px;
+  border: 0;
+  padding: 5px 5px;
+}
+
+#car-edit-btn {
+  background-color: var(--yellow);
+}
+
+#car-edit-btn:hover {
+  background-color: var(--darkyellow);
+}
+
+#car-delete-btn {
+  background-color: var(--red);
+}
+
+#car-delete-btn:hover {
+  background-color: var(--crimson);
+}
+
+.page-btn {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.page-btn button {
+  padding: 10px 20px;
+  background-color: var(--lapis);
+  color: var(--platinum);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+
+.page-btn button:hover {
+  background-color: var(--indigo);
+}
+
+#car-add-btn:hover {
+  background-color: var(--darkgreen);
+}
+
+/* Popup styles */
+.popup {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.popup-content {
+  background-color: var(--indigo);
+  color: var(--white);
+  border-radius: 20px;
+  width: 35%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 70px;
+  text-align: center;
+}
+
+.popup-content select {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  font-weight: 17px;
+  padding: 5px;
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  margin-right: 20px;
+  margin-top: 20px;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close:hover, .close:focus {
+  color: black;
+  text-decoration: none;
+}
+
+.popup-content form input {
+  margin-bottom: 20px;
+  width: 350px;
+  font-size: 25px;
+  border-radius: 5px;
+}
+
+.popup-content label {
+  font-weight: 600;
+  font-size: 25px;
+}
+
+.popup-content h2 {
+  margin-top: 50px;
+}
+
+.popup-content button {
+  width: 150px;
+  height: 30px;
+  border: 0;
+  border-radius: 5px;
+  background-color: var(--platinum);
+}
+
+.popup-content button:hover {
+  background-color: var(--lapis);
+  color: var(--white);
+}
+
 </style>

@@ -78,7 +78,6 @@ def orders(request):
                 'image': detail.image.url
             }
             details_list.append(detail_dict)
-
         context = {
             'details': details_list,
         }
@@ -124,12 +123,34 @@ def userprofile(request):
    return render(request, 'main/user_profile.html')
 
 def distributorprofile(request):
+  try:
+    if request.method == 'POST':
+      renter_name = request.POST.get('renter_name')
+      car_model = request.POST.get('car_model')
+
+      car_detail = CarDetail.objects.filter(renter_name=renter_name, car_model=car_model)
+      if car_detail:
+        if 'editCar' in request.POST and 'changeUnlisted' in request.POST:
+          car_detail.status = "Unlisted"
+          messages.success(request, "Status updated successfully")
+        elif 'editCar' in request.POST and 'changeAvailable' in request.POST:
+          car_detail.status = "Unlisted"
+          messages.success(request, "Status updated successfully")
+      else:
+        messages.error(request, "Car detail not found")
+        return redirect('distributor_profile')
+  except:
+    messages.error(request, "Error")
+
   items = CarDetail.objects.all()
   orders = CarOrder.objects.all()
+
+  recent_orders = CarOrder.objects.all()[:5]
 
   context = {
     'items': items,
     'orders': orders,
+    'recent_orders': recent_orders,
   }
 
   return render(request, 'main/distributor.html', context)
