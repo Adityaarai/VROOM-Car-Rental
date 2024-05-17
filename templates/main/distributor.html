@@ -138,7 +138,6 @@
               <button class="filter-btn" data-category="EV">EV</button>
               <button class="filter-btn" data-category="Truck">Truck</button>
               <button class="filter-btn" data-category="Sedan">Sedan</button>
-              <button id="car-add-btn" onclick="openAddCarPopup()">Add</button>
             </div>
 
             <div class="cards-container">
@@ -222,33 +221,6 @@
               "Unlisted Cars : " + totalUnlistedCarCount;
           </script>
 
-          <!-- popup to add car -->
-          <div class="popup" id="addCarPopup">
-            <div class="popup-content">
-              <span class="close" onclick="closePopup('addCarPopup')"
-                >&times;</span
-              >
-              <h2>Add Car</h2>
-              <form id="addCarForm">
-                {% csrf_token %}
-                <label for="renterName">Renter Name:</label><br />
-                <input type="text" id="renterName" name="renterName" /><br />
-                <label for="contactNumber">Contact Number:</label><br />
-                <input
-                  type="text"
-                  id="contactNumber"
-                  name="contactNumber"
-                /><br />
-                <label for="model">Model:</label><br />
-                <input type="text" id="model" name="model" /><br />
-                <label for="price">Price:</label><br />
-                <input type="text" id="price" name="price" /><br />
-                <label for="carImage">Car Image:</label><br />
-                <input type="file" id="carImage" name="carImage" /><br /><br />
-                <button type="submit">Add Car</button>
-              </form>
-            </div>
-          </div>
         </div>
       </div>
       <div id="booking-content">
@@ -304,7 +276,7 @@
                   {% csrf_token %}
                   <!-- Hidden inputs to include car model and renter name -->
                   <input type="hidden" id="orderid" name="order_id" value="{{ order.order_id }}" />
-                  
+
                   <button type="submit" name="approve">Approve</button>
                 </form>
               </td>
