@@ -306,6 +306,11 @@ def payment_view(request):
                 # Update the status to 'Paid'
                 approved_booking.status = 'Paid'
                 approved_booking.save()
+
+                # Update car availability to 'Booked'
+                car_detail.availability = 'Booked'
+                car_detail.save()
+
                 messages.success(request, 'Payment successful!')
 
                 # Check if the end date has passed, if so, change the Status of the booking as 'Completed'
