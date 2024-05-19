@@ -3,119 +3,114 @@
 {% block title %} About Us {% endblock %} 
 {% block content %}
 
-<link
-  rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-  integrity="sha384-vWtPOzvV2LtoJMdIo6HfT94oZD8/eeFh0I+1wT6h7ggzmg+7Z0WgVpY+P6r+Qv26"
-  crossorigin="anonymous"
-/>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>About Us Page</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.2/css/fontawesome.min.css">
+</head>
+<body>
 
-<section class="hero">
-  <div class="heading">
-    <h1>About Us</h1>
-  </div>
-  <div class="container">
-    <div class="hero-content">
-      <h2>Welcome to Vroom Car Rental</h2>
-      <p>"Welcome to Vroom Vehicle Rental, where each trip is a mix of luxury and simplicity. Begin your adventure today
-        and immerse yourself in the continual excellence of motion. Our carefully selected fleet, tailored to match all
-        of your requirements, ensures that every journey with Vroom is an unforgettable experience. Discover the joy of
-        discovery with us, where each drive tells a story of comfort and style."</p>
-      <a href="{% url 'learnmore' %}"><button class="cta-button">Learn More</button></a>    
-    <div class="hero-image">
-      <img src="{% static 'img/abtUs.jpg' %}" />
+  <section class="heor">
+    <div class="heading">
+      <h1>About Us</h1>
     </div>
-  </div>
-  <div class="title-box center">
-    <h2>Meet Our Team</h2>
-    <p>
-      "The faces behind the creation of this Website.<br />Lets us present you
-      our Power Ranger Mystic Force."
-    </p>
-  </div>
-  <div class="Member-row">
-    <div class="profile-box">
-      <h4>Prajwol Rai</h4>
-      <small>Project Manager</small>
-      <img src="{% static 'img/Baje.jpg' %}" />
-      <div class="social-box">
-        <i class="fa-brands fa-facebook"></i>
-        <i class="fa-brands fa-x-twitter"></i>
-        <i class="fa-brands fa-linkedin"></i>
-        <i class="fa-brands fa-instagram"></i>
+    <div class="container">
+      <div class="hero-content">
+        <h2>Welcome to Vroom Car Rental</h2>
+        <p>"Welcome to Vroom Vehicle Rental, where each trip is a mix of luxury and simplicity. Begin your adventure today and immerse yourself in the continual excellence of motion. Our carefully selected fleet, tailored to match all of your requirements, ensures that every journey with Vroom is an unforgettable experience. Discover the joy of discovery with us, where each drive tells a story of comfort and style."</p>
+        <button class="cta-button">Learn More</button>
       </div>
-      <p>
-        Our project manager, orchestrating success with precision and vision.
-        Leading the team with expertise, he ensures every project exceeds
-        expectations.
-      </p>
-    </div>
-    <div class="profile-box">
-      <h4>Tsokney Lama</h4>
-      <small>Business Analysis</small>
-      <img src="{% static 'img/tsokney.jpg' %}" />
-      <div class="social-box">
-       
+      <div class="hero-image">
+        <img src="Main-image-Car-Rental.webp">
       </div>
-      <p>
-        Our intelligent business analyst deciphers information and develops
-        plans to move our activities ahead with clarity and foresight.
-      </p>
     </div>
-    <div class="profile-box">
-      <h4>Krishan Tamang</h4>
-      <small>Developer</small>
-      <img src="{% static 'img/kisne.jpg' %}" />
-      <div class="social-box">
-        
-      </div>
-      <p>
-        Our digital infrastructure runs smoothly and securely thanks to the
-        skillful design of our coding maestro, who creates solid frontend
-        systems with great attention to detail.
-      </p>
+    <div class="title-box center">
+      <h2>Meet Our Team</h2>
+      <p>"The faces behind the creation of this Website.<br>Lets us present you our Power Ranger Mystic Force." </p>
     </div>
-    <div class="profile-box">
-      <h4>Aditya Rai</h4>
-      <small>Developer</small>
-      <img src="{% static 'img/Chimrey.jpg' %}" />
-      <div class="social-box">
-        
-      </div>
-      <p>
-        A valuable component of our team, contributing technical skills and
-        creative solutions to each project, guaranteeing that our digital
-        undertakings are executed with originality and precision.
-      </p>
+    <div class="Member-row">
+        <div class="profile-box">
+            <h4>Prajwol Rai</h4>
+            <small>Project Manager </small>
+            <img src="Baje.jpg">
+            <div class="social-box">
+              <i class="fa-brands fa-facebook"></i>
+              <i class="fa-brands fa-twitter"></i>
+              <i class="fa-brands fa-linkedin"></i>
+              <i class="fa-brands fa-instagram"></i>
+            </div>
+            <p> Our project manager, orchestrating success with precision and vision. Leading the team with expertise, he ensures every project exceeds expectations.</p>
+        </div>
+        <div class="profile-box">
+          <h4>Tsokney Lama</h4>
+          <small>Business Analysis</small>
+          <img src="tsokney.jpg">
+          <div class="social-box">
+            <i class="fa-brands fa-facebook"></i>
+            <i class="fa-brands fa-twitter"></i>
+            <i class="fa-brands fa-linkedin"></i>
+            <i class="fa-brands fa-instagram"></i>
+          </div>
+          <p> Our intelligent business analyst deciphers information and develops plans to move our activities ahead with clarity and foresight.</p>
+        </div>
+        <div class="profile-box">
+          <h4>Krishan Tamang</h4>
+          <small>Developer</small>
+          <img src="kisne.jpg">
+          <div class="social-box">
+            <i class="fa-brands fa-facebook"></i>
+            <i class="fa-brands fa-twitter"></i>
+            <i class="fa-brands fa-linkedin"></i>
+            <i class="fa-brands fa-instagram"></i>
+          </div>
+          <p> Our digital infrastructure runs smoothly and securely thanks to the skillful design of our coding maestro, who creates solid frontend systems with great attention to detail.
+          </p>
+        </div>
+        <div class="profile-box">
+          <h4>Aditya Rai</h4>
+          <small>Developer </small>
+          <img src="Chimrey.jpg">
+          <div class="social-box">
+            <i class="fa-brands fa-facebook"></i>
+            <i class="fa-brands fa-twitter"></i>
+            <i class="fa-brands fa-linkedin"></i>
+            <i class="fa-brands fa-instagram"></i>
+          </div>
+          <p> A valuable component of our team, contributing technical skills and creative solutions to each project, guaranteeing that our digital undertakings are executed with originality and precision.</p>
+        </div>
+        <div class="profile-box">
+          <h4>Nileena Rai</h4>
+          <small>Developer </small>
+          <img src="nileena.jpg">
+          <div class="social-box">
+            <i class="fa-brands fa-facebook"></i>
+            <i class="fa-brands fa-twitter"></i>
+            <i class="fa-brands fa-linkedin"></i>
+            <i class="fa-brands fa-instagram"></i>
+          </div>
+          <p> Our digital infrastructure runs smoothly and securely thanks to the skillful design of our coding maestro, who creates solid backend systems with great attention to detail.</p>
+        </div>
+        <div class="profile-box">
+          <h4>Abraham Hyolmo</h4>
+          <small>Developer </small>
+          <img src="abraham.jpg">
+          <div class="social-box">
+            <i class="fa-brands fa-facebook"></i>
+            <i class="fa-brands fa-twitter"></i>
+            <i class="fa-brands fa-linkedin"></i>
+            <i class="fa-brands fa-instagram"></i>
+          </div>
+          <p> The creative mind behind our 'About Us' page, blending design flair with frontend expertise to craft an immersive and visually captivating narrative of our brand story.</p>
+        </div>
     </div>
-    <div class="profile-box">
-      <h4>Nileena Rai</h4>
-      <small>Developer</small>
-      <img src="{% static 'img/nileena.jpg' %}" />
-      <div class="social-box">
-        
-      </div>
-      <p>
-        Our digital infrastructure runs smoothly and securely thanks to the
-        skillful design of our coding maestro, who creates solid backend systems
-        with great attention to detail.
-      </p>
-    </div>
-    <div class="profile-box">
-      <h4>Abraham Hyolmo</h4>
-      <small>Developer</small>
-      <img src="{% static 'img/abraham.jpg' %}" />
-      <div class="social-box">
-        
-      </div>
-      <p>
-        The creative mind behind our 'About Us' page, blending design flair with
-        frontend expertise to craft an immersive and visually captivating
-        narrative of our brand story.
-      </p>
-    </div>
-  </div>
-</section>
+  </section> 
+</body>
+</html>
 
 <style>
   * {
@@ -307,7 +302,7 @@
 .profile-box h4 {
   margin-top: 25px;
   margin-bottom: 5px;
-  color: #7379aa;
+  color: #0f1b79;
 }
 
   small {
@@ -315,10 +310,10 @@
   }
 
 .social-box {
-  background: #ffffff;
+  background: #0f1b79;
   margin: 60px auto 20px;
   text-align: center;
-  border-radius: 5px;
+  border-radius: 3px;
 }
 
   .social-box .fa {
