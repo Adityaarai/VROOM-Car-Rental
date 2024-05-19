@@ -10,7 +10,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>About Us Page</title>
-  <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.2/css/fontawesome.min.css">
 </head>
 <body>
@@ -23,10 +22,13 @@
       <div class="hero-content">
         <h2>Welcome to Vroom Car Rental</h2>
         <p>"Welcome to Vroom Vehicle Rental, where each trip is a mix of luxury and simplicity. Begin your adventure today and immerse yourself in the continual excellence of motion. Our carefully selected fleet, tailored to match all of your requirements, ensures that every journey with Vroom is an unforgettable experience. Discover the joy of discovery with us, where each drive tells a story of comfort and style."</p>
-        <button class="cta-button">Learn More</button>
+        <a href="{% url 'learnmore' %}">
+          <button class="cta-button" >Learn More</button>
+        </a>
+        
       </div>
       <div class="hero-image">
-        <img src="Main-image-Car-Rental.webp">
+        <img src="{% static 'img/abtUs.jpg' %}">
       </div>
     </div>
     <div class="title-box center">
@@ -37,7 +39,7 @@
         <div class="profile-box">
             <h4>Prajwol Rai</h4>
             <small>Project Manager </small>
-            <img src="Baje.jpg">
+            <img src="{% static 'img/Baje.jpg' %}">
             <div class="social-box">
               <i class="fa-brands fa-facebook"></i>
               <i class="fa-brands fa-twitter"></i>
@@ -49,7 +51,7 @@
         <div class="profile-box">
           <h4>Tsokney Lama</h4>
           <small>Business Analysis</small>
-          <img src="tsokney.jpg">
+          <img src="{% static 'img/tsokney.jpg' %}">
           <div class="social-box">
             <i class="fa-brands fa-facebook"></i>
             <i class="fa-brands fa-twitter"></i>
@@ -61,7 +63,7 @@
         <div class="profile-box">
           <h4>Krishan Tamang</h4>
           <small>Developer</small>
-          <img src="kisne.jpg">
+          <img src="{% static 'img/kisne.jpg' %}">
           <div class="social-box">
             <i class="fa-brands fa-facebook"></i>
             <i class="fa-brands fa-twitter"></i>
@@ -74,7 +76,7 @@
         <div class="profile-box">
           <h4>Aditya Rai</h4>
           <small>Developer </small>
-          <img src="Chimrey.jpg">
+          <img src="{% static 'img/Chimrey.jpg' %}">
           <div class="social-box">
             <i class="fa-brands fa-facebook"></i>
             <i class="fa-brands fa-twitter"></i>
@@ -86,7 +88,7 @@
         <div class="profile-box">
           <h4>Nileena Rai</h4>
           <small>Developer </small>
-          <img src="nileena.jpg">
+          <img src="{% static 'img/nileena.jpg' %}">
           <div class="social-box">
             <i class="fa-brands fa-facebook"></i>
             <i class="fa-brands fa-twitter"></i>
@@ -98,7 +100,7 @@
         <div class="profile-box">
           <h4>Abraham Hyolmo</h4>
           <small>Developer </small>
-          <img src="abraham.jpg">
+          <img src="{% static 'img/abraham.jpg' %}">
           <div class="social-box">
             <i class="fa-brands fa-facebook"></i>
             <i class="fa-brands fa-twitter"></i>
@@ -183,7 +185,8 @@
 
   .hero-image {
     flex: 1;
-    width: 600px;
+    height: auto;
+    width: 900px;
     margin: auto;
     animation: fadeInRight 2s ease;
   }
@@ -344,7 +347,7 @@
   }
 
   .profile-box:hover {
-    background-color: #266c94;
+    background-color: #97b7c9;
   }
 </style>
 {% endblock %}

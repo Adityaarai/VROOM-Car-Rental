@@ -3,23 +3,27 @@
 {% block title %} About Us {% endblock %}
 {% block content %}
 
-  <section class="heor">
-    <div class="heading">
-      <h1>Learn more</h1>
-    </div>
-    <div class="container">
-      <div class="hero-content">
-        <h2>What Is Vroom Car Rental?</h2>
-        <p>"Vroom Car Rental is your premier choice for seamless and stylish travel experiences. We pride ourselves on offering a diverse fleet of top-quality vehicles, designed to meet all your travel needs with comfort and reliability. Whether you're exploring a new city or embarking on a road trip, Vroom ensures every journey is memorable. Our commitment to excellence and customer satisfaction sets us apart, making each drive with Vroom a unique adventure in luxury and convenience."</p>
-        <a href="{% url 'about_us' %}"><button class="cta-button">Back to Home</button></a>
-      </div>
-      <div class="hero-image">
-        <h2>What Does Vroom Car Rental Do?</h2>
-        <p>"Vroom Vehicle Rental gives a top notch vehicle rental help, offering many excellent vehicles to suit each movement need. Whether you're exploring city roads, going out on an excursion, or requiring a dependable vehicle for business purposes, Vroom guarantees a consistent and upscale travel insight. We focus on consumer loyalty by conveying extraordinary help, carefully kept up with vehicles, and a simple rental cycle. With Vroom, each excursion turns into a pleasant and essential experience."</p>
-    </div>
+  
+    <body>
+      <section class="hero">
+        <div class="heading">
+          <h1>Learn more</h1>
+        </div>
+        <div class="container">
+          <div class="hero-content">
+            <h2>What Is Vroom Car Rental?</h2>
+            <p>"Vroom Car Rental is your premier choice for seamless and stylish travel experiences. We pride ourselves on offering a diverse fleet of top-quality vehicles, designed to meet all your travel needs with comfort and reliability. Whether you're exploring a new city or embarking on a road trip, Vroom ensures every journey is memorable. Our commitment to excellence and customer satisfaction sets us apart, making each drive with Vroom a unique adventure in luxury and convenience."</p>
+            <a href="{% url 'about_us' %}"><button class="cta-button">Back</button></a>
+          </div>
+          <div class="hero-image">
+            <h2>What Does Vroom Rental Do?</h2>
+            <p>"Vroom Vehicle Rental gives a top notch vehicle rental help, offering many excellent vehicles to suit each movement need. Whether you're exploring city roads, going out on an excursion, or requiring a dependable vehicle for business purposes, Vroom guarantees a consistent and upscale travel insight. We focus on consumer loyalty by conveying extraordinary help, carefully kept up with vehicles, and a simple rental cycle. With Vroom, each excursion turns into a pleasant and essential experience."</p>
+        </div>
+        </section>
+    </body>
     <style>
       body{
-        background-image: url(readmore.webp);
+        background-image: "{% url 'about_us' %}";
         background-repeat: no-repeat;
         background-attachment: fixed;
         background-size: 100% 100%;
@@ -31,8 +35,9 @@
           font-family: "Arial", sans-serif;
         }
         .hero{
-          background-color: #f8f8f8;
+          /* background-color: #f8f8f8; */
           overflow: hidden;
+          width: 80%;
         }
         .heading h1{
           color: #0f1b79;
@@ -42,10 +47,7 @@
         }
         .container{
           display: flex;
-          justify-content: space-between;
-          text-align: justify;
-          align-items: center;
-          width: 90%;
+          justify-content: center;
           margin: 70px auto;
         }
         .hero-content{
@@ -64,6 +66,7 @@
         .hero-content p{
           font-size: 24px;
           line-height: 1.5;
+          text-align: justify;
           margin-bottom: 40px;
           color: #1a1717;
         }
@@ -87,7 +90,7 @@
         .hero-image{
           flex: 1;
           width: 600px;
-          margin: auto;
+          /* margin: auto; */
           animation: fadeInRight 2s ease;
         }
         .hero-image h2{
@@ -99,6 +102,7 @@
         .hero-image p{
           font-size: 24px;
           line-height: 1.5;
+          text-align: justify;
           margin-bottom: 40px;
           color: #000000;
         }
