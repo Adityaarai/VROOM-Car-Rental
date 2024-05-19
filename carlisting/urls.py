@@ -10,6 +10,7 @@ urlpatterns = [
     path('distributor-profile/', views.distributorprofile, name = 'distributor_profile'),
     path('admin-profile/', views.adminprofile, name = 'admin_profile'),
     path('orders/', views.orders, name = 'orders'),
+    path('about_us/learnmore/', views.learnmore, name='learnmore')
 ]
 
 

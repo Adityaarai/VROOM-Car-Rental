@@ -15,8 +15,7 @@
         and immerse yourself in the continual excellence of motion. Our carefully selected fleet, tailored to match all
         of your requirements, ensures that every journey with Vroom is an unforgettable experience. Discover the joy of
         discovery with us, where each drive tells a story of comfort and style."</p>
-      <button class="cta-button">Learn More</button>
-    </div>
+      <a href="{% url 'learnmore' %}"><button class="cta-button">Learn More</button></a>    
     <div class="hero-image">
       <img src="{% static 'img/abtUs.jpg' %}">
     </div>
@@ -31,7 +30,10 @@
       <small>Project Manager</small>
       <img src="{% static 'img/Baje.jpg' %}">
       <div class="social-box">
+        <i class="fa-brands fa-facebook"></i>
+        <i class="fa-brands fa-x-twitter"></i>
         <i class="fa-brands fa-linkedin"></i>
+        <i class="fa-brands fa-instagram"></i>
       </div>
       <p>Our project manager, orchestrating success with precision and vision. Leading the team with expertise, he
         ensures every project exceeds expectations.</p>
@@ -41,10 +43,7 @@
       <small>Business Analysis</small>
       <img src="{% static 'img/tsokney.jpg' %}">
       <div class="social-box">
-        <i class="fa-brands fa-facebook"></i>
-        <i class="fa-brands fa-twitter"></i>
-        <i class="fa-brands fa-linkedin"></i>
-        <i class="fa-brands fa-instagram"></i>
+       
       </div>
       <p>Our intelligent business analyst deciphers information and develops plans to move our activities ahead with
         clarity and foresight.</p>
@@ -54,10 +53,7 @@
       <small>Developer</small>
       <img src="{% static 'img/kisne.jpg' %}">
       <div class="social-box">
-        <i class="fa-brands fa-facebook"></i>
-        <i class="fa-brands fa-twitter"></i>
-        <i class="fa-brands fa-linkedin"></i>
-        <i class="fa-brands fa-instagram"></i>
+        
       </div>
       <p>Our digital infrastructure runs smoothly and securely thanks to the skillful design of our coding maestro, who
         creates solid frontend systems with great attention to detail.</p>
@@ -67,10 +63,7 @@
       <small>Developer</small>
       <img src="{% static 'img/Chimrey.jpg' %}">
       <div class="social-box">
-        <i class="fa-brands fa-facebook"></i>
-        <i class="fa-brands fa-twitter"></i>
-        <i class="fa-brands fa-linkedin"></i>
-        <i class="fa-brands fa-instagram"></i>
+        
       </div>
       <p>A valuable component of our team, contributing technical skills and creative solutions to each project,
         guaranteeing that our digital undertakings are executed with originality and precision.</p>
@@ -80,10 +73,7 @@
       <small>Developer</small>
       <img src="{% static 'img/nileena.jpg' %}">
       <div class="social-box">
-        <i class="fa-brands fa-facebook"></i>
-        <i class="fa-brands fa-twitter"></i>
-        <i class="fa-brands fa-linkedin"></i>
-        <i class="fa-brands fa-instagram"></i>
+        
       </div>
       <p>Our digital infrastructure runs smoothly and securely thanks to the skillful design of our coding maestro, who
         creates solid backend systems with great attention to detail.</p>
@@ -93,10 +83,7 @@
       <small>Developer</small>
       <img src="{% static 'img/abraham.jpg' %}">
       <div class="social-box">
-        <i class="fa-brands fa-facebook"></i>
-        <i class="fa-brands fa-twitter"></i>
-        <i class="fa-brands fa-linkedin"></i>
-        <i class="fa-brands fa-instagram"></i>
+        
       </div>
       <p>The creative mind behind our 'About Us' page, blending design flair with frontend expertise to craft an
         immersive and visually captivating narrative of our brand story.</p>
@@ -158,7 +145,7 @@
 
 .hero-content button {
   display: inline-block;
-  background-color: #300973;
+  background-color: #917bb8;
   color: #e1cccc;
   padding: 12px 24px;
   border-radius: 5px;
@@ -169,7 +156,7 @@
 }
 
 .hero-content button:hover {
-  background: color #0f1b79;
+  background: color #e9e9ee;
   transform: scale(1.1);
 }
 
@@ -294,7 +281,7 @@ img {
 .profile-box h4 {
   margin-top: 25px;
   margin-bottom: 5px;
-  color: #0f1b79;
+  color: #7379aa;
 }
 
 small {
@@ -302,10 +289,10 @@ small {
 }
 
 .social-box {
-  background: #0f1b79;
+  background: #ffffff;
   margin: 60px auto 20px;
   text-align: center;
-  border-radius: 3px;
+  border-radius: 5px;
 }
 
 .social-box .fa {
