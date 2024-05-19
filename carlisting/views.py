@@ -147,6 +147,9 @@ def index(request):
 def about_us(request):
     return render(request, 'main/about.html')
 
+def learnmore(request):
+   return render(request, "main/learnmore.html")
+
 def userprofile(request):
    return render(request, 'main/user_profile.html')
 
