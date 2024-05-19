@@ -19,6 +19,7 @@ from .forms import UserProfileForm
 from django.contrib.auth import update_session_auth_hash
 from carlisting.models import CarDetail, CarOrder
 from .models import Profile 
+from django.utils import timezone
 
 # Create your views here.
 # View for handling signup functionality
@@ -146,77 +147,71 @@ def activate(request, uidb64, token):
 def user_profile_view(request):
     user = request.user
 
-    # Retrieve logged-in user's email
-    user_email = user.email
-
     try:
         profile = Profile.objects.get(user=user)
     except Profile.DoesNotExist:
-        profile = None
+        profile = Profile(user=user)
+        profile.save()  # Ensure the profile is saved if it doesn't exist
 
     if request.method == 'POST':
-        form = PasswordChangeForm(user, request.POST)
+        profile_form = UserProfileForm(request.POST, instance=profile, user=user)
+        password_form = PasswordChangeForm(user, request.POST)
 
         if 'update_profile' in request.POST:
-            profile_form = UserProfileForm(request.POST, instance=profile)
             if profile_form.is_valid():
-                if profile:
-                    profile_form.save()
-                    messages.success(request, "Profile information updated successfully.")
-                else:
-                    # If profile does not exist, create a new one
-                    profile = profile_form.save(commit=False)
-                    profile.user = user
-                    profile.save()
-                    messages.success(request, "Profile created successfully.")
+                profile_form.save()
+                messages.success(request, "Profile updated successfully.")
+                return redirect('user_profile')  # Redirect to the same page to ensure data is refreshed
             else:
                 messages.error(request, "Failed to update profile information. Please check the provided data.")
 
-            # Update username if it's changed
-            new_username = request.POST.get('username')
-            if new_username != user.username:
-                user.username = new_username
-                user.save()
-
-        elif 'change_password' in request.POST:  # Check if the change password form is submitted
+        elif 'change_password' in request.POST:
             form = PasswordChangeForm(user, request.POST)
             if form.is_valid():
                 form.save()
                 update_session_auth_hash(request, form.user)
                 messages.success(request, "Password updated successfully.")
+                return redirect('user_profile')  # Redirect to the same page to ensure data is refreshed
             else:
                 for field, errors in form.errors.items():
                     for error in errors:
                         messages.error(request, f"{field}: {error}")
+
+    else:
+        profile_form = UserProfileForm(instance=profile, user=user)
+        password_form = PasswordChangeForm(user)
     
     # Filter CarDetail objects based on renter_name matching the logged-in user's username
     cars = CarDetail.objects.filter(renter_name=user.username)
 
     # Filter bookings based on user's email and status ("Pending")
-    pending_bookings = CarOrder.objects.filter(rentee_email=user_email, status='Pending')
+    pending_bookings = CarOrder.objects.filter(rentee=user.profile, status='Pending')
 
     # Filter bookings based on user's email and status ("Approved")
-    approved_bookings = CarOrder.objects.filter(rentee_email=user_email, status='Approved')
+    approved_bookings = CarOrder.objects.filter(rentee=user.profile, status='Approved')
 
     # Filter bookings based on user's email and status ("Paid")
-    paid_bookings = CarOrder.objects.filter(rentee_email=user_email, status='Paid')
+    paid_bookings = CarOrder.objects.filter(rentee=user.profile, status='Paid')
 
     # Filter bookings based on user's email and status ("Completed")
-    completed_bookings = CarOrder.objects.filter(rentee_email=user_email, status='Completed')
+    completed_bookings = CarOrder.objects.filter(rentee=user.profile, status='Completed')
 
-    if not cars:  # If no cars found for the user
-        message = "You haven't added any cars yet."
-        return render(request, 'main/user_profile.html', {'user': user, 'message': message})
-    else:
-        return render(request, 'main/user_profile.html', {
-          'user': user,
-          'profile': profile,
-          'cars': cars,
-          'pending_bookings': pending_bookings,
-          'approved_bookings': approved_bookings,
-          'paid_bookings': paid_bookings,
-          'completed_bookings': completed_bookings
-        })
+    context = {
+        'user': user,
+        'profile': profile,
+        'profile_form': profile_form,
+        'password_form': password_form,
+        'cars': cars,
+        'pending_bookings': pending_bookings,
+        'approved_bookings': approved_bookings,
+        'paid_bookings': paid_bookings,
+        'completed_bookings': completed_bookings
+    }
+
+    if not cars: # If no cars found in the database
+        context['message'] = "You haven't added any cars yet."
+
+    return render(request, 'main/user_profile.html', context)
 
 # View for logging out
 @login_required
@@ -234,6 +229,17 @@ def add_car(request):
         price = request.POST.get('price')
         car_image = request.FILES.get('carImage')
 
+        # Regular expression pattern to match exactly 10 digits for contact number
+        pattern = r'^\d{10}$'
+
+        if not contact_number or not car_type or not model or not price or not car_image:
+            messages.error(request, 'Please fill in all fields, including the car image.')
+            return redirect('user_profile')
+
+        if not re.match(pattern, contact_number):
+            messages.error(request, 'Contact number must be a 10-digit number.')
+            return redirect('user_profile')
+            
         # Assuming the user is authenticated
         user = request.user
 
@@ -274,60 +280,49 @@ def remove_car(request):
     return redirect('user_profile')  # Redirecting to user profile page
 
 # View for payment
+@login_required
 def payment_view(request):
-    # Retrieve logged-in user's email
-    user_email = request.user.email
+    user = request.user
+    approved_booking = CarOrder.objects.filter(rentee=user.profile, status='Approved').first()
+    
+    if approved_booking:
+        car_detail = approved_booking.product
+        car_name = f"{car_detail.car_type} {car_detail.car_model}"
+        car_image = car_detail.image.url
+        context = {
+            'car_name': car_name,
+            'price': approved_booking.total_price,
+            'pickup_date': approved_booking.start_date,
+            'dropoff_date': approved_booking.end_date,
+            'image': car_image
+        }
+        
+        if request.method == 'POST':
+            esewa_number = request.POST.get('esewa_number')
+            password = request.POST.get('password')
+            
+            # Perform any necessary validation on esewa_number and password
+            if esewa_number and password and len(esewa_number) == 10 and len(password) == 4:
+                # Update the status to 'Paid'
+                approved_booking.status = 'Paid'
+                approved_booking.save()
 
-    # Retrieve CarOrder data for the user's email
-    user_orders = CarOrder.objects.filter(rentee_email=user_email, status='Approved')  # Filter only approved orders
+                # Update car availability to 'Booked'
+                car_detail.availability = 'Booked'
+                car_detail.save()
 
-    # Assuming only one order is retrieved
-    if user_orders.exists():
-        order = user_orders.first()
-        product = order.product
+                messages.success(request, 'Payment successful!')
 
-        # Join car model and type
-        car_name = f"{product.car_model} {product.car_type}"
+                # Check if the end date has passed, if so, change the Status of the booking as 'Completed'
+                if approved_booking.end_date < timezone.now():
+                    approved_booking.status = 'Completed'
+                    approved_booking.save()
+                    messages.info(request, 'Booking completed!')
 
-        # Retrieve CarDetail matching the car name
-        car_details = CarDetail.objects.filter(car_model__icontains=product.car_model, car_type__icontains=product.car_type)
-
-        if car_details.exists():
-            car_detail = car_details.first()
-            price = car_detail.price
-            image = car_detail.image.url
-        else:
-            # Handle case where no matching car details are found
-            price = "Price not available"
-            image = "Image not available"
-
-        # Retrieve pickup and drop-off dates from the order
-        pickup_date = order.start_date.strftime('%Y-%m-%d')
-        dropoff_date = order.end_date.strftime('%Y-%m-%d')
-
+                return redirect('user_profile')  # Redirect to the user's profile page
+            else:
+                messages.error(request, 'Invalid payment details. Please try again.')
     else:
-        # Handle case where no orders are found for the user
-        car_name = "Car not available"
-        price = "Price not available"
-        image = "Car not available"
-        pickup_date = "Pickup date not available"
-        dropoff_date = "Drop-off date not available"
-
-    context = {
-        'car_name': car_name,
-        'price': price,
-        'image': image,
-        'pickup_date': pickup_date,
-        'dropoff_date': dropoff_date,
-    }
-
-    if request.method == 'POST':
-        # Update the status of the CarOrder to 'Paid'
-        if user_orders.exists():  # Check if the order exists
-            order = user_orders.first()  # Retrieve the order
-            order.status = 'Paid'  # Update the status
-            order.save()  # Save the changes
-            # Redirect the user to their profile page
-            return redirect('/user/profile')
+        context = {}
 
     return render(request, 'main/payment.html', context)

@@ -1,8 +1,14 @@
-{% extends 'partials/base.html' %}
-{% load static %}
-{% block title %} About Us {% endblock %}
+{% extends 'partials/base.html' %} 
+{% load static %} 
+{% block title %} About Us {% endblock %} 
 {% block content %}
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-vWtPOzvV2LtoJMdIo6HfT94oZD8/eeFh0I+1wT6h7ggzmg+7Z0WgVpY+P6r+Qv26" crossorigin="anonymous">
+
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+  integrity="sha384-vWtPOzvV2LtoJMdIo6HfT94oZD8/eeFh0I+1wT6h7ggzmg+7Z0WgVpY+P6r+Qv26"
+  crossorigin="anonymous"
+/>
 
 <section class="hero">
   <div class="heading">
@@ -17,131 +23,151 @@
         discovery with us, where each drive tells a story of comfort and style."</p>
       <a href="{% url 'learnmore' %}"><button class="cta-button">Learn More</button></a>    
     <div class="hero-image">
-      <img src="{% static 'img/abtUs.jpg' %}">
+      <img src="{% static 'img/abtUs.jpg' %}" />
     </div>
   </div>
   <div class="title-box center">
     <h2>Meet Our Team</h2>
-    <p>"The faces behind the creation of this Website.<br>Lets us present you our Power Ranger Mystic Force." </p>
+    <p>
+      "The faces behind the creation of this Website.<br />Lets us present you
+      our Power Ranger Mystic Force."
+    </p>
   </div>
   <div class="Member-row">
     <div class="profile-box">
       <h4>Prajwol Rai</h4>
       <small>Project Manager</small>
-      <img src="{% static 'img/Baje.jpg' %}">
+      <img src="{% static 'img/Baje.jpg' %}" />
       <div class="social-box">
         <i class="fa-brands fa-facebook"></i>
         <i class="fa-brands fa-x-twitter"></i>
         <i class="fa-brands fa-linkedin"></i>
         <i class="fa-brands fa-instagram"></i>
       </div>
-      <p>Our project manager, orchestrating success with precision and vision. Leading the team with expertise, he
-        ensures every project exceeds expectations.</p>
+      <p>
+        Our project manager, orchestrating success with precision and vision.
+        Leading the team with expertise, he ensures every project exceeds
+        expectations.
+      </p>
     </div>
     <div class="profile-box">
       <h4>Tsokney Lama</h4>
       <small>Business Analysis</small>
-      <img src="{% static 'img/tsokney.jpg' %}">
+      <img src="{% static 'img/tsokney.jpg' %}" />
       <div class="social-box">
        
       </div>
-      <p>Our intelligent business analyst deciphers information and develops plans to move our activities ahead with
-        clarity and foresight.</p>
+      <p>
+        Our intelligent business analyst deciphers information and develops
+        plans to move our activities ahead with clarity and foresight.
+      </p>
     </div>
     <div class="profile-box">
       <h4>Krishan Tamang</h4>
       <small>Developer</small>
-      <img src="{% static 'img/kisne.jpg' %}">
+      <img src="{% static 'img/kisne.jpg' %}" />
       <div class="social-box">
         
       </div>
-      <p>Our digital infrastructure runs smoothly and securely thanks to the skillful design of our coding maestro, who
-        creates solid frontend systems with great attention to detail.</p>
+      <p>
+        Our digital infrastructure runs smoothly and securely thanks to the
+        skillful design of our coding maestro, who creates solid frontend
+        systems with great attention to detail.
+      </p>
     </div>
     <div class="profile-box">
       <h4>Aditya Rai</h4>
       <small>Developer</small>
-      <img src="{% static 'img/Chimrey.jpg' %}">
+      <img src="{% static 'img/Chimrey.jpg' %}" />
       <div class="social-box">
         
       </div>
-      <p>A valuable component of our team, contributing technical skills and creative solutions to each project,
-        guaranteeing that our digital undertakings are executed with originality and precision.</p>
+      <p>
+        A valuable component of our team, contributing technical skills and
+        creative solutions to each project, guaranteeing that our digital
+        undertakings are executed with originality and precision.
+      </p>
     </div>
     <div class="profile-box">
       <h4>Nileena Rai</h4>
       <small>Developer</small>
-      <img src="{% static 'img/nileena.jpg' %}">
+      <img src="{% static 'img/nileena.jpg' %}" />
       <div class="social-box">
         
       </div>
-      <p>Our digital infrastructure runs smoothly and securely thanks to the skillful design of our coding maestro, who
-        creates solid backend systems with great attention to detail.</p>
+      <p>
+        Our digital infrastructure runs smoothly and securely thanks to the
+        skillful design of our coding maestro, who creates solid backend systems
+        with great attention to detail.
+      </p>
     </div>
     <div class="profile-box">
       <h4>Abraham Hyolmo</h4>
       <small>Developer</small>
-      <img src="{% static 'img/abraham.jpg' %}">
+      <img src="{% static 'img/abraham.jpg' %}" />
       <div class="social-box">
         
       </div>
-      <p>The creative mind behind our 'About Us' page, blending design flair with frontend expertise to craft an
-        immersive and visually captivating narrative of our brand story.</p>
+      <p>
+        The creative mind behind our 'About Us' page, blending design flair with
+        frontend expertise to craft an immersive and visually captivating
+        narrative of our brand story.
+      </p>
     </div>
   </div>
 </section>
 
 <style>
-* {
-  margin: 2px;
-  padding: 2px;
-  box-sizing: border-box;
-  font-family: "Arial", sans-serif;
-}
+  * {
+    margin: 2px;
+    padding: 2px;
+    box-sizing: border-box;
+    font-family: "Arial", sans-serif;
+  }
 
-.hero {
-  width: 100%;
-  background-color: #ffffff;
-  overflow: hidden;
-}
+  .hero {
+    width: 100%;
+    background-color: #ffffff;
+    overflow: hidden;
+  }
 
-.heading h1 {
-  color: #000000;
-  font-size: 55px;
-  text-align: center;
-  margin-top: 90px;
-  margin-bottom: 0;
-}
+  .heading h1 {
+    color: #000000;
+    font-size: 55px;
+    text-align: center;
+    margin-top: 90px;
+    margin-bottom: 0;
+  }
 
-.container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 90%;
-  margin: 65px auto;
-}
+  .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+    margin: 65px auto;
+  }
 
-.hero-content {
-  flex: 1;
-  width: 600px;
-  margin: 0px 25px;
-  animation: fadeInUp 2s ease;
-}
+  .hero-content {
+    flex: 1;
+    width: 600px;
+    margin: 0px 25px;
+    animation: fadeInUp 2s ease;
+  }
 
-.hero-content h2 {
-  margin-top: 10px;
-  font-size: 38px;
-  margin-bottom: 20px;
-  color: #653939;
-}
+  .hero-content h2 {
+    margin-top: 10px;
+    font-size: 38px;
+    margin-bottom: 20px;
+    color: #653939;
+  }
 
-.hero-content p {
-  text-align: justify;
-  font-size: 24px;
-  line-height: 1.5;
-  margin-bottom: 40px;
-  color: #1a1717;
-}
+  .hero-content p {
+    text-align: justify;
+    font-size: 24px;
+    line-height: 1.5;
+    margin-bottom: 40px;
+    color: #1a1717;
+  }
 
 .hero-content button {
   display: inline-block;
@@ -160,123 +186,123 @@
   transform: scale(1.1);
 }
 
-.hero-image {
-  flex: 1;
-  width: 600px;
-  margin: auto;
-  animation: fadeInRight 2s ease;
-}
-
-img {
-  width: 100%;
-  height: auto;
-  border-radius: 20px;
-}
-
-@media screen and (max-width: 768px) {
-  .heading h1 {
-    font-size: 45px;
-    margin-top: 30px;
-  }
-
-  .hero {
-    margin: 0px;
-  }
-
-  .container {
-    width: 100%;
-    flex-direction: column;
-  }
-
-  .hero-content {
-    width: 100%;
-    margin: 35px 0px;
-  }
-
-  .hero-content h2 {
-    font-size: 30px;
-  }
-
-  .hero-content p {
-    font-size: 18px;
-    margin-bottom: 20px;
-  }
-
-  .hero-content button {
-    font-size: 16px;
-    padding: 8px 16px;
-  }
-
   .hero-image {
+    flex: 1;
+    width: 600px;
+    margin: auto;
+    animation: fadeInRight 2s ease;
+  }
+
+  img {
     width: 100%;
+    height: auto;
+    border-radius: 20px;
   }
-}
 
-@keyframes fadeInUp {
-  0% {
-    opacity: 0;
-    transform: translate(50px);
+  @media screen and (max-width: 768px) {
+    .heading h1 {
+      font-size: 45px;
+      margin-top: 30px;
+    }
+
+    .hero {
+      margin: 0px;
+    }
+
+    .container {
+      width: 100%;
+      flex-direction: column;
+    }
+
+    .hero-content {
+      width: 100%;
+      margin: 35px 0px;
+    }
+
+    .hero-content h2 {
+      font-size: 30px;
+    }
+
+    .hero-content p {
+      font-size: 18px;
+      margin-bottom: 20px;
+    }
+
+    .hero-content button {
+      font-size: 16px;
+      padding: 8px 16px;
+    }
+
+    .hero-image {
+      width: 100%;
+    }
   }
-  100% {
-    opacity: 1;
-    transform: translate(0px);
+
+  @keyframes fadeInUp {
+    0% {
+      opacity: 0;
+      transform: translate(50px);
+    }
+    100% {
+      opacity: 1;
+      transform: translate(0px);
+    }
   }
-}
 
-@keyframes fadeInRight {
-  0% {
-    opacity: 0;
-    transform: translate(-50px);
+  @keyframes fadeInRight {
+    0% {
+      opacity: 0;
+      transform: translate(-50px);
+    }
+    100% {
+      opacity: 1;
+      transform: translate(0px);
+    }
   }
-  100% {
-    opacity: 1;
-    transform: translate(0px);
+
+  .title-box {
+    text-align: center;
   }
-}
 
-.title-box {
-  text-align: center;
-}
+  .center {
+    margin: 0 auto;
+    max-width: 600px;
+  }
 
-.center {
-  margin: 0 auto;
-  max-width: 600px;
-}
+  .title-box h2 {
+    color: #000000;
+    font-size: 55px;
+    text-align: center;
+    margin-top: 220px;
+  }
 
-.title-box h2 {
-  color: #000000;
-  font-size: 55px;
-  text-align: center;
-  margin-top: 220px;
-}
+  .title-box p {
+    font-size: 24px;
+    line-height: 24px;
+    margin-top: 20px;
+    color: #1a1717;
+  }
 
-.title-box p {
-  font-size: 24px;
-  line-height: 24px;
-  margin-top: 20px;
-  color: #1a1717;
-}
+  .profile-box {
+    width: 360px;
+    height: 330px;
+    background: #fff;
+    border-radius: 4px;
+    margin-bottom: 30px;
+    box-shadow: 8px 8px 8px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    position: relative;
+    transition: background 0.5s;
+  }
 
-.profile-box {
-  width: 360px;
-  height: 330px;
-  background: #fff;
-  border-radius: 4px;
-  margin-bottom: 30px;
-  box-shadow: 8px 8px 8px 8px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  position: relative;
-  transition: background 0.5s;
-}
-
-.profile-box img {
-  width: 110px;
-  position: absolute;
-  top: 10px;
-  right: 30px;
-  border-radius: 4px;
-  transition: 0.5s;
-}
+  .profile-box img {
+    width: 110px;
+    position: absolute;
+    top: 10px;
+    right: 30px;
+    border-radius: 4px;
+    transition: 0.5s;
+  }
 
 .profile-box h4 {
   margin-top: 25px;
@@ -284,9 +310,9 @@ img {
   color: #7379aa;
 }
 
-small {
-  color: #555;
-}
+  small {
+    color: #555;
+  }
 
 .social-box {
   background: #ffffff;
@@ -295,35 +321,35 @@ small {
   border-radius: 5px;
 }
 
-.social-box .fa {
-  margin: 5px;
-  color: #fff;
-  cursor: pointer;
-}
+  .social-box .fa {
+    margin: 5px;
+    color: #fff;
+    cursor: pointer;
+  }
 
-.profile-box p {
-  padding-top: 20px;
-  text-align: justify;
-  font-size: 16px;
-  line-height: 1.4;
-  color: #555;
-}
+  .profile-box p {
+    padding-top: 20px;
+    text-align: justify;
+    font-size: 16px;
+    line-height: 1.4;
+    color: #555;
+  }
 
-.Member-row {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  justify-content: space-between;
-  flex-wrap: wrap-reverse;
-  width: 110%;
-  margin: 100px auto;
-}
+  .Member-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    justify-content: space-between;
+    flex-wrap: wrap-reverse;
+    width: 110%;
+    margin: 100px auto;
+  }
 
-.profile-box img:hover {
-  width: 250px;
-}
+  .profile-box img:hover {
+    width: 250px;
+  }
 
-.profile-box:hover {
-  background-color: #266c94;
-}
+  .profile-box:hover {
+    background-color: #266c94;
+  }
 </style>
 {% endblock %}
